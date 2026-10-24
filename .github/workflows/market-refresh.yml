@@ -1,0 +1,65 @@
+name: Validate and refresh market snapshots
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Fixture validation or approved live collection
+        required: true
+        default: fixture
+        type: choice
+        options:
+          - fixture
+          - live
+
+concurrency:
+  group: market-refresh
+  cancel-in-progress: false
+
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      # All collection tests inject fixture responses; this job makes no Steam request.
+      - run: npm test
+      - run: npm run build
+
+  live:
+    if: ${{ inputs.mode == 'live' }}
+    needs: fixture
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      STEAM_MARKET_COLLECTION_ALLOWED: ${{ vars.STEAM_MARKET_COLLECTION_ALLOWED }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Require documented permission
+        run: test "$STEAM_MARKET_COLLECTION_ALLOWED" = true
+      - run: npm ci
+      - run: node scripts/steam-market.mjs --live
+      - name: Commit only verified changes
+        run: |
+          if git diff --quiet -- public/market-jpy.json public/market-usd.json; then
+            echo "No snapshot changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/market-jpy.json public/market-usd.json
+          git commit -m "Update verified Steam market snapshots"
+          git push

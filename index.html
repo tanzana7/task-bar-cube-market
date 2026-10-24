@@ -19,14 +19,15 @@
   <main class="shell">
     <div class="intro"><p class="eyebrow">UNOFFICIAL MARKET BROWSER</p><h1>欲しいアイテムの相場を、すぐに。</h1><p class="intro-copy">Task Bar CubeのSteam出品を検索・比較。</p></div>
     <section class="market" aria-label="アイテム一覧">
-      <div class="controls"><label class="search"><span class="search-icon" aria-hidden="true">⌕</span><span class="sr-only">アイテム名で検索</span><input id="search" type="search" placeholder="アイテム名で検索" autocomplete="off" /></label><label class="sort"><span class="sr-only">並び替え</span><select id="sort"><option value="price-asc">価格が安い順</option><option value="price-desc">価格が高い順</option><option value="name">名前順</option></select></label></div>
+      <div class="controls"><label class="search"><span class="search-icon" aria-hidden="true">⌕</span><span class="sr-only">アイテム名で検索</span><input id="search" type="search" placeholder="アイテム名で検索" autocomplete="off" /></label><label class="sort"><span class="sr-only">通貨</span><select id="currency"><option value="JPY">JPY</option><option value="USD">USD</option></select></label><label class="sort"><span class="sr-only">並び替え</span><select id="sort"><option value="price-asc">価格が安い順</option><option value="price-desc">価格が高い順</option><option value="name">名前順</option></select></label></div>
       <div class="list-head"><span id="result-count">読み込み中</span><span id="updated-at">更新日時 —</span></div>
       <div id="status" class="status" role="status">マーケットデータを読み込んでいます…</div>
       <div id="items" class="items" hidden></div>
     </section>
     <p class="market-note">価格は取得時点の最安出品価格です。購入時はSteamでご確認ください。</p>
   </main>
-  <footer class="site-footer"><div class="shell footer-row"><span>Task Bar Cube Market · 非公式ファンサイト</span><span>Valveおよびゲーム開発元とは無関係です。</span></div></footer>
+  <footer class="site-footer"><div class="shell footer-row"><span>Task Bar Cube Market · 非公式ファンサイト</span><span>Valveおよびゲーム開発元とは無関係です。 <a href="/privacy.html">プライバシー</a> <button id="analytics-settings" type="button">解析設定</button></span></div></footer>
+  <div id="analytics-consent" class="consent" hidden><span>アクセス解析を許可しますか？ <a href="/privacy.html">詳細</a></span><div><button id="analytics-decline" type="button">拒否</button><button id="analytics-accept" type="button">許可</button></div></div>
   <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

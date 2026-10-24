@@ -3,15 +3,21 @@ import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 export const APPID = 5084200;
+export const CURRENCIES = Object.freeze({
+  JPY: { code: 8, country: 'JP', file: 'market-jpy.json' },
+  USD: { code: 1, country: 'US', file: 'market-usd.json' },
+});
 const MARKET_ENDPOINT = 'https://steamcommunity.com/market/search/render/';
-const CACHE_PATH = new URL('../public/market.json', import.meta.url);
 
-export function searchUrl(start) {
+export function searchUrl(start, currency = 'JPY') {
+  if (!Number.isSafeInteger(start) || start < 0 || !CURRENCIES[currency]) throw new Error('Invalid search request');
   const url = new URL(MARKET_ENDPOINT);
   url.searchParams.set('appid', String(APPID));
   url.searchParams.set('norender', '1');
   url.searchParams.set('count', '100');
   url.searchParams.set('start', String(start));
+  url.searchParams.set('currency', String(CURRENCIES[currency].code));
+  url.searchParams.set('country', CURRENCIES[currency].country);
   return url.href;
 }
 
@@ -25,81 +31,160 @@ function safeSteamImage(value) {
   }
 }
 
-export function normalizeResult(result) {
-  if (!result || typeof result !== 'object') return null;
+export function priceMatchesCurrency(text, currency) {
+  if (typeof text !== 'string' || !text.trim()) return false;
+  if (currency === 'JPY') return /^(?:JP¥|¥|￥|JPY\s*)\s*[\d,]+(?:\.00)?$/.test(text.trim());
+  if (currency === 'USD') return /^(?:US\$|\$|USD\s*)\s*[\d,]+(?:\.\d{2})?$/.test(text.trim());
+  return false;
+}
+
+export function normalizeResult(result, currency = 'JPY') {
+  if (!result || typeof result !== 'object' || !CURRENCIES[currency]) throw new Error('Invalid item');
   const asset = result.asset_description;
-  // Steam's search result name is its listing identifier when hash_name is absent.
-  const hashName = asset?.market_hash_name ?? result.hash_name ?? result.name;
+  // A missing market_hash_name cannot be inferred safely from a localized display name.
+  const hashName = asset?.market_hash_name ?? result.hash_name;
   const name = result.name;
-  if (typeof name !== 'string' || !name.trim() || typeof hashName !== 'string' || !hashName.trim()) return null;
-  if (asset?.appid !== undefined && Number(asset.appid) !== APPID) return null;
-  const minor = Number.isSafeInteger(result.sell_price) && result.sell_price >= 0 ? result.sell_price : null;
+  if (typeof name !== 'string' || !name.trim() || typeof hashName !== 'string' || !hashName.trim()) {
+    throw new Error('Steam item identifier missing');
+  }
+  if (asset?.appid !== undefined && Number(asset.appid) !== APPID) throw new Error('Unexpected Steam appid');
+  const priceText = typeof result.sell_price_text === 'string' && result.sell_price_text.trim() ? result.sell_price_text.trim() : null;
+  const priceAmount = Number.isSafeInteger(result.sell_price) && result.sell_price >= 0 ? result.sell_price : null;
+  if (priceText !== null && !priceMatchesCurrency(priceText, currency)) {
+    throw new Error(`Currency could not be verified for ${currency}`);
+  }
+  // A numeric price without a matching display currency must never become a sortable price.
+  const verifiedPrice = priceText === null ? null : priceAmount;
   const listings = Number.isSafeInteger(result.sell_listings) && result.sell_listings >= 0 ? result.sell_listings : null;
   return {
     name,
     marketHashName: hashName,
     imageUrl: safeSteamImage(asset?.icon_url ? `https://community.cloudflare.steamstatic.com/economy/image/${asset.icon_url}` : null),
-    priceMinor: minor,
-    priceText: typeof result.sell_price_text === 'string' && result.sell_price_text.trim() ? result.sell_price_text : null,
+    priceMinor: verifiedPrice,
+    priceText,
     listings,
     steamUrl: `https://steamcommunity.com/market/listings/${APPID}/${encodeURIComponent(hashName)}`,
   };
 }
 
-export function parsePage(body, expectedStart) {
-  if (!body || body.success !== true || body.start !== expectedStart || !Number.isSafeInteger(body.total_count)
-      || body.total_count < 0 || !Array.isArray(body.results) || body.results.length > 100) {
+export function parsePage(body, expectedStart, expectedTotal = null) {
+  if (!body || body.success !== true || !Number.isSafeInteger(body.total_count) || body.total_count < 0
+      || !Array.isArray(body.results) || body.results.length > 100
+      || body.results.length > Math.max(0, body.total_count - expectedStart)
+      || (body.start !== undefined && body.start !== expectedStart)
+      || (body.pagesize !== undefined && (!Number.isSafeInteger(body.pagesize) || body.pagesize < 1))
+      || (expectedTotal !== null && body.total_count !== expectedTotal)) {
     throw new Error('Steam search response shape changed');
   }
-  if (body.total_count > 0 && body.results.length === 0) throw new Error('Steam returned an incomplete page');
+  if (body.total_count > expectedStart && body.results.length === 0) throw new Error('Steam returned an incomplete page');
   return body;
 }
 
-export async function fetchPage(start, fetchImpl = fetch) {
-  const response = await fetchImpl(searchUrl(start), { headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(15000) });
+export async function fetchPage(start, currency, fetchImpl = fetch, expectedTotal = null) {
+  let response;
+  try {
+    response = await fetchImpl(searchUrl(start, currency), {
+      headers: { Accept: 'application/json' },
+      signal: AbortSignal.timeout(15000),
+    });
+  } catch (error) {
+    throw new Error('Steam network request failed', { cause: error });
+  }
   if (response.status === 403 || response.status === 429) throw new Error(`Steam access stopped: HTTP ${response.status}`);
   if (!response.ok) throw new Error(`Steam HTTP ${response.status}`);
-  return parsePage(await response.json(), start);
+  let body;
+  try {
+    body = await response.json();
+  } catch (error) {
+    throw new Error('Steam returned non-JSON response', { cause: error });
+  }
+  return parsePage(body, start, expectedTotal);
 }
 
-export async function collect(fetchImpl = fetch) {
-  const first = await fetchPage(0, fetchImpl);
+export async function collect(currency, fetchImpl = fetch, pause = ms => new Promise(resolve => setTimeout(resolve, ms))) {
+  if (!CURRENCIES[currency]) throw new Error('Unsupported currency');
+  const first = await fetchPage(0, currency, fetchImpl);
+  const total = first.total_count;
   const all = [...first.results];
-  // Actual pagesize is used because Steam can ignore the requested count.
-  const step = first.results.length || first.pagesize || 10;
-  if (!Number.isSafeInteger(step) || step < 1 || step > 100) throw new Error('Invalid Steam page size');
-  for (let start = step; start < first.total_count; start += step) {
-    // Sequential requests with a conservative delay; no retry on access restrictions.
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    const page = await fetchPage(start, fetchImpl);
-    all.push(...page.results);
+  if (total > 0) {
+    // The first result count is authoritative when Steam ignores count=100.
+    const step = first.results.length;
+    if (step > total) throw new Error('Steam returned more items than total_count');
+    for (let start = step; start < total; start += step) {
+      await pause(2000);
+      const page = await fetchPage(start, currency, fetchImpl, total);
+      if (page.results.length !== Math.min(step, total - start)) throw new Error('Steam page missing items');
+      all.push(...page.results);
+    }
+    if (all.length !== total) throw new Error('Steam result set was incomplete');
   }
-  if (all.length < first.total_count) throw new Error('Steam result set was incomplete');
-  const normalized = all.map(normalizeResult);
-  if (normalized.some(item => item === null)) throw new Error('Steam returned an item without an identifier');
-  const unique = [...new Map(normalized.map(item => [item.marketHashName, item])).values()];
+  const unique = new Map();
+  for (const raw of all) {
+    const item = normalizeResult(raw, currency);
+    const previous = unique.get(item.marketHashName);
+    // Steam can repeat rows across pages; prefer the row with more active listings.
+    if (!previous || (item.listings ?? -1) > (previous.listings ?? -1)) unique.set(item.marketHashName, item);
+  }
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     appid: APPID,
-    status: unique.length ? 'ok' : 'empty',
+    currency,
+    // With zero listings there is no price string with which to verify endpoint currency behavior.
+    status: unique.size ? 'ok' : 'unavailable',
     fetchedAt: new Date().toISOString(),
-    // search/render does not guarantee the requested currency; retain display text, do not relabel it.
-    currency: null,
-    items: unique,
+    items: [...unique.values()],
   };
 }
 
-async function main() {
-  // This command is manual only. Production scheduling requires a separate permission review.
-  const snapshot = await collect();
-  const previous = JSON.parse(await readFile(CACHE_PATH, 'utf8'));
-  if (previous.status === 'ok' && snapshot.status === 'empty') {
-    throw new Error('Refusing to replace a populated cache with an empty response');
+export function validateSnapshot(snapshot, currency) {
+  if (!snapshot || snapshot.schemaVersion !== 2 || snapshot.appid !== APPID || snapshot.currency !== currency
+      || !['ok', 'unavailable'].includes(snapshot.status) || !Array.isArray(snapshot.items)
+      || (snapshot.status === 'ok' && snapshot.items.length === 0)) throw new Error('Invalid market snapshot');
+  for (const item of snapshot.items) {
+    if (typeof item.marketHashName !== 'string' || typeof item.name !== 'string'
+        || (item.priceText !== null && !priceMatchesCurrency(item.priceText, currency))) {
+      throw new Error('Invalid market item');
+    }
   }
-  const temporary = new URL('../public/market.json.tmp', import.meta.url);
+  return snapshot;
+}
+
+export async function saveSnapshot(snapshot, currency, cachePath = new URL(`../public/${CURRENCIES[currency].file}`, import.meta.url)) {
+  validateSnapshot(snapshot, currency);
+  let previous = null;
+  try {
+    previous = JSON.parse(await readFile(cachePath, 'utf8'));
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error;
+  }
+  if (previous?.status === 'ok' && snapshot.status !== 'ok') {
+    throw new Error('Refusing to replace a populated cache with unverified data');
+  }
+  const temporary = new URL(cachePath.href + '.tmp');
   await writeFile(temporary, JSON.stringify(snapshot) + '\n', 'utf8');
-  await rename(temporary, CACHE_PATH);
-  console.info(`Steam snapshot saved: ${snapshot.items.length} items at ${snapshot.fetchedAt}`);
+  await rename(temporary, cachePath);
+}
+
+async function main() {
+  const live = process.argv.includes('--live');
+  if (!live || process.env.STEAM_MARKET_COLLECTION_ALLOWED !== 'true') {
+    throw new Error('Live Steam collection requires --live and STEAM_MARKET_COLLECTION_ALLOWED=true');
+  }
+  // Collect both before writing either cache, so a network or currency failure cannot publish a partial pair.
+  const jpy = await collect('JPY');
+  const usd = await collect('USD');
+  validateSnapshot(jpy, 'JPY');
+  validateSnapshot(usd, 'USD');
+  for (const [currency, next] of [['JPY', jpy], ['USD', usd]]) {
+    const path = new URL(`../public/${CURRENCIES[currency].file}`, import.meta.url);
+    const previous = JSON.parse(await readFile(path, 'utf8'));
+    if (previous.status === 'ok' && next.status !== 'ok') {
+      throw new Error(`Refusing to replace populated ${currency} cache`);
+    }
+  }
+  await saveSnapshot(jpy, 'JPY');
+  await saveSnapshot(usd, 'USD');
+  console.info(`Steam snapshots saved: JPY ${jpy.items.length}, USD ${usd.items.length}`);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {

@@ -1,0 +1,42 @@
+{
+  "JPY": {
+    "0": {
+      "success": true,
+      "total_count": 3,
+      "results": [
+        {"name":"Cube A","sell_price":100,"sell_price_text":"¥100","sell_listings":2,"asset_description":{"appid":5084200,"market_hash_name":"Cube A"}},
+        {"name":"Cube B","sell_price":250,"sell_price_text":"¥250","sell_listings":1,"asset_description":{"appid":5084200,"market_hash_name":"Cube B"}}
+      ]
+    },
+    "2": {
+      "success": true,
+      "start": 2,
+      "pagesize": 2,
+      "total_count": 3,
+      "results": [
+        {"name":"Cube C","sell_price":500,"sell_price_text":"¥500","sell_listings":4,"asset_description":{"appid":5084200,"market_hash_name":"Cube C"}}
+      ]
+    }
+  },
+  "USD": {
+    "0": {
+      "success": true,
+      "start": 0,
+      "pagesize": 2,
+      "total_count": 3,
+      "results": [
+        {"name":"Cube A","sell_price":100,"sell_price_text":"$1.00","sell_listings":2,"asset_description":{"appid":5084200,"market_hash_name":"Cube A"}},
+        {"name":"Cube B","sell_price":250,"sell_price_text":"$2.50","sell_listings":1,"asset_description":{"appid":5084200,"market_hash_name":"Cube B"}}
+      ]
+    },
+    "2": {
+      "success": true,
+      "start": 2,
+      "pagesize": 2,
+      "total_count": 3,
+      "results": [
+        {"name":"Cube C","sell_price":500,"sell_price_text":"$5.00","sell_listings":4,"asset_description":{"appid":5084200,"market_hash_name":"Cube C"}}
+      ]
+    }
+  }
+}
