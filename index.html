@@ -1,133 +1,32 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="google-site-verification" content="85Yim27xrDF7ct6CIeLhcyKc_ri2UnD2xfkwGu5aA9w" />
-
-  <title>Task Bar Cube Market | Steamマーケット価格・アイテム検索</title>
-  <meta name="description" content="Task Bar CubeのSteam Community Marketに出品されるアイテムの価格や出品情報を検索・比較できる非公式マーケット情報サイト。">
-  <meta name="robots" content="index, follow">
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      background: #0f1724;
-      color: #e8edf5;
-      font-family: Arial, "Noto Sans JP", sans-serif;
-      line-height: 1.7;
-    }
-
-    header {
-      padding: 24px;
-      background: #172235;
-      border-bottom: 1px solid #29384f;
-    }
-
-    .container {
-      max-width: 960px;
-      margin: 0 auto;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: 25px;
-    }
-
-    .subtitle {
-      color: #93a4bd;
-      font-size: 14px;
-    }
-
-    main {
-      padding: 70px 24px;
-      text-align: center;
-    }
-
-    h2 {
-      font-size: 28px;
-    }
-
-    p {
-      color: #aab8cb;
-    }
-
-    .status {
-      display: inline-block;
-      margin: 20px 0;
-      padding: 8px 18px;
-      border-radius: 20px;
-      background: #243b55;
-      color: #8ec8ff;
-      font-size: 14px;
-    }
-
-    .button {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 12px 24px;
-      border-radius: 8px;
-      background: #327dc0;
-      color: #fff;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .button:hover {
-      background: #4196df;
-    }
-
-    footer {
-      padding: 24px;
-      border-top: 1px solid #29384f;
-      text-align: center;
-      color: #78889f;
-      font-size: 12px;
-    }
-  </style>
+  <title>Task Bar Cube Market | アイテム検索・Steam価格</title>
+  <meta name="description" content="Task Bar CubeのSteam Community Market出品を検索・価格順に比較できる非公式サイト。" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://task-bar-cube-market.pages.dev/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Task Bar Cube Market" />
+  <meta property="og:description" content="Task Bar CubeのSteamマーケットを見やすく検索。" />
+  <meta property="og:url" content="https://task-bar-cube-market.pages.dev/" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 </head>
-
 <body>
-
-  <header>
-    <div class="container">
-      <h1>Task Bar Cube Market</h1>
-      <div class="subtitle">Unofficial Steam Market Browser</div>
-    </div>
-  </header>
-
-  <main class="container">
-    <h2>Task Bar Cubeのマーケット情報をもっと見やすく。</h2>
-
-    <p>
-      Task Bar Cube Marketは、Steam Community Marketに出品される<br>
-      アイテムの価格や出品状況を検索・比較するための非公式サイトです。
-    </p>
-
-    <div class="status">現在開発中 — Coming Soon</div>
-
-    <p>
-      アイテム一覧・価格検索・並び替え機能を準備しています。<br>
-      Steamマーケットのデータが利用可能になり次第、順次対応予定です。
-    </p>
-
-    <a class="button"
-       href="https://steamcommunity.com/market/search?appid=5084200"
-       target="_blank"
-       rel="noopener noreferrer">
-      Steamマーケットを見る ↗
-    </a>
+  <header class="site-header"><div class="shell header-row"><a class="brand" href="/" aria-label="Task Bar Cube Market ホーム"><span class="brand-mark" aria-hidden="true">▣</span><span>Task Bar Cube <strong>Market</strong></span></a><a class="header-link" href="https://steamcommunity.com/market/search?appid=5084200" target="_blank" rel="noopener noreferrer">Steam Market ↗</a></div></header>
+  <main class="shell">
+    <div class="intro"><p class="eyebrow">UNOFFICIAL MARKET BROWSER</p><h1>欲しいアイテムの相場を、すぐに。</h1><p class="intro-copy">Task Bar CubeのSteam出品を検索・比較。</p></div>
+    <section class="market" aria-label="アイテム一覧">
+      <div class="controls"><label class="search"><span class="search-icon" aria-hidden="true">⌕</span><span class="sr-only">アイテム名で検索</span><input id="search" type="search" placeholder="アイテム名で検索" autocomplete="off" /></label><label class="sort"><span class="sr-only">並び替え</span><select id="sort"><option value="price-asc">価格が安い順</option><option value="price-desc">価格が高い順</option><option value="name">名前順</option></select></label></div>
+      <div class="list-head"><span id="result-count">読み込み中</span><span id="updated-at">更新日時 —</span></div>
+      <div id="status" class="status" role="status">マーケットデータを読み込んでいます…</div>
+      <div id="items" class="items" hidden></div>
+    </section>
+    <p class="market-note">価格は取得時点の最安出品価格です。購入時はSteamでご確認ください。</p>
   </main>
-
-  <footer>
-    Task Bar Cube Market is an unofficial fan-made website.<br>
-    Not affiliated with Valve or the developers of Task Bar Cube.
-  </footer>
-
+  <footer class="site-footer"><div class="shell footer-row"><span>Task Bar Cube Market · 非公式ファンサイト</span><span>Valveおよびゲーム開発元とは無関係です。</span></div></footer>
+  <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

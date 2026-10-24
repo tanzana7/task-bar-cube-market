@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://task-bar-cube-market.pages.dev/sitemap.xml
