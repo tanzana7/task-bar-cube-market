@@ -1,14 +1,6 @@
 import './style.css';
+import { filterAndSort, type MarketItem, type SortMode } from './market';
 
-type MarketItem = {
-  name: string;
-  marketHashName: string;
-  imageUrl: string | null;
-  priceMinor: number | null;
-  priceText: string | null;
-  listings: number | null;
-  steamUrl: string;
-};
 type Snapshot = {
   schemaVersion: number;
   appid: number;
@@ -55,25 +47,9 @@ function safeSteamUrl(url: string): string | null {
   }
 }
 
-function currencyKey(item: MarketItem): string | null {
-  return item.priceText?.replace(/[\d\s.,\u00a0-]/g, '') || null;
-}
-
 function render() {
   if (!snapshot) return;
-  const query = search.value.trim().toLocaleLowerCase();
-  const visible = snapshot.items.filter(item => item.name.toLocaleLowerCase().includes(query));
-  const collator = new Intl.Collator('ja', { sensitivity: 'base' });
-  visible.sort((a, b) => {
-    if (sort.value === 'name') return collator.compare(a.name, b.name);
-    // Price missing is always last; the name tie break keeps sorting stable.
-    if (a.priceMinor === null) return b.priceMinor === null ? collator.compare(a.name, b.name) : 1;
-    if (b.priceMinor === null) return -1;
-    // Steam may localize each displayed price. Do not compare numeric minor units across currencies.
-    if (currencyKey(a) !== currencyKey(b)) return collator.compare(a.name, b.name);
-    return (sort.value === 'price-desc' ? b.priceMinor - a.priceMinor : a.priceMinor - b.priceMinor)
-      || collator.compare(a.name, b.name);
-  });
+  const visible = filterAndSort(snapshot.items, search.value, sort.value as SortMode);
   countNode.textContent = `${visible.length}件のアイテム`;
   itemsNode.replaceChildren();
   if (snapshot.status === 'unavailable') {
