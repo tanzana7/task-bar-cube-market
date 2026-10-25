@@ -1,0 +1,3611 @@
+{
+  "schemaVersion": 1,
+  "appid": 5084200,
+  "currency": "USD",
+  "generatedAt": "2026-10-25T14:52:54.823Z",
+  "products": [
+    {
+      "marketHashName": "Arcane Boots 60%",
+      "name": "Arcane Boots 60%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Boots%2060%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$5.00",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$5.00",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Arcane Bracelet 60%",
+      "name": "Arcane Bracelet 60%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Bracelet%2060%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$4.46",
+          "listings": 4,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$4.46",
+          "listings": 4,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Arcane Chestplate 60%",
+      "name": "Arcane Chestplate 60%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Chestplate%2060%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.87",
+          "listings": 2,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.87",
+          "listings": 2,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Arcane Gloves 60%",
+      "name": "Arcane Gloves 60%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Gloves%2060%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$3.27",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$3.27",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Arcane Helmet 60%",
+      "name": "Arcane Helmet 60%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Helmet%2060%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$1.19",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$1.19",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Arcane Necklace 60%",
+      "name": "Arcane Necklace 60%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Necklace%2060%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$5.49",
+          "listings": 2,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$5.49",
+          "listings": 2,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Arcane Pants 60%",
+      "name": "Arcane Pants 60%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Pants%2060%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$1.28",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$1.28",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Arcane Ring 60%",
+      "name": "Arcane Ring 60%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Ring%2060%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$1.11",
+          "listings": 4,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$1.11",
+          "listings": 4,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Blazing Gloves 65%",
+      "name": "Blazing Gloves 65%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Blazing%20Gloves%2065%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$3.72",
+          "listings": 2,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$3.72",
+          "listings": 2,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Blazing Helmet 65%",
+      "name": "Blazing Helmet 65%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Blazing%20Helmet%2065%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$14.73",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$14.73",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Blazing Necklace 65%",
+      "name": "Blazing Necklace 65%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Blazing%20Necklace%2065%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$22.32",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$22.32",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Blazing Pants 65%",
+      "name": "Blazing Pants 65%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Blazing%20Pants%2065%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$1.31",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$1.31",
+          "listings": 2,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Blazing Ring 65%",
+      "name": "Blazing Ring 65%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Blazing%20Ring%2065%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$1.76",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$1.76",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Celestial Chestplate 85%",
+      "name": "Celestial Chestplate 85%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Celestial%20Chestplate%2085%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$24.99",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$24.99",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Celestial Necklace 85%",
+      "name": "Celestial Necklace 85%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Celestial%20Necklace%2085%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$51.10",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$51.10",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Chest Lv.1",
+      "name": "Chest Lv.1",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Chest%20Lv.1",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 2894,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 2961,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Chest Lv.2",
+      "name": "Chest Lv.2",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Chest%20Lv.2",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 334,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 340,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Chest Lv.3",
+      "name": "Chest Lv.3",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Chest%20Lv.3",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 130,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 133,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Chest Lv.4",
+      "name": "Chest Lv.4",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Chest%20Lv.4",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 47,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 47,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Chest Lv.5",
+      "name": "Chest Lv.5",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Chest%20Lv.5",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.21",
+          "listings": 23,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.21",
+          "listings": 26,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Cobalt Boots 25%",
+      "name": "Cobalt Boots 25%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Boots%2025%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 21,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 21,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Cobalt Bracelet 25%",
+      "name": "Cobalt Bracelet 25%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Bracelet%2025%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 16,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 16,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Cobalt Chestplate 25%",
+      "name": "Cobalt Chestplate 25%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Chestplate%2025%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 16,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 16,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Cobalt Gloves 25%",
+      "name": "Cobalt Gloves 25%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Gloves%2025%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 11,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 11,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Cobalt Helmet 25%",
+      "name": "Cobalt Helmet 25%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Helmet%2025%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 25,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 25,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Cobalt Necklace 25%",
+      "name": "Cobalt Necklace 25%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Necklace%2025%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 15,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 16,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Cobalt Pants 25%",
+      "name": "Cobalt Pants 25%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Pants%2025%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 18,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 18,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Cobalt Ring 25%",
+      "name": "Cobalt Ring 25%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Ring%2025%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 23,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 23,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Cobalt Sword 25%",
+      "name": "Cobalt Sword 25%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Sword%2025%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 21,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 21,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Crimson Boots 40%",
+      "name": "Crimson Boots 40%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Boots%2040%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.06",
+          "listings": 13,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.06",
+          "listings": 13,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Crimson Bracelet 40%",
+      "name": "Crimson Bracelet 40%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Bracelet%2040%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.28",
+          "listings": 8,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.28",
+          "listings": 8,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Crimson Chestplate 40%",
+      "name": "Crimson Chestplate 40%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Chestplate%2040%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.30",
+          "listings": 6,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.30",
+          "listings": 6,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Crimson Gloves 40%",
+      "name": "Crimson Gloves 40%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Gloves%2040%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.13",
+          "listings": 6,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.13",
+          "listings": 6,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Crimson Helmet 40%",
+      "name": "Crimson Helmet 40%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Helmet%2040%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.11",
+          "listings": 11,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.11",
+          "listings": 11,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Crimson Necklace 40%",
+      "name": "Crimson Necklace 40%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Necklace%2040%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.37",
+          "listings": 15,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.37",
+          "listings": 15,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Crimson Pants 40%",
+      "name": "Crimson Pants 40%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Pants%2040%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.23",
+          "listings": 13,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.23",
+          "listings": 13,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Crimson Ring 40%",
+      "name": "Crimson Ring 40%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Ring%2040%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.14",
+          "listings": 9,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.14",
+          "listings": 9,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Crimson Sword 40%",
+      "name": "Crimson Sword 40%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Sword%2040%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.20",
+          "listings": 10,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.20",
+          "listings": 10,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Dragonforged Bracelet 80%",
+      "name": "Dragonforged Bracelet 80%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Dragonforged%20Bracelet%2080%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$5.10",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$5.10",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Dragonforged Ring 80%",
+      "name": "Dragonforged Ring 80%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Dragonforged%20Ring%2080%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$13.28",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$13.28",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Eternal Gloves 95%",
+      "name": "Eternal Gloves 95%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Eternal%20Gloves%2095%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$27.96",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$27.96",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Eternal Pants 95%",
+      "name": "Eternal Pants 95%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Eternal%20Pants%2095%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$25.55",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$25.55",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Eternal Sword 95%",
+      "name": "Eternal Sword 95%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Eternal%20Sword%2095%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$6.26",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Golden Boots 30%",
+      "name": "Golden Boots 30%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Boots%2030%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 18,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 18,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Golden Bracelet 30%",
+      "name": "Golden Bracelet 30%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Bracelet%2030%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 17,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 17,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Golden Chestplate 30%",
+      "name": "Golden Chestplate 30%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Chestplate%2030%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 17,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 17,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Golden Gloves 30%",
+      "name": "Golden Gloves 30%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Gloves%2030%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 18,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 18,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Golden Helmet 30%",
+      "name": "Golden Helmet 30%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Helmet%2030%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 18,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 18,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Golden Necklace 30%",
+      "name": "Golden Necklace 30%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Necklace%2030%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 19,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 19,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Golden Pants 30%",
+      "name": "Golden Pants 30%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Pants%2030%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 14,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 14,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Golden Ring 30%",
+      "name": "Golden Ring 30%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Ring%2030%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 12,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 12,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Golden Sword 30%",
+      "name": "Golden Sword 30%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Sword%2030%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 14,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 14,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Mystic Boots 45%",
+      "name": "Mystic Boots 45%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Boots%2045%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 9,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.23",
+          "listings": 8,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Mystic Bracelet 45%",
+      "name": "Mystic Bracelet 45%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Bracelet%2045%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.18",
+          "listings": 5,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.18",
+          "listings": 5,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Mystic Chestplate 45%",
+      "name": "Mystic Chestplate 45%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Chestplate%2045%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.42",
+          "listings": 7,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.42",
+          "listings": 7,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Mystic Gloves 45%",
+      "name": "Mystic Gloves 45%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Gloves%2045%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$1.47",
+          "listings": 6,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$1.47",
+          "listings": 6,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Mystic Helmet 45%",
+      "name": "Mystic Helmet 45%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Helmet%2045%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.17",
+          "listings": 6,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.17",
+          "listings": 6,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Mystic Necklace 45%",
+      "name": "Mystic Necklace 45%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Necklace%2045%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$1.46",
+          "listings": 4,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$1.46",
+          "listings": 4,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Mystic Pants 45%",
+      "name": "Mystic Pants 45%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Pants%2045%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.30",
+          "listings": 8,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.30",
+          "listings": 8,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Mystic Ring 45%",
+      "name": "Mystic Ring 45%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Ring%2045%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.30",
+          "listings": 9,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.30",
+          "listings": 9,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Mystic Sword 45%",
+      "name": "Mystic Sword 45%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Sword%2045%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$1.84",
+          "listings": 7,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        },
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$1.84",
+          "listings": 7,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Platinum Boots 35%",
+      "name": "Platinum Boots 35%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Boots%2035%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 7,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Platinum Bracelet 35%",
+      "name": "Platinum Bracelet 35%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Bracelet%2035%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 9,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Platinum Chestplate 35%",
+      "name": "Platinum Chestplate 35%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Chestplate%2035%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.08",
+          "listings": 10,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Platinum Gloves 35%",
+      "name": "Platinum Gloves 35%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Gloves%2035%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.07",
+          "listings": 6,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Platinum Helmet 35%",
+      "name": "Platinum Helmet 35%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Helmet%2035%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 13,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Platinum Necklace 35%",
+      "name": "Platinum Necklace 35%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Necklace%2035%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.11",
+          "listings": 11,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Platinum Pants 35%",
+      "name": "Platinum Pants 35%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Pants%2035%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 6,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Platinum Ring 35%",
+      "name": "Platinum Ring 35%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Ring%2035%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.06",
+          "listings": 14,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Platinum Sword 35%",
+      "name": "Platinum Sword 35%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Sword%2035%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 15,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Polished Boots 20%",
+      "name": "Polished Boots 20%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Boots%2020%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 38,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Polished Bracelet 20%",
+      "name": "Polished Bracelet 20%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Bracelet%2020%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 46,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Polished Chestplate 20%",
+      "name": "Polished Chestplate 20%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Chestplate%2020%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 47,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Polished Gloves 20%",
+      "name": "Polished Gloves 20%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Gloves%2020%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 48,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Polished Helmet 20%",
+      "name": "Polished Helmet 20%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Helmet%2020%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 44,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Polished Necklace 20%",
+      "name": "Polished Necklace 20%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Necklace%2020%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 57,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Polished Pants 20%",
+      "name": "Polished Pants 20%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Pants%2020%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 34,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Polished Ring 20%",
+      "name": "Polished Ring 20%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Ring%2020%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 46,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Polished Sword 20%",
+      "name": "Polished Sword 20%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Sword%2020%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 33,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Rusty Boots 5%",
+      "name": "Rusty Boots 5%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Boots%205%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 134,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Rusty Bracelet 5%",
+      "name": "Rusty Bracelet 5%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Bracelet%205%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 151,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Rusty Chestplate 5%",
+      "name": "Rusty Chestplate 5%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Chestplate%205%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 115,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Rusty Gloves 5%",
+      "name": "Rusty Gloves 5%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Gloves%205%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 136,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Rusty Helmet 5%",
+      "name": "Rusty Helmet 5%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Helmet%205%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 133,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Rusty Necklace 5%",
+      "name": "Rusty Necklace 5%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Necklace%205%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 151,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Rusty Pants 5%",
+      "name": "Rusty Pants 5%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Pants%205%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 138,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Rusty Ring 5%",
+      "name": "Rusty Ring 5%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Ring%205%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 117,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Rusty Sword 5%",
+      "name": "Rusty Sword 5%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Sword%205%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 120,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Seraphic Chestplate 90%",
+      "name": "Seraphic Chestplate 90%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Seraphic%20Chestplate%2090%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$27.61",
+          "listings": 2,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Shadow Boots 50%",
+      "name": "Shadow Boots 50%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Boots%2050%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.59",
+          "listings": 7,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Shadow Bracelet 50%",
+      "name": "Shadow Bracelet 50%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Bracelet%2050%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.87",
+          "listings": 6,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Shadow Chestplate 50%",
+      "name": "Shadow Chestplate 50%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Chestplate%2050%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.63",
+          "listings": 4,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Shadow Gloves 50%",
+      "name": "Shadow Gloves 50%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Gloves%2050%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$1.19",
+          "listings": 4,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Shadow Helmet 50%",
+      "name": "Shadow Helmet 50%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Helmet%2050%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$22.32",
+          "listings": 3,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Shadow Necklace 50%",
+      "name": "Shadow Necklace 50%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Necklace%2050%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$2.96",
+          "listings": 2,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Shadow Pants 50%",
+      "name": "Shadow Pants 50%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Pants%2050%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$7.40",
+          "listings": 5,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Shadow Ring 50%",
+      "name": "Shadow Ring 50%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Ring%2050%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$7.43",
+          "listings": 3,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Shadow Sword 50%",
+      "name": "Shadow Sword 50%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Sword%2050%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$1.49",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Starforged Boots 55%",
+      "name": "Starforged Boots 55%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Boots%2055%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.55",
+          "listings": 5,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Starforged Bracelet 55%",
+      "name": "Starforged Bracelet 55%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Bracelet%2055%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$5.54",
+          "listings": 2,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Starforged Gloves 55%",
+      "name": "Starforged Gloves 55%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Gloves%2055%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$2.56",
+          "listings": 3,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Starforged Helmet 55%",
+      "name": "Starforged Helmet 55%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Helmet%2055%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$1.21",
+          "listings": 6,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Starforged Necklace 55%",
+      "name": "Starforged Necklace 55%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Necklace%2055%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$3.68",
+          "listings": 2,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Starforged Pants 55%",
+      "name": "Starforged Pants 55%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Pants%2055%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.62",
+          "listings": 4,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Starforged Ring 55%",
+      "name": "Starforged Ring 55%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Ring%2055%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$2.23",
+          "listings": 2,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Starforged Sword 55%",
+      "name": "Starforged Sword 55%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Sword%2055%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$1.44",
+          "listings": 3,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Stormborn Boots 75%",
+      "name": "Stormborn Boots 75%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Stormborn%20Boots%2075%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$12.88",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Stormborn Helmet 75%",
+      "name": "Stormborn Helmet 75%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Stormborn%20Helmet%2075%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$2.44",
+          "listings": 2,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Sturdy Boots 15%",
+      "name": "Sturdy Boots 15%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Boots%2015%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 42,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Sturdy Bracelet 15%",
+      "name": "Sturdy Bracelet 15%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Bracelet%2015%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 42,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Sturdy Chestplate 15%",
+      "name": "Sturdy Chestplate 15%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Chestplate%2015%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 44,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Sturdy Gloves 15%",
+      "name": "Sturdy Gloves 15%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Gloves%2015%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 37,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Sturdy Helmet 15%",
+      "name": "Sturdy Helmet 15%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Helmet%2015%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 49,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Sturdy Necklace 15%",
+      "name": "Sturdy Necklace 15%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Necklace%2015%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 40,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Sturdy Pants 15%",
+      "name": "Sturdy Pants 15%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Pants%2015%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 55,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Sturdy Ring 15%",
+      "name": "Sturdy Ring 15%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Ring%2015%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 44,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Sturdy Sword 15%",
+      "name": "Sturdy Sword 15%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Sword%2015%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.04",
+          "listings": 46,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Titan Boots 70%",
+      "name": "Titan Boots 70%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Titan%20Boots%2070%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$3.41",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Titan Chestplate 70%",
+      "name": "Titan Chestplate 70%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Titan%20Chestplate%2070%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$1.70",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Titan Gloves 70%",
+      "name": "Titan Gloves 70%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Titan%20Gloves%2070%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$21.29",
+          "listings": 2,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Titan Pants 70%",
+      "name": "Titan Pants 70%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Titan%20Pants%2070%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:55:11.103Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$29.71",
+          "listings": 2,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Titan Sword 70%",
+      "name": "Titan Sword 70%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Titan%20Sword%2070%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:55:11.103Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$9.20",
+          "listings": 1,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Worn Boots 10%",
+      "name": "Worn Boots 10%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Boots%2010%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:55:11.103Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 86,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Worn Bracelet 10%",
+      "name": "Worn Bracelet 10%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Bracelet%2010%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:55:11.103Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 93,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Worn Chestplate 10%",
+      "name": "Worn Chestplate 10%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Chestplate%2010%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:55:11.103Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 76,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Worn Gloves 10%",
+      "name": "Worn Gloves 10%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Gloves%2010%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:55:11.103Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 70,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Worn Helmet 10%",
+      "name": "Worn Helmet 10%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Helmet%2010%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:55:11.103Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 75,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Worn Necklace 10%",
+      "name": "Worn Necklace 10%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Necklace%2010%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:55:11.103Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 85,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Worn Pants 10%",
+      "name": "Worn Pants 10%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Pants%2010%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:55:11.103Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 88,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Worn Ring 10%",
+      "name": "Worn Ring 10%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Ring%2010%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:55:11.103Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 84,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    },
+    {
+      "marketHashName": "Worn Sword 10%",
+      "name": "Worn Sword 10%",
+      "imageUrl": null,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Sword%2010%25",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:55:11.103Z",
+          "sourceKind": "query-action",
+          "currency": "USD",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "priceBasis": "min-sell-subtotal-unverified-fees",
+          "priceMinor": null,
+          "priceText": null,
+          "referencePriceText": "$0.03",
+          "listings": 77,
+          "provenance": "operator-directed factual observations; rights unconfirmed; images omitted"
+        }
+      ]
+    }
+  ],
+  "imports": [
+    {
+      "sourceKind": "query-action",
+      "provenance": "operator-directed factual observations; rights unconfirmed; images omitted",
+      "observedAt": "2026-10-25T13:51:28.011Z",
+      "rightsConfirmed": false,
+      "start": 0,
+      "totalCount": 131,
+      "pageSize": 30,
+      "complete": false
+    },
+    {
+      "sourceKind": "query-action",
+      "provenance": "operator-directed factual observations; rights unconfirmed; images omitted",
+      "observedAt": "2026-10-25T13:52:35.727Z",
+      "rightsConfirmed": false,
+      "start": 30,
+      "totalCount": 130,
+      "pageSize": 30,
+      "complete": false
+    },
+    {
+      "sourceKind": "query-action",
+      "provenance": "operator-directed factual observations; rights unconfirmed; images omitted",
+      "observedAt": "2026-10-25T13:54:11.199Z",
+      "rightsConfirmed": false,
+      "start": 0,
+      "totalCount": 131,
+      "pageSize": 30,
+      "complete": false
+    },
+    {
+      "sourceKind": "query-action",
+      "provenance": "operator-directed factual observations; rights unconfirmed; images omitted",
+      "observedAt": "2026-10-25T13:54:26.142Z",
+      "rightsConfirmed": false,
+      "start": 30,
+      "totalCount": 131,
+      "pageSize": 30,
+      "complete": false
+    },
+    {
+      "sourceKind": "query-action",
+      "provenance": "operator-directed factual observations; rights unconfirmed; images omitted",
+      "observedAt": "2026-10-25T13:54:41.311Z",
+      "rightsConfirmed": false,
+      "start": 60,
+      "totalCount": 131,
+      "pageSize": 30,
+      "complete": false
+    },
+    {
+      "sourceKind": "query-action",
+      "provenance": "operator-directed factual observations; rights unconfirmed; images omitted",
+      "observedAt": "2026-10-25T13:54:56.127Z",
+      "rightsConfirmed": false,
+      "start": 90,
+      "totalCount": 131,
+      "pageSize": 30,
+      "complete": false
+    },
+    {
+      "sourceKind": "query-action",
+      "provenance": "operator-directed factual observations; rights unconfirmed; images omitted",
+      "observedAt": "2026-10-25T13:55:11.103Z",
+      "rightsConfirmed": false,
+      "start": 120,
+      "totalCount": 131,
+      "pageSize": 11,
+      "complete": false
+    }
+  ]
+}
