@@ -172,13 +172,15 @@ export function validateFxRateRecord(record, now = new Date()) {
   const published = typeof rateDate === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(rateDate)
     ? Date.parse(`${rateDate}T00:00:00Z`) : NaN;
   const fetchedAt = Date.parse(record?.fetchedAt);
+  const nowMs = nowDate.valueOf();
   const apiUrl = record?.apiUrl ?? record?.sourceUrl;
+  const today = Number.isFinite(nowMs) ? nowDate.toISOString().slice(0, 10) : '';
   if (record?.source !== 'Frankfurter' || apiUrl !== FX_RATE_URL || record.base !== 'USD' || record.quote !== 'JPY'
       || !Number.isFinite(record.rate) || record.rate < 1 || record.rate > 1000
       || !Number.isFinite(published) || new Date(published).toISOString().slice(0, 10) !== rateDate
-      || rateDate > nowDate.toISOString().slice(0, 10)
-      || !Number.isFinite(fetchedAt) || !Number.isFinite(nowDate.valueOf())
-      || nowDate.valueOf() - published > 4 * 86400000 || published - nowDate.valueOf() > 86400000) {
+      || !Number.isFinite(nowMs) || rateDate > today
+      || !Number.isFinite(fetchedAt) || fetchedAt - nowMs > 60000
+      || nowMs - published > 4 * 86400000) {
     throw new Error('FX rate is invalid or stale');
   }
   return { source: 'Frankfurter', sourceUrl: FX_RATE_URL, base: 'USD', quote: 'JPY', rate: record.rate,

@@ -4,7 +4,7 @@ import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { pathToFileURL } from 'node:url';
-import { collectPair, FX_RATE_URL } from '../scripts/steam-market.mjs';
+import { collectPair, FX_RATE_URL, validateFxRateRecord } from '../scripts/steam-market.mjs';
 import { updateFxRate, validateFxCache } from '../scripts/fx-rate.mjs';
 import { deriveJpyReferenceSnapshot, formatFxRateLabel, parseFreshFxRate } from '../src/market.ts';
 
@@ -74,6 +74,8 @@ test('same daily rate is unchanged and does not rewrite the cache', async () => 
 });
 
 test('invalid, stale, future and failed observations leave the prior cache untouched', async () => {
+  assert.throws(() => validateFxRateRecord({ source: 'Frankfurter', apiUrl: FX_RATE_URL, base: 'USD', quote: 'JPY',
+    rate: 157.12, rateDate: '2026-10-25', fetchedAt: '2026-10-25T09:02:00Z' }, now()), /invalid or stale/);
   await withCache(async cachePath => {
     const prior = { schemaVersion: 1, source: 'Frankfurter', apiUrl: FX_RATE_URL, base: 'USD', quote: 'JPY',
       rate: 150, rateDate: '2026-10-23', fetchedAt: '2026-10-24T09:00:00.000Z' };

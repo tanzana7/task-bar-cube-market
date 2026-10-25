@@ -41,7 +41,7 @@ export function parseFreshFxRate(value: unknown, now = Date.now()): FxRateRecord
       || typeof record.rate !== 'number' || !Number.isFinite(record.rate) || record.rate < 1 || record.rate > 1000
       || typeof record.rateDate !== 'string' || isFxRateExpired(record.rateDate, now)
       || typeof record.fetchedAt !== 'string' || !Number.isFinite(Date.parse(record.fetchedAt))
-      || Date.parse(record.fetchedAt) - now > 24 * 60 * 60 * 1000) return null;
+      || Date.parse(record.fetchedAt) - now > 60_000) return null;
   return record as FxRateRecord;
 }
 
