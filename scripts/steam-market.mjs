@@ -174,6 +174,17 @@ function recordCollectionDiagnostic(state, diagnostic) {
   state.diagnostics = [...(state.diagnostics ?? []), diagnostic].slice(-20);
 }
 
+function safeResponseHeader(response, name) {
+  const value = response.headers?.get?.(name);
+  return typeof value === 'string' ? value.replace(/[\r\n\t]/g, ' ').slice(0, 120) || null : null;
+}
+
+function safeHttpDiagnostic(status) {
+  if (status === 400) return 'Steam rejected the request; response body omitted.';
+  if (status === 404) return 'The requested route was unavailable; response body omitted.';
+  return `HTTP ${status} response; response body omitted.`;
+}
+
 export function createSteamRequestController({ fetchImpl = fetch, pause = ms => new Promise(resolve => setTimeout(resolve, ms)),
   policy = DEFAULT_REQUEST_POLICY, statePath = null, now = () => new Date() } = {}) {
   let requestsMade = 0;
@@ -215,6 +226,7 @@ export function createSteamRequestController({ fetchImpl = fetch, pause = ms => 
         throw new Error('Steam network request failed', { cause: error });
       }
       const durationMs = Math.max(0, now().valueOf() - startedAt);
+      const contentType = safeResponseHeader(response, 'Content-Type');
       if (response.status === 403 || response.status === 429) {
         recordCollectionDiagnostic(state, {
           scope,
@@ -222,9 +234,11 @@ export function createSteamRequestController({ fetchImpl = fetch, pause = ms => 
           status: 'http-error',
           httpStatus: response.status,
           at: now().toISOString(),
-          retryAfter: response.headers?.get?.('Retry-After') ?? null,
+          retryAfter: safeResponseHeader(response, 'Retry-After'),
+          contentType,
+          diagnosticMessage: safeHttpDiagnostic(response.status),
         });
-        state.stop = { status: response.status, at: now().toISOString(), retryAfter: response.headers?.get?.('Retry-After') ?? null };
+        state.stop = { status: response.status, at: now().toISOString(), retryAfter: safeResponseHeader(response, 'Retry-After') };
         await saveCollectionState(statePath, state);
       } else if (response.ok === false) {
         // An experimental route can fail without disabling the established collector.
@@ -235,10 +249,12 @@ export function createSteamRequestController({ fetchImpl = fetch, pause = ms => 
           status: 'http-error',
           httpStatus: response.status,
           at: now().toISOString(),
-          retryAfter: response.headers?.get?.('Retry-After') ?? null,
+          retryAfter: safeResponseHeader(response, 'Retry-After'),
+          contentType,
+          diagnosticMessage: safeHttpDiagnostic(response.status),
         });
         if (scope === 'production') {
-          state.stop = { status: 'invalid-response', at: now().toISOString(), retryAfter: response.headers?.get?.('Retry-After') ?? null };
+          state.stop = { status: 'invalid-response', at: now().toISOString(), retryAfter: safeResponseHeader(response, 'Retry-After') };
         }
         await saveCollectionState(statePath, state);
       }
@@ -248,14 +264,16 @@ export function createSteamRequestController({ fetchImpl = fetch, pause = ms => 
     }
   }
 
-  async function stop(reason = 'non-json', { scope = 'production', endpoint = 'unknown', httpStatus = null, retryAfter = null } = {}) {
+  async function stop(reason = 'non-json', { scope = 'production', endpoint = 'unknown', httpStatus = null, retryAfter = null,
+    contentType = null, diagnosticMessage = null } = {}) {
     if (![403, 429, 'non-json', 'invalid-response'].includes(reason)) throw new Error('Invalid stop reason');
     const current = now();
     const state = await loadCollectionState(statePath, current);
     if (reason === 403 || reason === 429 || scope === 'production') {
       state.stop = { status: reason, at: current.toISOString(), retryAfter };
     } else {
-      recordCollectionDiagnostic(state, { scope, endpoint, status: reason, httpStatus, at: current.toISOString(), retryAfter });
+      recordCollectionDiagnostic(state, { scope, endpoint, status: reason, httpStatus, at: current.toISOString(), retryAfter,
+        contentType, diagnosticMessage });
     }
     await saveCollectionState(statePath, state);
   }

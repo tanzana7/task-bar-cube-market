@@ -16,6 +16,11 @@ const NEW_SEARCH_FIXTURE_PATH = new URL('../tests/fixtures/tbh-structured-search
 const STRUCTURED_SEARCH_ENDPOINT = 'https://steamcommunity.com/market/search?appid=3678970&sort=1&dir=1';
 const STRUCTURED_SEARCH_SCOPE = 'tbh-route-probe';
 
+function safeHeader(response, name) {
+  const value = response.headers?.get?.(name);
+  return typeof value === 'string' ? value.replace(/[\r\n\t]/g, ' ').slice(0, 120) || null : null;
+}
+
 export function tbhSearchUrl() {
   const url = new URL('https://steamcommunity.com/market/search/render/');
   for (const [key, value] of Object.entries({ appid: TBH_APPID, norender: 1, count: 100, start: 0, currency: 1, country: 'US' })) {
@@ -136,6 +141,7 @@ export async function inspectTbhStructuredMarket({ live = false, fetchImpl = fet
   let retryAfter = null;
   let responseMs = null;
   let requestsMade = 0;
+  let diagnosticMessage = null;
 
   if (live) {
     const controller = createSteamRequestController({ fetchImpl, pause, now, statePath,
@@ -148,32 +154,47 @@ export async function inspectTbhStructuredMarket({ live = false, fetchImpl = fet
     requestsMade = controller.requestsMade;
     responseMs = result.durationMs;
     httpStatus = result.response.status;
-    contentType = result.response.headers?.get?.('Content-Type') ?? null;
-    retryAfter = result.response.headers?.get?.('Retry-After') ?? null;
+    contentType = safeHeader(result.response, 'Content-Type');
+    retryAfter = safeHeader(result.response, 'Retry-After');
     if (httpStatus === 403 || httpStatus === 429) {
-      throw new Error(`Steam collection stopped: ${JSON.stringify({ httpStatus, contentType, responseMs, retryAfter, requestsMade })}`);
+      diagnosticMessage = `Steam returned HTTP ${httpStatus}; stopped without reading the response body.`;
+      throw new Error(`Steam collection stopped: ${JSON.stringify({ httpStatus, contentType, responseMs, retryAfter, requestsMade, diagnosticMessage })}`);
     }
     if (!result.response.ok) {
-      throw new Error(`Steam structured search failed: ${JSON.stringify({ httpStatus, contentType, responseMs, retryAfter, requestsMade })}`);
+      diagnosticMessage = httpStatus === 400
+        ? 'Steam rejected the request; response body omitted.'
+        : httpStatus === 404
+          ? 'The requested route was unavailable; response body omitted.'
+          : `HTTP ${httpStatus} response; response body omitted.`;
+      throw new Error(`Steam structured search failed: ${JSON.stringify({ httpStatus, contentType, responseMs, retryAfter, requestsMade, diagnosticMessage })}`);
     }
     if (!/^application\/(?:[a-z0-9.+-]*\+)?json(?:\s*;|$)/i.test(contentType ?? '')) {
+      diagnosticMessage = 'Response Content-Type was not JSON; stopped without parsing the body.';
       await controller.stop('non-json', { scope: STRUCTURED_SEARCH_SCOPE,
-        endpoint: 'POST /market/search?appid=3678970&sort=1&dir=1', httpStatus, retryAfter });
-      throw new Error(`Steam structured search returned non-JSON Content-Type (${contentType ?? 'missing'}); stopped`);
+        endpoint: 'POST /market/search?appid=3678970&sort=1&dir=1', httpStatus, retryAfter, contentType, diagnosticMessage });
+      throw new Error(`Steam structured search stopped: ${JSON.stringify({ httpStatus, contentType, responseMs, retryAfter, requestsMade, diagnosticMessage })}`);
     }
     try {
       payload = await result.response.json();
-      if (payload === null) {
-        await controller.stop('invalid-response', { scope: STRUCTURED_SEARCH_SCOPE,
-          endpoint: 'POST /market/search?appid=3678970&sort=1&dir=1', httpStatus, retryAfter });
-        throw new Error('Steam structured search returned literal null; stopped');
-      }
+    } catch (error) {
+      diagnosticMessage = 'Response was not valid JSON; body omitted.';
+      await controller.stop('invalid-response', { scope: STRUCTURED_SEARCH_SCOPE,
+        endpoint: 'POST /market/search?appid=3678970&sort=1&dir=1', httpStatus, retryAfter, contentType, diagnosticMessage });
+      throw new Error(`Steam structured search stopped: ${JSON.stringify({ httpStatus, contentType, responseMs, retryAfter, requestsMade, diagnosticMessage })}`, { cause: error });
+    }
+    if (payload === null) {
+      diagnosticMessage = 'Response was literal JSON null; stopped without retry.';
+      await controller.stop('invalid-response', { scope: STRUCTURED_SEARCH_SCOPE,
+        endpoint: 'POST /market/search?appid=3678970&sort=1&dir=1', httpStatus, retryAfter, contentType, diagnosticMessage });
+      throw new Error(`Steam structured search stopped: ${JSON.stringify({ httpStatus, contentType, responseMs, retryAfter, requestsMade, diagnosticMessage })}`);
+    }
+    try {
       inspectStructuredSearch(payload);
     } catch (error) {
-      if (error.message?.includes('literal null')) throw error;
+      diagnosticMessage = 'JSON response did not match the expected search structure; body omitted.';
       await controller.stop('invalid-response', { scope: STRUCTURED_SEARCH_SCOPE,
-        endpoint: 'POST /market/search?appid=3678970&sort=1&dir=1', httpStatus, retryAfter });
-      throw new Error(`Steam structured search response was incomplete; stopped: ${error.message}`, { cause: error });
+        endpoint: 'POST /market/search?appid=3678970&sort=1&dir=1', httpStatus, retryAfter, contentType, diagnosticMessage });
+      throw new Error(`Steam structured search stopped: ${JSON.stringify({ httpStatus, contentType, responseMs, retryAfter, requestsMade, diagnosticMessage })}`, { cause: error });
     }
   } else {
     payload = JSON.parse(await readFile(NEW_SEARCH_FIXTURE_PATH, 'utf8'));
@@ -206,7 +227,7 @@ export async function inspectTbhMarket({ live = false, fetchImpl = fetch, pause 
     requestCount = controller.requestsMade;
     responseMs = result.durationMs;
     httpStatus = result.response.status;
-    retryAfter = result.response.headers?.get?.('Retry-After') ?? null;
+    retryAfter = safeHeader(result.response, 'Retry-After');
     if (httpStatus === 403 || httpStatus === 429) {
       throw new Error(`Steam collection stopped on HTTP ${httpStatus}${retryAfter ? ` (Retry-After: ${retryAfter})` : ''}`);
     }

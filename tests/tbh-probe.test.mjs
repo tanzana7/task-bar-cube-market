@@ -159,6 +159,7 @@ test('new structured probe records route failures without globally stopping the 
   for (const response of [
     { ok: false, status: 403, headers: { get: () => null } },
     { ok: false, status: 429, headers: { get: name => name === 'Retry-After' ? '600' : null } },
+    { ok: false, status: 400, headers: { get: name => name === 'Content-Type' ? 'text/plain' : null } },
     { ok: false, status: 404, headers: { get: name => name === 'Content-Type' ? 'application/json' : null } },
     { ok: true, status: 200, headers: { get: name => name === 'Content-Type' ? 'text/html' : null }, text: async () => '<html>challenge</html>' },
     { ok: true, status: 200, headers: { get: name => name === 'Content-Type' ? 'application/json' : null }, json: async () => { throw new SyntaxError('fixture invalid JSON'); } },
@@ -178,7 +179,12 @@ test('new structured probe records route failures without globally stopping the 
       if (response.status === 404) {
         assert.match(error.message, /"httpStatus":404/);
         assert.match(error.message, /"contentType":"application\/json"/);
+        assert.match(error.message, /requested route was unavailable; response body omitted/);
         assert.match(error.message, /"requestsMade":1/);
+      }
+      if (response.status === 400) {
+        assert.match(error.message, /Steam rejected the request; response body omitted/);
+        assert.match(error.message, /"contentType":"text\/plain"/);
       }
       const state = JSON.parse(await readFile(statePath, 'utf8'));
       if (response.status === 403 || response.status === 429) assert.equal(state.stop.status, response.status);
@@ -189,6 +195,17 @@ test('new structured probe records route failures without globally stopping the 
         if (response.status === 404) {
           assert.equal(state.diagnostic.httpStatus, 404);
           assert.equal(state.diagnostic.status, 'http-error');
+          assert.equal(state.diagnostic.contentType, 'application/json');
+          assert.equal(state.diagnostic.diagnosticMessage, 'The requested route was unavailable; response body omitted.');
+        }
+        if (response.status === 400) {
+          assert.equal(state.diagnostic.httpStatus, 400);
+          assert.equal(state.diagnostic.contentType, 'text/plain');
+          assert.equal(state.diagnostic.diagnosticMessage, 'Steam rejected the request; response body omitted.');
+        }
+        if (response.status === 200 && response.headers.get('Content-Type') === 'text/html') {
+          assert.equal(state.diagnostic.contentType, 'text/html');
+          assert.equal(state.diagnostic.diagnosticMessage, 'Response Content-Type was not JSON; stopped without parsing the body.');
         }
       }
     } finally {
