@@ -2,6 +2,8 @@
 
 ## 現在
 
+Steamの利用規約が取得を許諾するという確認は得られていません。Steam Subscriber Agreementの「Automation」節はSteamサービスとのやり取りを自動化するスクリプト等を制限し、コンテンツの複製・公開・配布にも制限を記載しています。Steam Web APIの公開ドキュメントにCommunity Marketの一覧取得APIは掲載されていません。従って、アプリ内の`STEAM_MARKET_COLLECTION_ALLOWED=true`はValveからの許可を示すものではなく、今回は新たなSteam通信をしません。許可済みのデータ源が確保されるまで市場Actionsは手動fixture検証に限定します。規約は[Steam Subscriber Agreement](https://store.steampowered.com/agreement/?l=english)、API一覧は[Steam Web API Documentation](https://steamcommunity.com/dev)を参照してください。
+
 `.github/workflows/market-refresh.yml`は`workflow_dispatch`のみ。既定の`fixture`はSteamへアクセスせず、`npm run market:validate`とビルドを実行する。`live`はfixture job成功後に実行され、リポジトリ変数`STEAM_MARKET_COLLECTION_ALLOWED=true`がなければ失敗する。スケジュールは未設定。
 
 `.github/workflows/fx-rate-refresh.yml`はSteam収集と独立し、`workflow_dispatch`と毎日18:17 UTCのscheduleでFrankfurter USD/JPY APIだけを取得する。同じ公表日・レートならJSONを書き換えず、週末の同じbusiness-day値でCloudflare Pagesを再ビルドしない。Frankfurter未更新は、最大4日以内の有効なbusiness-day観測なら成功として既存ファイルを保持する。両workflowは同じ`market-data-refresh` concurrency groupで直列化し、Push前に`main`へrebaseする。競合解消不能時はPushを失敗扱いにする。
@@ -50,3 +52,11 @@ Pages上のfixture表示テストは[queryAction表示テスト](https://task-ba
 GitHub Actionsにはmanual-onlyの`query-action` modeがあります。運用許可変数が設定されていてもユーザーがworkflow_dispatchで選ぶまで実行されません。成功・失敗とも予算と観測ストアだけを`[CF-Pages-Skip]`コミットで保存し、Steam定期実行はありません。新APIは価格手数料基準、通貨不一致の由来、AppID 5084200の実応答、ページ順変動への完全性が未確認のため本番サイト・価格履歴へ採用しないでください。詳細は[new Steam Market investigation](new-steam-market-investigation.md)を参照。
 
 GitHub Actionsの市場更新に30分scheduleはありません。今回のTBH市場で`count=100`に対して実応答ページサイズ10を観測し、全件に約110 requestsと見積もられました。現状の6件/実行制限と完全スナップショット要件では収集を完了できず、途中データは公開しません。複数実行に分割する場合は商品別`observedAt`を持ち、異なる時刻を同時点の完全市場として扱わない別設計が必要です。
+
+## TBC公開JSONの正規取込
+
+`npm run market:import -- --input <file> --format search-render|query-action --observed-at <UTC ISO timestamp> --provenance <source description>`は入力を検証してプレビューし、書き込みません。取込の公開を行うときだけ`--publish`を追加します。対象AppIDは固定で5084200です。取込はSteamへの通信を行いません。
+
+成功すると`public/market-observations.json`に商品キー別の観測履歴を追記します。正規`market-usd.json`、既存価格履歴、ランキングとは独立しています。正規市場に同じ商品が存在する場合は正規スナップショットを優先します。queryAction由来のsubtotalは`priceMinor=null`のまま「参考値・価格基準確認中」と表示します。各商品に実際の`observedAt`、件数、出典を保存し、ページ範囲を超える収集を全市場とは表示しません。
+
+取込後の公開は同一ブランチへPushし、既存Cloudflare Pages Git連携に任せます。異なる時刻の再取込は新しい観測として保存されます。入力範囲が1ページまたは一部ページなら`complete=false`で記録し、未観測商品を0価格・0出品として補完しません。TBH fixtureはAppID検証で拒否されます。

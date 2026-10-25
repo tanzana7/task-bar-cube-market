@@ -280,3 +280,16 @@ Valveの2026-05-12告知は、新しいカード表示、動的検索フィル�
 - 新APIのTBH価格、単位、商品ID、画像、sell-order件数、認証要否、ページサイズ、429挙動を確認できていない。
 - 旧方式の実測は過去の1ページであり、発売後市場の応答形式や取得可能ページ数を保証しない。
 - Steamの利用条件・自動取得および市場情報再配布の条件を確認できていないため、Steam定期実行は引き続き無効。
+# v0.6: 利用許可と本番商品取込
+
+2026-10-25時点で、公開Steam Market検索用のqueryActionはSteamブラウザ通信を観察した実測経路である一方、Steam Subscriber Agreementに照らした自動収集・価格/画像の再配布許可が確認できていない。アプリ内の`STEAM_MARKET_COLLECTION_ALLOWED=true`はValveの利用許可ではない。今回は追加のSteam通信を実施していない。
+
+Valveの[Steam Subscriber Agreement](https://store.steampowered.com/agreement/?l=english)はAutomation節にSteamサービスとの自動化されたやり取りへの制限を記載し、Content and Servicesの複製・公開・配布にも制限を記載する。[Steam Web API Documentation](https://steamcommunity.com/dev)で列挙されている公開APIにもCommunity Marketの価格・一覧APIは含まれていない。したがって現状、利用料金0円かつ再配布許可が確認できた代替市場APIは採用していない。
+
+商品データを止めないため、運用者が適正に入手・提供したAppID 5084200のJSONだけを処理する`npm run market:import`を追加した。プレビューが既定で、`--publish`時だけ`public/market-observations.json`へ追記する。TBC AppID、USDの表示価格と数値、market_hash_name、重複、出品数、商品リンク、観測時刻を検証する。価格基準未確認のqueryAction `strMinSellSubtotal`は参考値として保存し、正規価格・履歴・ランキングから隔離する。
+
+取込データには出所、取込時刻、商品ごとの観測時刻とページ範囲を保存する。未観測商品を補完せず、部分ページを全市場スナップショットと表示しない。正規`market-usd.json`に商品が存在するときはそちらを優先する。同一観測の二重取込は書き込みを行わない。前回のJSONが不正なら上書きせず停止する。
+
+v0.5で確認されたTBH 30行 fixtureはAppID 3678970であるためTBC取込は拒否される。テストは隔離した一時ファイルだけを使用し、本番TBC商品JSONには合成商品やTBH商品を追加しない。
+
+`strMinSellSubtotal`・`unSteamFee`・`unPublisherFee`が旧`sell_price`と同じ購入者表示価格を構成するかは同一商品・同一時点の比較材料がなく、依然として未確認である。計算式を推測して補正せず、queryAction値を従来のUSD履歴へ接続しない。

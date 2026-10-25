@@ -1,5 +1,6 @@
 import './style.css';
 import { formatFxRateLabel, parseFreshFxRate, prepareMarketPriceView, type FxRateRecord, type MarketSnapshot } from './market';
+import { latestObservedItems, parseMarketObservations, type MarketObservations, type ObservationPoint } from './market-observations';
 import { filterHistoryPoints, formatHistoryPrice, makeChartPoints, parseHistoryIndex, parseProductHistory, type HistoryCurrency, type HistoryIndex, type HistoryRange, type ProductHistory } from './history';
 import { calculateTechnicalIndicators, currencyView, filterMarketItems, parseFavorites, parsePriceFilterInput, parseRankingSnapshot, priceStatistics, summarizeMarket, toggleFavorite, type MarketSort, type RankingSnapshot } from './market-features';
 
@@ -49,6 +50,8 @@ let usdSnapshot: Snapshot | null = null;
 let currentFxRate: FxRateRecord | null = null;
 let historyIndex: HistoryIndex | null = null;
 let rankingSnapshot: RankingSnapshot | null = null;
+let importedSnapshot: MarketObservations | null = null;
+let importedObservations = new Map<string, ObservationPoint>();
 let favorites = parseFavorites(storedValue('tbcm-5084200-watchlist'));
 let activeHistoryItem: MarketSnapshot['items'][number] | null = null;
 let selectedHistory: ProductHistory | null = null;
@@ -266,10 +269,16 @@ async function openHistory(item: MarketSnapshot['items'][number]) {
   historyCurrency.value = useUsdHistoryFallback ? 'USD' : currencySelect.value;
   historyFxFallbackNotice = useUsdHistoryFallback ? '為替レート未取得のため、価格履歴をUSDで表示しています' : null;
   historyTitle.textContent = item.name;
+  const imported = importedObservations.get(item.marketHashName);
   const visibleItem = snapshot?.items.find(candidate => candidate.marketHashName === item.marketHashName) ?? item;
-  const currentPrice = visibleItem.priceText ?? (currencySelect.value === 'JPY' ? '参考円価格は更新待ち' : '価格情報なし');
+  const currentPrice = imported
+    ? imported.sourceKind === 'query-action'
+      ? `${imported.referencePriceText} USD（参考値・価格基準確認中）`
+      : imported.priceText ? `${imported.priceText} USD（取込観測）` : '価格情報なし'
+    : visibleItem.priceText ?? (currencySelect.value === 'JPY' ? '参考円価格は更新待ち' : '価格情報なし');
   const listings = visibleItem.listings === null ? '出品数 未取得' : `出品 ${visibleItem.listings.toLocaleString('ja-JP')}件`;
-  const captured = usdSnapshot?.fetchedAt ? ` · ${formatObservedAt(usdSnapshot.fetchedAt)}` : '';
+  const capturedAt = imported?.observedAt ?? usdSnapshot?.fetchedAt;
+  const captured = capturedAt ? ` · ${formatObservedAt(capturedAt)}` : '';
   historySummary.textContent = `${currentPrice} · ${listings}${captured}`;
   historyFavoriteButton.setAttribute('aria-pressed', String(favorites.has(item.marketHashName)));
   historyFavoriteButton.textContent = favorites.has(item.marketHashName) ? '★ ウォッチ中' : '☆ ウォッチ';
@@ -283,6 +292,11 @@ async function openHistory(item: MarketSnapshot['items'][number]) {
   historyStatus.textContent = '読み込み中';
   historyChart.replaceChildren();
   if (!historyDialog.open) historyDialog.showModal();
+
+  if (imported) {
+    historyStatus.textContent = 'この取込観測は価格履歴に接続していません。';
+    return;
+  }
 
   const product = historyIndex?.products.find(entry => entry.marketHashName === item.marketHashName);
   if (!product) {
@@ -325,7 +339,19 @@ function render() {
     statusNode.hidden = true;
     return;
   }
-  const visible = filterMarketItems(priceView.items, {
+  const canonicalNames = new Set(usdSnapshot?.items.map(item => item.marketHashName) ?? []);
+  const visibleCurrency = currencySelect.value as 'USD' | 'JPY';
+  const importedItems = latestObservedItems(importedSnapshot).filter(item => !canonicalNames.has(item.marketHashName)).map(item => ({
+    ...item,
+    // Imported snapshots are standalone observations, never members of the verified history model.
+    // queryAction's subtotal stays non-sortable; legacy USD rows become non-sortable in JPY mode.
+    priceMinor: visibleCurrency === 'USD' && item.observation?.sourceKind === 'search-render' ? item.priceMinor : null,
+    priceText: visibleCurrency === 'USD' && item.observation?.sourceKind === 'search-render' ? item.priceText : null,
+  }));
+  importedObservations = new Map(importedItems.flatMap(item => item.observation ? [[item.marketHashName, item.observation] as const] : []));
+  const allItems = [...priceView.items, ...importedItems];
+  const importedText = new Map(importedItems.map(item => [item.marketHashName, item.importedPriceText ?? '価格情報なし']));
+  const visible = filterMarketItems(allItems, {
     query: search.value,
     minimumPrice: minimumPrice.value,
     maximumPrice: maximumPrice.value,
@@ -336,9 +362,12 @@ function render() {
   favoriteCountNode.textContent = favorites.size.toLocaleString('ja-JP');
   countNode.textContent = `${visible.length}件のアイテム`;
   itemsNode.replaceChildren();
-  if (snapshot.status === 'unavailable') {
+  if (snapshot.status === 'unavailable' && visible.length === 0) {
     statusNode.hidden = false;
-    statusNode.textContent = `${snapshot.currency}の価格情報は未取得です`;
+    const latestCapture = importedSnapshot?.imports.at(-1);
+    statusNode.textContent = latestCapture?.totalCount === 0
+      ? `最終観測では掲載商品なし · ${formatObservedAt(latestCapture.observedAt)}`
+      : `${snapshot.currency}の価格情報は未取得です`;
     itemsNode.hidden = true;
     return;
   }
@@ -370,7 +399,8 @@ function render() {
     const main = document.createElement('button');
     main.type = 'button';
     main.className = 'item-main item-detail';
-    main.setAttribute('aria-label', `${item.name}の価格履歴を表示`);
+    const observation = importedObservations.get(item.marketHashName);
+    main.setAttribute('aria-label', observation ? `${item.name}の観測情報を表示` : `${item.name}の価格履歴を表示`);
     main.addEventListener('click', () => { void openHistory(item); });
     const name = document.createElement('strong');
     name.textContent = item.name;
@@ -379,7 +409,14 @@ function render() {
     main.append(name, listings);
     const price = document.createElement('span');
     price.className = 'price';
-    price.textContent = priceView.expiredFx ? '参考円価格は更新待ち' : item.priceText ?? '価格情報なし';
+    price.textContent = priceView.expiredFx && !observation ? '参考円価格は更新待ち'
+      : importedText.get(item.marketHashName) ?? item.priceText ?? '価格情報なし';
+    if (observation) {
+      const detail = document.createElement('small');
+      detail.textContent = `${observation.sourceKind === 'query-action' ? '参考値・価格基準確認中' : `観測・${observation.provenance}`} · ${formatObservedAt(observation.observedAt)}`;
+      card.dataset.marketObservation = 'imported';
+      price.append(detail);
+    }
     if (item.priceText && snapshot.priceSource === 'fx') {
       // Converted yen must remain visibly distinct from a Steam JPY listing.
       const note = document.createElement('small');
@@ -418,11 +455,19 @@ function setFavorite(marketHashName: string) {
 
 function renderOverview() {
   if (!usdSnapshot) return;
-  const overview = summarizeMarket(usdSnapshot.items);
-  overviewItemsNode.textContent = usdSnapshot.status === 'unavailable' ? '未取得' : overview.itemTypes.toLocaleString('ja-JP');
-  overviewListingsNode.textContent = usdSnapshot.status === 'unavailable' || overview.totalListings === null
-    ? '未取得' : overview.totalListings.toLocaleString('ja-JP');
-  overviewUpdatedNode.textContent = usdSnapshot.fetchedAt ? formatObservedAt(usdSnapshot.fetchedAt) : '未取得';
+  const imported = latestObservedItems(importedSnapshot).filter(item => !usdSnapshot!.items.some(canonical => canonical.marketHashName === item.marketHashName));
+  const combined = [...usdSnapshot.items, ...imported];
+  const overview = summarizeMarket(combined);
+  overviewItemsNode.textContent = combined.length ? overview.itemTypes.toLocaleString('ja-JP') : '未取得';
+  const observedAtValues = new Set([
+    ...(usdSnapshot.fetchedAt ? [usdSnapshot.fetchedAt] : []),
+    ...imported.map(item => item.observation?.observedAt).filter((value): value is string => typeof value === 'string'),
+  ]);
+  overviewListingsNode.textContent = overview.totalListings === null ? '未取得'
+    : observedAtValues.size > 1 ? '商品別に表示' : overview.totalListings.toLocaleString('ja-JP');
+  const lastObserved = [usdSnapshot.fetchedAt, ...imported.map(item => item.observation?.observedAt ?? null)]
+    .filter((value): value is string => typeof value === 'string').sort((a, b) => Date.parse(b) - Date.parse(a))[0];
+  overviewUpdatedNode.textContent = lastObserved ? formatObservedAt(lastObserved) : '未取得';
   overviewFxNode.textContent = formatFxRateLabel(currentFxRate)?.replace(/^参考為替：/, '') ?? '未取得';
 }
 
@@ -469,11 +514,12 @@ async function load(currency: 'JPY' | 'USD') {
   countNode.textContent = '読み込み中';
   updatedNode.textContent = '更新日時 —';
   try {
-    const [response, fxValue, historyIndexValue, rankingValue] = await Promise.all([
+    const [response, fxValue, historyIndexValue, rankingValue, observationsValue] = await Promise.all([
       fetch('/market-usd.json', { cache: 'no-cache' }),
       readOptionalJson('/fx-rate.json'),
       readOptionalJson('/history/index.json'),
       readOptionalJson('/market-rankings.json'),
+      readOptionalJson('/market-observations.json'),
     ]);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const value: unknown = await response.json();
@@ -482,16 +528,23 @@ async function load(currency: 'JPY' | 'USD') {
     currentFxRate = parseFreshFxRate(fxValue);
     historyIndex = parseHistoryIndex(historyIndexValue);
     rankingSnapshot = parseRankingSnapshot(rankingValue);
+    importedSnapshot = parseMarketObservations(observationsValue);
     usdSnapshot = value;
     snapshot = currencyView(value, currency, currentFxRate?.rate ?? null);
     renderOverview();
     renderRankings();
     const priceView = prepareMarketPriceView(snapshot.items, snapshot.currency, snapshot.priceSource, currentFxRate?.rateDate);
-    noteNode.textContent = priceView.expiredFx
+    const latestCapture = importedSnapshot?.imports.at(-1);
+    const baseNote = priceView.expiredFx
       ? '為替レートの期限切れにより、JPY参考価格を表示していません。商品情報はSteamでご確認ください。'
       : snapshot.priceSource === 'fx'
         ? 'JPYはSteamのUSD最安価格を為替換算した参考価格です。購入時はSteamでご確認ください。'
       : '価格は取得時点の最安出品価格です。購入時はSteamでご確認ください。';
+    noteNode.textContent = latestCapture?.sourceKind === 'query-action'
+      ? '取込データは商品ごとの部分観測です。queryActionのUSD表示額は参考値で、価格基準確認中です。購入前にSteamでご確認ください。'
+      : latestCapture
+        ? '取込データはSteam応答の部分観測です。表示価格と出品数には商品ごとの観測日時を付けています。購入前にSteamでご確認ください。'
+        : baseNote;
     if (snapshot.fetchedAt) {
       const date = new Date(snapshot.fetchedAt);
       if (!Number.isNaN(date.valueOf())) {
