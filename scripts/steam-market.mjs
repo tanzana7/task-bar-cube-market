@@ -265,15 +265,14 @@ export function createSteamRequestController({ fetchImpl = fetch, pause = ms => 
   }
 
   async function stop(reason = 'non-json', { scope = 'production', endpoint = 'unknown', httpStatus = null, retryAfter = null,
-    contentType = null, diagnosticMessage = null } = {}) {
+    contentType = null, diagnosticMessage = null, requestCurrencyId = null, responseCurrencyIds = null } = {}) {
     if (![403, 429, 'non-json', 'invalid-response'].includes(reason)) throw new Error('Invalid stop reason');
     const current = now();
     const state = await loadCollectionState(statePath, current);
+    recordCollectionDiagnostic(state, { scope, endpoint, status: reason, httpStatus, at: current.toISOString(), retryAfter,
+      contentType, diagnosticMessage, requestCurrencyId, responseCurrencyIds });
     if (reason === 403 || reason === 429 || scope === 'production') {
       state.stop = { status: reason, at: current.toISOString(), retryAfter };
-    } else {
-      recordCollectionDiagnostic(state, { scope, endpoint, status: reason, httpStatus, at: current.toISOString(), retryAfter,
-        contentType, diagnosticMessage });
     }
     await saveCollectionState(statePath, state);
   }

@@ -1,5 +1,43 @@
 # 新Steam Market検索方式の調査
 
+## v0.5.1: request/response通貨・価格基準・部分観測の扱い
+
+### 通貨と実測fixture
+
+管理対象のfixture `tests/fixtures/tbh-query-action-real-start30-usd.json` は、AppID 3678970、`data.start=30`、`total_count=1092`、`grouping=1`、30種類の`results`を含み、全行のレスポンス通貨IDは1 (USD) である。別途記録されたChromeリクエストは`price.eCurrency=8`だったが、同じHTTP応答との対応は証明されていない。従って、これは「JPYを要求したらUSDが返った」という実測ペアではない。
+
+queryActionアダプターは、送信する通貨IDと返された各行の`eCurrency`を別々に記録し、ページ内の通貨混在・USD以外・要求応答の不一致を拒否する。失敗診断にはAppID由来のscope、要求通貨、受信通貨を保存する。AppID 5084200はproduction scopeとなり、不正レスポンスで共有停止状態になる。TBH試験の400/404等はprobe scopeの診断にとどまるが、403/429はcontrollerによりどのscopeでも共通停止する。Cookie・sessionidを送らず、記録もしない。
+
+このfixtureで確認できるレスポンスは`$0.03`の表示文字列と`eCurrency=1`の組み合わせだけである。別のrequest通貨で成功した証拠、JPY金額、価格単位の一般化は未確認。テストfixtureを通貨指定変更の実通信成功根拠としては扱わない。
+
+### 手数料と価格基準
+
+[Steam Community Market FAQ](https://help.steampowered.com/en/faqs/view/61F0-72B7-9A18-C70B)は購入者がSteam取引手数料を払い、現時点で最低額がUSD 0.01であること、ゲーム固有のpublisher feeも存在し得ることを説明する。ただし公式FAQはqueryActionの`strMinSellSubtotal`やfixtureの`unSteamFee=1`、`unPublisherFee=1`の意味、手数料の整数単位、旧`search/render`の`sell_price`との対応を定義していない。
+
+[SteamPriceAPIの非公式レスポンス資料](https://steampriceapi.com/guide/responses/)は`unPrice + unFee`を購入者支払額として扱う実装例と、`strSubtotal`を金額の根拠にしない注意を載せている。これはSteam公式保証ではなく、今回のfixtureに同じ整数フィールドがあることも示さない。よって`strMinSellSubtotal="$0.03"`からseller net、Steam fee、publisher fee、buyer totalを逆算しない。
+
+| 金額の概念 | 確認できた範囲 |
+| --- | --- |
+| 売り手の受取額 | fixtureと公開FAQから値を確定できない |
+| Steam手数料 | 購入者が負担すること、公式FAQの最低額説明まで確認。fixtureの整数値との対応は未確認 |
+| パブリッシャー手数料 | ゲーム固有であり得るが、fixtureの`unPublisherFee=1`の単位・計算上の意味は未確認 |
+| 購入者の支払総額 | fixtureからは確定できない |
+| grouped検索の最安値表示 | `strMinSellSubtotal`が`$0.03`と返ることのみ確認。総額と同一かは未確認 |
+
+新APIの観測は`.market/query-action-observations-<appid>.json`に隔離し、各点へ価格基準`min-sell-subtotal-unverified-fees`を記録する。legacy `sell_price` USD snapshot、`scripts/price-history.mjs`、公開JSONへ接続しない。比較可能性が直接検証されるまで、この分離を解除しない。
+
+### 商品単位の分割観測と復旧
+
+`scripts/query-action-market.mjs`のqueryAction batch collectorは、1ページの検証成功ごとに非公開ソース領域へ原子的に書く。商品キーは`asset_description.market_hash_name`。各観測は`observedAt`、request/response通貨ID、AppID、取得元、表示subtotal、出品数を保持し、未観測商品に価格0・出品0を作らない。価格履歴関数は呼ばない。
+
+`.market/query-action-observations-<appid>.json`には`progress` (run ID、開始日時、次offset、報告total、ページ数、当runの重複検出集合、状態)も保存され、`partial`は次回そのoffsetから再開する。取得済みの有効な商品観測は後続通信失敗でも残る。ページ重複または`total_count`変動で`restart-required`とし、観測を保持したうえで明示的な再開を要求する。報告件数まで到達しても並び順変動のため`count-reached-unverified`であり、`catalogComplete=false`を維持する。順序変動によるページ跨ぎの欠落をoffsetだけから完全検出できるとは限らない。
+
+実通信APIは、明示的`--live`、リポジトリ運用ゲート`STEAM_MARKET_COLLECTION_ALLOWED=true`、明示的な通貨ID、共有の`.market/steam-collection-state.json`を必須とする。テストでは偽transport、明示state path、およびtest-only指定が揃ったときだけゲートを通す。予算は既定15秒間隔、最大6通信/実行、UTC日次24件。通信試行は送信前に保存し、403/429は全収集経路の共有stop状態として保存、再試行しない。失敗後に日次予算を手動で戻す実装はない。
+
+Fixtureだけで使う: `npm run market:query-action -- --target=tbh`。実通信コマンドは `npm run market:query-action -- --live --target=tbh --request-currency-id=1 --max-pages=1` だが、今回は実行していない。Actionsはworkflow_dispatchのquery-action modeだけで起動し、定期scheduleはない。保存するのは共有予算と`.market/`内の観測JSONだけで、`public/`や履歴は変更しない。Actionsの`[CF-Pages-Skip]` commitを使い公開Pagesビルドを抑制する。
+
+本番AppID 5084200の採用は、同AppIDでのCookieなし取得、request/response USD整合、価格基準の既存履歴との一致、実ページ挙動・ページ完全性、継続予算・復旧・キャッシュ保護を別途確認するまで保留。現時点は旧APIの本番スナップショットを維持する。
+
 ## v0.5追記：DevTools queryAction応答のfixture検証
 
 ### 取得契約の根拠と制約

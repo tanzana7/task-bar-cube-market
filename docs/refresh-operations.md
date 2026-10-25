@@ -39,4 +39,12 @@
 
 TBH限定のローカル試験は`npm run market:probe -- --target=tbh`。実通信は明示的な`--live`を付けた時だけ行い、1回1リクエストで停止します。AppID `3678970`の試験値や本文はAppID `5084200`の本番キャッシュに書き込まれません。実測結果、掲載ページSSRとの比較、通信予算および保存量は[tbh-collection-probe.md](tbh-collection-probe.md)に記録します。
 
+### queryActionの隔離試験・分割観測
+
+`npm run market:query-action -- --target=tbh`は保存fixtureのみを解析しSteam通信もJSON書き込みもしません。実通信は`--live`に加え、`STEAM_MARKET_COLLECTION_ALLOWED=true`、明示した`--request-currency-id=1|8`、最大6ページの指定が必要です。最初の運用では1ページを指定してください。queryActionと旧`search/render`は共有`.market/steam-collection-state.json`の15秒間隔・最大6件/実行・日次24件予算を使います。日次予算はUTC日付が変われば通常の新しい日次枠になります。403/429はAppIDを問わず保存された全体停止となり、自動再試行しません。
+
+AppID別の途中観測は`.market/query-action-observations-<appid>.json`に商品単位で保存されます。1ページの成功後すぐ保存し、次回は`partial`のoffsetから続行します。HTTP失敗は保存済み観測を残します。total_count変化または商品重複は`restart-required`となるため、結果を確認してからローカルの明示`--restart`で新しいrunを開始します。件数到達も完全スナップショットを意味せず、状態は`count-reached-unverified`、`catalogComplete=false`のままです。データは`public/`配下ではなく公開サイトから配信されず、既存USD履歴にも接続されません。
+
+GitHub Actionsにはmanual-onlyの`query-action` modeがあります。運用許可変数が設定されていてもユーザーがworkflow_dispatchで選ぶまで実行されません。成功・失敗とも予算と観測ストアだけを`[CF-Pages-Skip]`コミットで保存し、Steam定期実行はありません。新APIは価格手数料基準、通貨不一致の由来、AppID 5084200の実応答、ページ順変動への完全性が未確認のため本番サイト・価格履歴へ採用しないでください。詳細は[new Steam Market investigation](new-steam-market-investigation.md)を参照。
+
 GitHub Actionsの市場更新に30分scheduleはありません。今回のTBH市場で`count=100`に対して実応答ページサイズ10を観測し、全件に約110 requestsと見積もられました。現状の6件/実行制限と完全スナップショット要件では収集を完了できず、途中データは公開しません。複数実行に分割する場合は商品別`observedAt`を持ち、異なる時刻を同時点の完全市場として扱わない別設計が必要です。
