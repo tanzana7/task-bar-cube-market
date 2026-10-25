@@ -2,12 +2,12 @@
   "schemaVersion": 1,
   "appid": 5084200,
   "currency": "USD",
-  "generatedAt": "2026-10-25T14:52:54.823Z",
+  "generatedAt": "2026-10-25T22:00:18.949Z",
   "products": [
     {
       "marketHashName": "Arcane Boots 60%",
       "name": "Arcane Boots 60%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FidV1YVPTkLxQmI",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Boots%2060%25",
       "observations": [
         {
@@ -41,7 +41,7 @@
     {
       "marketHashName": "Arcane Bracelet 60%",
       "name": "Arcane Bracelet 60%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztoahpWFAfMZx0Be",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Bracelet%2060%25",
       "observations": [
         {
@@ -75,7 +75,7 @@
     {
       "marketHashName": "Arcane Chestplate 60%",
       "name": "Arcane Chestplate 60%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmdfFFrZSp2z3qtc",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Chestplate%2060%25",
       "observations": [
         {
@@ -109,7 +109,7 @@
     {
       "marketHashName": "Arcane Gloves 60%",
       "name": "Arcane Gloves 60%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCRJi5tGz3oD3ob8",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Gloves%2060%25",
       "observations": [
         {
@@ -143,7 +143,7 @@
     {
       "marketHashName": "Arcane Helmet 60%",
       "name": "Arcane Helmet 60%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5Kl8VYxoJPHPr99w",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Helmet%2060%25",
       "observations": [
         {
@@ -177,7 +177,7 @@
     {
       "marketHashName": "Arcane Necklace 60%",
       "name": "Arcane Necklace 60%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztoahpWFAcv3aPRs",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Necklace%2060%25",
       "observations": [
         {
@@ -211,7 +211,7 @@
     {
       "marketHashName": "Arcane Pants 60%",
       "name": "Arcane Pants 60%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FidV1YVPXvcT01Y",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Pants%2060%25",
       "observations": [
         {
@@ -245,7 +245,7 @@
     {
       "marketHashName": "Arcane Ring 60%",
       "name": "Arcane Ring 60%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FidV1YVP3WjgiKI",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Ring%2060%25",
       "observations": [
         {
@@ -279,7 +279,7 @@
     {
       "marketHashName": "Blazing Gloves 65%",
       "name": "Blazing Gloves 65%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCRIi5tGz-kpyViR",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Blazing%20Gloves%2065%25",
       "observations": [
         {
@@ -313,7 +313,7 @@
     {
       "marketHashName": "Blazing Helmet 65%",
       "name": "Blazing Helmet 65%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5KlsVYxoLkbFnkcg",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Blazing%20Helmet%2065%25",
       "observations": [
         {
@@ -347,7 +347,7 @@
     {
       "marketHashName": "Blazing Necklace 65%",
       "name": "Blazing Necklace 65%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztobhpWFAdSze_Ml",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Blazing%20Necklace%2065%25",
       "observations": [
         {
@@ -381,7 +381,7 @@
     {
       "marketHashName": "Blazing Pants 65%",
       "name": "Blazing Pants 65%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FiZV1YVPp_tsYjU",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Blazing%20Pants%2065%25",
       "observations": [
         {
@@ -415,7 +415,7 @@
     {
       "marketHashName": "Blazing Ring 65%",
       "name": "Blazing Ring 65%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FiZV1YVPXG7Cqqk",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Blazing%20Ring%2065%25",
       "observations": [
         {
@@ -449,7 +449,7 @@
     {
       "marketHashName": "Celestial Chestplate 85%",
       "name": "Celestial Chestplate 85%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmdLFFrZSywJ0260",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Celestial%20Chestplate%2085%25",
       "observations": [
         {
@@ -483,7 +483,7 @@
     {
       "marketHashName": "Celestial Necklace 85%",
       "name": "Celestial Necklace 85%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztofhpWFAaURzkrt",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Celestial%20Necklace%2085%25",
       "observations": [
         {
@@ -517,7 +517,7 @@
     {
       "marketHashName": "Chest Lv.1",
       "name": "Chest Lv.1",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyrk-t_-9LFjsLy4wNTooycQ",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Chest%20Lv.1",
       "observations": [
         {
@@ -551,7 +551,7 @@
     {
       "marketHashName": "Chest Lv.2",
       "name": "Chest Lv.2",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyrk-t_-9LFTsLy4x3d2u2jw",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Chest%20Lv.2",
       "observations": [
         {
@@ -585,7 +585,7 @@
     {
       "marketHashName": "Chest Lv.3",
       "name": "Chest Lv.3",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyrk-t_-9LFDsLy4zqa78Pfg",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Chest%20Lv.3",
       "observations": [
         {
@@ -619,7 +619,7 @@
     {
       "marketHashName": "Chest Lv.4",
       "name": "Chest Lv.4",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyrk-t_-9LEzsLy4xgoo_iBQ",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Chest%20Lv.4",
       "observations": [
         {
@@ -653,7 +653,7 @@
     {
       "marketHashName": "Chest Lv.5",
       "name": "Chest Lv.5",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyrk-t_-9LEjsLy4y8oJCVcw",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Chest%20Lv.5",
       "observations": [
         {
@@ -687,7 +687,7 @@
     {
       "marketHashName": "Cobalt Boots 25%",
       "name": "Cobalt Boots 25%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FyBV1YVPtGvRhIU",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Boots%2025%25",
       "observations": [
         {
@@ -721,7 +721,7 @@
     {
       "marketHashName": "Cobalt Bracelet 25%",
       "name": "Cobalt Bracelet 25%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsdhpWFAd2VuXdu",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Bracelet%2025%25",
       "observations": [
         {
@@ -755,7 +755,7 @@
     {
       "marketHashName": "Cobalt Chestplate 25%",
       "name": "Cobalt Chestplate 25%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNDFFrZSU-daMxU",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Chestplate%2025%25",
       "observations": [
         {
@@ -789,7 +789,7 @@
     {
       "marketHashName": "Cobalt Gloves 25%",
       "name": "Cobalt Gloves 25%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVOi5tGz8NunSAm",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Gloves%2025%25",
       "observations": [
         {
@@ -823,7 +823,7 @@
     {
       "marketHashName": "Cobalt Helmet 25%",
       "name": "Cobalt Helmet 25%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5LkMVYxoIxvEtCxg",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Helmet%2025%25",
       "observations": [
         {
@@ -857,7 +857,7 @@
     {
       "marketHashName": "Cobalt Necklace 25%",
       "name": "Cobalt Necklace 25%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsdhpWFAdO7PKu0",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Necklace%2025%25",
       "observations": [
         {
@@ -891,7 +891,7 @@
     {
       "marketHashName": "Cobalt Pants 25%",
       "name": "Cobalt Pants 25%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FyBV1YVPYHswe4A",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Pants%2025%25",
       "observations": [
         {
@@ -925,7 +925,7 @@
     {
       "marketHashName": "Cobalt Ring 25%",
       "name": "Cobalt Ring 25%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FyBV1YVPVUH7vvg",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Ring%2025%25",
       "observations": [
         {
@@ -959,7 +959,7 @@
     {
       "marketHashName": "Cobalt Sword 25%",
       "name": "Cobalt Sword 25%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5LkMVYxoJa9SEitA",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Sword%2025%25",
       "observations": [
         {
@@ -993,7 +993,7 @@
     {
       "marketHashName": "Crimson Boots 40%",
       "name": "Crimson Boots 40%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_Fy1V1YVPlZ2TnFo",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Boots%2040%25",
       "observations": [
         {
@@ -1027,7 +1027,7 @@
     {
       "marketHashName": "Crimson Bracelet 40%",
       "name": "Crimson Bracelet 40%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsQhpWFAVIDrniP",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Bracelet%2040%25",
       "observations": [
         {
@@ -1061,7 +1061,7 @@
     {
       "marketHashName": "Crimson Chestplate 40%",
       "name": "Crimson Chestplate 40%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmN3FFrZShhrK9G8",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Chestplate%2040%25",
       "observations": [
         {
@@ -1095,7 +1095,7 @@
     {
       "marketHashName": "Crimson Gloves 40%",
       "name": "Crimson Gloves 40%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVDi5tGz1FI9OBF",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Gloves%2040%25",
       "observations": [
         {
@@ -1129,7 +1129,7 @@
     {
       "marketHashName": "Crimson Helmet 40%",
       "name": "Crimson Helmet 40%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5LncVYxoLGjeSvVA",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Helmet%2040%25",
       "observations": [
         {
@@ -1163,7 +1163,7 @@
     {
       "marketHashName": "Crimson Necklace 40%",
       "name": "Crimson Necklace 40%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsQhpWFAW7jgOk7",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Necklace%2040%25",
       "observations": [
         {
@@ -1197,7 +1197,7 @@
     {
       "marketHashName": "Crimson Pants 40%",
       "name": "Crimson Pants 40%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_Fy1V1YVPY_6HoI4",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Pants%2040%25",
       "observations": [
         {
@@ -1231,7 +1231,7 @@
     {
       "marketHashName": "Crimson Ring 40%",
       "name": "Crimson Ring 40%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_Fy1V1YVPRKIJBkY",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Ring%2040%25",
       "observations": [
         {
@@ -1265,7 +1265,7 @@
     {
       "marketHashName": "Crimson Sword 40%",
       "name": "Crimson Sword 40%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5LncVYxoLWQabQ9Q",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Sword%2040%25",
       "observations": [
         {
@@ -1299,7 +1299,7 @@
     {
       "marketHashName": "Dragonforged Bracelet 80%",
       "name": "Dragonforged Bracelet 80%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztoehpWFASKaGD6d",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Dragonforged%20Bracelet%2080%25",
       "observations": [
         {
@@ -1333,7 +1333,7 @@
     {
       "marketHashName": "Dragonforged Ring 80%",
       "name": "Dragonforged Ring 80%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FiNV1YVPz1IE5YM",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Dragonforged%20Ring%2080%25",
       "observations": [
         {
@@ -1367,7 +1367,7 @@
     {
       "marketHashName": "Eternal Gloves 95%",
       "name": "Eternal Gloves 95%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCRCi5tGz_n4DAUH",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Eternal%20Gloves%2095%25",
       "observations": [
         {
@@ -1401,7 +1401,7 @@
     {
       "marketHashName": "Eternal Pants 95%",
       "name": "Eternal Pants 95%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FixV1YVP3Del9nU",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Eternal%20Pants%2095%25",
       "observations": [
         {
@@ -1435,7 +1435,7 @@
     {
       "marketHashName": "Eternal Sword 95%",
       "name": "Eternal Sword 95%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5KnMVYxoJ5cKLqMw",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Eternal%20Sword%2095%25",
       "observations": [
         {
@@ -1456,7 +1456,7 @@
     {
       "marketHashName": "Golden Boots 30%",
       "name": "Golden Boots 30%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FyNV1YVPtPzaDjU",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Boots%2030%25",
       "observations": [
         {
@@ -1490,7 +1490,7 @@
     {
       "marketHashName": "Golden Bracelet 30%",
       "name": "Golden Bracelet 30%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsehpWFAf2Vk8hL",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Bracelet%2030%25",
       "observations": [
         {
@@ -1524,7 +1524,7 @@
     {
       "marketHashName": "Golden Chestplate 30%",
       "name": "Golden Chestplate 30%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNPFFrZSMGCiFsc",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Chestplate%2030%25",
       "observations": [
         {
@@ -1558,7 +1558,7 @@
     {
       "marketHashName": "Golden Gloves 30%",
       "name": "Golden Gloves 30%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVNi5tGz2USRfBV",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Gloves%2030%25",
       "observations": [
         {
@@ -1592,7 +1592,7 @@
     {
       "marketHashName": "Golden Helmet 30%",
       "name": "Golden Helmet 30%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5Lk8VYxoL5jYY4Rw",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Helmet%2030%25",
       "observations": [
         {
@@ -1626,7 +1626,7 @@
     {
       "marketHashName": "Golden Necklace 30%",
       "name": "Golden Necklace 30%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsehpWFARQ6hu-5",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Necklace%2030%25",
       "observations": [
         {
@@ -1660,7 +1660,7 @@
     {
       "marketHashName": "Golden Pants 30%",
       "name": "Golden Pants 30%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FyNV1YVPKin7NBc",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Pants%2030%25",
       "observations": [
         {
@@ -1694,7 +1694,7 @@
     {
       "marketHashName": "Golden Ring 30%",
       "name": "Golden Ring 30%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FyNV1YVPV5Cq8dE",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Ring%2030%25",
       "observations": [
         {
@@ -1728,7 +1728,7 @@
     {
       "marketHashName": "Golden Sword 30%",
       "name": "Golden Sword 30%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5Lk8VYxoKIrXh7mw",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Sword%2030%25",
       "observations": [
         {
@@ -1762,7 +1762,7 @@
     {
       "marketHashName": "Mystic Boots 45%",
       "name": "Mystic Boots 45%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FyxV1YVP5PE93xA",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Boots%2045%25",
       "observations": [
         {
@@ -1796,7 +1796,7 @@
     {
       "marketHashName": "Mystic Bracelet 45%",
       "name": "Mystic Bracelet 45%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsRhpWFAU9coU8h",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Bracelet%2045%25",
       "observations": [
         {
@@ -1830,7 +1830,7 @@
     {
       "marketHashName": "Mystic Chestplate 45%",
       "name": "Mystic Chestplate 45%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNzFFrZSiegUMic",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Chestplate%2045%25",
       "observations": [
         {
@@ -1864,7 +1864,7 @@
     {
       "marketHashName": "Mystic Gloves 45%",
       "name": "Mystic Gloves 45%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVCi5tGz0iSr5vT",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Gloves%2045%25",
       "observations": [
         {
@@ -1898,7 +1898,7 @@
     {
       "marketHashName": "Mystic Helmet 45%",
       "name": "Mystic Helmet 45%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5LnMVYxoKUEQT93w",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Helmet%2045%25",
       "observations": [
         {
@@ -1932,7 +1932,7 @@
     {
       "marketHashName": "Mystic Necklace 45%",
       "name": "Mystic Necklace 45%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsRhpWFAUvxvWlc",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Necklace%2045%25",
       "observations": [
         {
@@ -1966,7 +1966,7 @@
     {
       "marketHashName": "Mystic Pants 45%",
       "name": "Mystic Pants 45%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FyxV1YVPjzv3GEc",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Pants%2045%25",
       "observations": [
         {
@@ -2000,7 +2000,7 @@
     {
       "marketHashName": "Mystic Ring 45%",
       "name": "Mystic Ring 45%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FyxV1YVP0ONcFBQ",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Ring%2045%25",
       "observations": [
         {
@@ -2034,7 +2034,7 @@
     {
       "marketHashName": "Mystic Sword 45%",
       "name": "Mystic Sword 45%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5LnMVYxoJe9uLVCg",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Sword%2045%25",
       "observations": [
         {
@@ -2068,7 +2068,7 @@
     {
       "marketHashName": "Platinum Boots 35%",
       "name": "Platinum Boots 35%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FyJV1YVPBbaW5Ck",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Boots%2035%25",
       "observations": [
         {
@@ -2089,7 +2089,7 @@
     {
       "marketHashName": "Platinum Bracelet 35%",
       "name": "Platinum Bracelet 35%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsfhpWFAYpyx5cI",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Bracelet%2035%25",
       "observations": [
         {
@@ -2110,7 +2110,7 @@
     {
       "marketHashName": "Platinum Chestplate 35%",
       "name": "Platinum Chestplate 35%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNLFFrZSnWjuftI",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Chestplate%2035%25",
       "observations": [
         {
@@ -2131,7 +2131,7 @@
     {
       "marketHashName": "Platinum Gloves 35%",
       "name": "Platinum Gloves 35%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVMi5tGzwSKLvQv",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Gloves%2035%25",
       "observations": [
         {
@@ -2152,7 +2152,7 @@
     {
       "marketHashName": "Platinum Helmet 35%",
       "name": "Platinum Helmet 35%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5LksVYxoLUrP_JWw",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Helmet%2035%25",
       "observations": [
         {
@@ -2173,7 +2173,7 @@
     {
       "marketHashName": "Platinum Necklace 35%",
       "name": "Platinum Necklace 35%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsfhpWFAXUnETzl",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Necklace%2035%25",
       "observations": [
         {
@@ -2194,7 +2194,7 @@
     {
       "marketHashName": "Platinum Pants 35%",
       "name": "Platinum Pants 35%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FyJV1YVPzy9UPzg",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Pants%2035%25",
       "observations": [
         {
@@ -2215,7 +2215,7 @@
     {
       "marketHashName": "Platinum Ring 35%",
       "name": "Platinum Ring 35%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FyJV1YVPc6LqTjI",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Ring%2035%25",
       "observations": [
         {
@@ -2236,7 +2236,7 @@
     {
       "marketHashName": "Platinum Sword 35%",
       "name": "Platinum Sword 35%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5LksVYxoK5uiE3CA",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Sword%2035%25",
       "observations": [
         {
@@ -2257,7 +2257,7 @@
     {
       "marketHashName": "Polished Boots 20%",
       "name": "Polished Boots 20%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FyFV1YVPkUUQHig",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Boots%2020%25",
       "observations": [
         {
@@ -2278,7 +2278,7 @@
     {
       "marketHashName": "Polished Bracelet 20%",
       "name": "Polished Bracelet 20%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztschpWFAWqQaaAV",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Bracelet%2020%25",
       "observations": [
         {
@@ -2299,7 +2299,7 @@
     {
       "marketHashName": "Polished Chestplate 20%",
       "name": "Polished Chestplate 20%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNHFFrZSwQMXi7E",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Chestplate%2020%25",
       "observations": [
         {
@@ -2320,7 +2320,7 @@
     {
       "marketHashName": "Polished Gloves 20%",
       "name": "Polished Gloves 20%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVPi5tGzw0wwcRZ",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Gloves%2020%25",
       "observations": [
         {
@@ -2341,7 +2341,7 @@
     {
       "marketHashName": "Polished Helmet 20%",
       "name": "Polished Helmet 20%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5LkcVYxoL4FmV61Q",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Helmet%2020%25",
       "observations": [
         {
@@ -2362,7 +2362,7 @@
     {
       "marketHashName": "Polished Necklace 20%",
       "name": "Polished Necklace 20%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztschpWFAS6Vn2nt",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Necklace%2020%25",
       "observations": [
         {
@@ -2383,7 +2383,7 @@
     {
       "marketHashName": "Polished Pants 20%",
       "name": "Polished Pants 20%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FyFV1YVPcvC-J2E",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Pants%2020%25",
       "observations": [
         {
@@ -2404,7 +2404,7 @@
     {
       "marketHashName": "Polished Ring 20%",
       "name": "Polished Ring 20%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FyFV1YVP3Cl9_sY",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Ring%2020%25",
       "observations": [
         {
@@ -2425,7 +2425,7 @@
     {
       "marketHashName": "Polished Sword 20%",
       "name": "Polished Sword 20%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5LkcVYxoJBc_wqzw",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Sword%2020%25",
       "observations": [
         {
@@ -2446,7 +2446,7 @@
     {
       "marketHashName": "Rusty Boots 5%",
       "name": "Rusty Boots 5%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FyRV1YVP4GWbPxE",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Boots%205%25",
       "observations": [
         {
@@ -2467,7 +2467,7 @@
     {
       "marketHashName": "Rusty Bracelet 5%",
       "name": "Rusty Bracelet 5%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsZhpWFAc5cFlOI",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Bracelet%205%25",
       "observations": [
         {
@@ -2488,7 +2488,7 @@
     {
       "marketHashName": "Rusty Chestplate 5%",
       "name": "Rusty Chestplate 5%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNTFFrZS1IJUyd4",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Chestplate%205%25",
       "observations": [
         {
@@ -2509,7 +2509,7 @@
     {
       "marketHashName": "Rusty Gloves 5%",
       "name": "Rusty Gloves 5%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVKi5tGz-z0er8G",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Gloves%205%25",
       "observations": [
         {
@@ -2530,7 +2530,7 @@
     {
       "marketHashName": "Rusty Helmet 5%",
       "name": "Rusty Helmet 5%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5LlMVYxoJwd4kIOQ",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Helmet%205%25",
       "observations": [
         {
@@ -2551,7 +2551,7 @@
     {
       "marketHashName": "Rusty Necklace 5%",
       "name": "Rusty Necklace 5%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsZhpWFARQasK5O",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Necklace%205%25",
       "observations": [
         {
@@ -2572,7 +2572,7 @@
     {
       "marketHashName": "Rusty Pants 5%",
       "name": "Rusty Pants 5%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FyRV1YVPjiK0_GI",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Pants%205%25",
       "observations": [
         {
@@ -2593,7 +2593,7 @@
     {
       "marketHashName": "Rusty Ring 5%",
       "name": "Rusty Ring 5%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FyRV1YVPSNI1AAc",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Ring%205%25",
       "observations": [
         {
@@ -2614,7 +2614,7 @@
     {
       "marketHashName": "Rusty Sword 5%",
       "name": "Rusty Sword 5%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5LlMVYxoL3z-LDiw",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Sword%205%25",
       "observations": [
         {
@@ -2635,7 +2635,7 @@
     {
       "marketHashName": "Seraphic Chestplate 90%",
       "name": "Seraphic Chestplate 90%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmd3FFrZSyqLMiG8",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Seraphic%20Chestplate%2090%25",
       "observations": [
         {
@@ -2656,7 +2656,7 @@
     {
       "marketHashName": "Shadow Boots 50%",
       "name": "Shadow Boots 50%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FiVV1YVPvrPjtBs",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Boots%2050%25",
       "observations": [
         {
@@ -2677,7 +2677,7 @@
     {
       "marketHashName": "Shadow Bracelet 50%",
       "name": "Shadow Bracelet 50%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztoYhpWFAf3W0zMG",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Bracelet%2050%25",
       "observations": [
         {
@@ -2698,7 +2698,7 @@
     {
       "marketHashName": "Shadow Chestplate 50%",
       "name": "Shadow Chestplate 50%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmdXFFrZSR6-UDNY",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Chestplate%2050%25",
       "observations": [
         {
@@ -2719,7 +2719,7 @@
     {
       "marketHashName": "Shadow Gloves 50%",
       "name": "Shadow Gloves 50%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCRLi5tGzz1FI6gw",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Gloves%2050%25",
       "observations": [
         {
@@ -2740,7 +2740,7 @@
     {
       "marketHashName": "Shadow Helmet 50%",
       "name": "Shadow Helmet 50%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5KlcVYxoIsg_fQaw",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Helmet%2050%25",
       "observations": [
         {
@@ -2761,7 +2761,7 @@
     {
       "marketHashName": "Shadow Necklace 50%",
       "name": "Shadow Necklace 50%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztoYhpWFAd1dv_cS",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Necklace%2050%25",
       "observations": [
         {
@@ -2782,7 +2782,7 @@
     {
       "marketHashName": "Shadow Pants 50%",
       "name": "Shadow Pants 50%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FiVV1YVP4E3zryY",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Pants%2050%25",
       "observations": [
         {
@@ -2803,7 +2803,7 @@
     {
       "marketHashName": "Shadow Ring 50%",
       "name": "Shadow Ring 50%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FiVV1YVPKkix3iQ",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Ring%2050%25",
       "observations": [
         {
@@ -2824,7 +2824,7 @@
     {
       "marketHashName": "Shadow Sword 50%",
       "name": "Shadow Sword 50%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5KlcVYxoIeoPX0Cw",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Sword%2050%25",
       "observations": [
         {
@@ -2845,7 +2845,7 @@
     {
       "marketHashName": "Starforged Boots 55%",
       "name": "Starforged Boots 55%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FiRV1YVPfIkVc9g",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Boots%2055%25",
       "observations": [
         {
@@ -2866,7 +2866,7 @@
     {
       "marketHashName": "Starforged Bracelet 55%",
       "name": "Starforged Bracelet 55%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztoZhpWFAQqzA-pS",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Bracelet%2055%25",
       "observations": [
         {
@@ -2887,7 +2887,7 @@
     {
       "marketHashName": "Starforged Gloves 55%",
       "name": "Starforged Gloves 55%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCRKi5tGz9_pLzeY",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Gloves%2055%25",
       "observations": [
         {
@@ -2908,7 +2908,7 @@
     {
       "marketHashName": "Starforged Helmet 55%",
       "name": "Starforged Helmet 55%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5KlMVYxoIVA09YDg",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Helmet%2055%25",
       "observations": [
         {
@@ -2929,7 +2929,7 @@
     {
       "marketHashName": "Starforged Necklace 55%",
       "name": "Starforged Necklace 55%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztoZhpWFAQY6ksMk",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Necklace%2055%25",
       "observations": [
         {
@@ -2950,7 +2950,7 @@
     {
       "marketHashName": "Starforged Pants 55%",
       "name": "Starforged Pants 55%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FiRV1YVPRiibQ90",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Pants%2055%25",
       "observations": [
         {
@@ -2971,7 +2971,7 @@
     {
       "marketHashName": "Starforged Ring 55%",
       "name": "Starforged Ring 55%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FiRV1YVPoHEVx1A",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Ring%2055%25",
       "observations": [
         {
@@ -2992,7 +2992,7 @@
     {
       "marketHashName": "Starforged Sword 55%",
       "name": "Starforged Sword 55%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5KlMVYxoKVjiuKYw",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Sword%2055%25",
       "observations": [
         {
@@ -3013,7 +3013,7 @@
     {
       "marketHashName": "Stormborn Boots 75%",
       "name": "Stormborn Boots 75%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FiBV1YVPx9mvBIA",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Stormborn%20Boots%2075%25",
       "observations": [
         {
@@ -3034,7 +3034,7 @@
     {
       "marketHashName": "Stormborn Helmet 75%",
       "name": "Stormborn Helmet 75%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5KkMVYxoKFiTvMKQ",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Stormborn%20Helmet%2075%25",
       "observations": [
         {
@@ -3055,7 +3055,7 @@
     {
       "marketHashName": "Sturdy Boots 15%",
       "name": "Sturdy Boots 15%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FyZV1YVPgpFnPzE",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Boots%2015%25",
       "observations": [
         {
@@ -3076,7 +3076,7 @@
     {
       "marketHashName": "Sturdy Bracelet 15%",
       "name": "Sturdy Bracelet 15%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsbhpWFAdke7ugP",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Bracelet%2015%25",
       "observations": [
         {
@@ -3097,7 +3097,7 @@
     {
       "marketHashName": "Sturdy Chestplate 15%",
       "name": "Sturdy Chestplate 15%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNbFFrZSLzxblII",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Chestplate%2015%25",
       "observations": [
         {
@@ -3118,7 +3118,7 @@
     {
       "marketHashName": "Sturdy Gloves 15%",
       "name": "Sturdy Gloves 15%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVIi5tGzyaBGonr",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Gloves%2015%25",
       "observations": [
         {
@@ -3139,7 +3139,7 @@
     {
       "marketHashName": "Sturdy Helmet 15%",
       "name": "Sturdy Helmet 15%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5LlsVYxoIz2DlEhg",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Helmet%2015%25",
       "observations": [
         {
@@ -3160,7 +3160,7 @@
     {
       "marketHashName": "Sturdy Necklace 15%",
       "name": "Sturdy Necklace 15%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsbhpWFAYult9YQ",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Necklace%2015%25",
       "observations": [
         {
@@ -3181,7 +3181,7 @@
     {
       "marketHashName": "Sturdy Pants 15%",
       "name": "Sturdy Pants 15%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FyZV1YVPv5qDL2g",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Pants%2015%25",
       "observations": [
         {
@@ -3202,7 +3202,7 @@
     {
       "marketHashName": "Sturdy Ring 15%",
       "name": "Sturdy Ring 15%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FyZV1YVP8XTLzIE",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Ring%2015%25",
       "observations": [
         {
@@ -3223,7 +3223,7 @@
     {
       "marketHashName": "Sturdy Sword 15%",
       "name": "Sturdy Sword 15%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5LlsVYxoKDEF_PkQ",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Sword%2015%25",
       "observations": [
         {
@@ -3244,7 +3244,7 @@
     {
       "marketHashName": "Titan Boots 70%",
       "name": "Titan Boots 70%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FiFV1YVPaeDglWI",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Titan%20Boots%2070%25",
       "observations": [
         {
@@ -3265,7 +3265,7 @@
     {
       "marketHashName": "Titan Chestplate 70%",
       "name": "Titan Chestplate 70%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmdHFFrZSq1VdFTQ",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Titan%20Chestplate%2070%25",
       "observations": [
         {
@@ -3286,7 +3286,7 @@
     {
       "marketHashName": "Titan Gloves 70%",
       "name": "Titan Gloves 70%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCRPi5tGz7YIModL",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Titan%20Gloves%2070%25",
       "observations": [
         {
@@ -3307,7 +3307,7 @@
     {
       "marketHashName": "Titan Pants 70%",
       "name": "Titan Pants 70%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FiFV1YVPCS0TT2k",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Titan%20Pants%2070%25",
       "observations": [
         {
@@ -3328,7 +3328,7 @@
     {
       "marketHashName": "Titan Sword 70%",
       "name": "Titan Sword 70%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5KkcVYxoII43x4Rw",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Titan%20Sword%2070%25",
       "observations": [
         {
@@ -3349,7 +3349,7 @@
     {
       "marketHashName": "Worn Boots 10%",
       "name": "Worn Boots 10%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FydV1YVPz7KIXrs",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Boots%2010%25",
       "observations": [
         {
@@ -3370,7 +3370,7 @@
     {
       "marketHashName": "Worn Bracelet 10%",
       "name": "Worn Bracelet 10%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsahpWFAa-zR-56",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Bracelet%2010%25",
       "observations": [
         {
@@ -3391,7 +3391,7 @@
     {
       "marketHashName": "Worn Chestplate 10%",
       "name": "Worn Chestplate 10%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNfFFrZSnNUvj6U",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Chestplate%2010%25",
       "observations": [
         {
@@ -3412,7 +3412,7 @@
     {
       "marketHashName": "Worn Gloves 10%",
       "name": "Worn Gloves 10%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVJi5tGz9Yckixx",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Gloves%2010%25",
       "observations": [
         {
@@ -3433,7 +3433,7 @@
     {
       "marketHashName": "Worn Helmet 10%",
       "name": "Worn Helmet 10%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5Ll8VYxoJWWroQUA",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Helmet%2010%25",
       "observations": [
         {
@@ -3454,7 +3454,7 @@
     {
       "marketHashName": "Worn Necklace 10%",
       "name": "Worn Necklace 10%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsahpWFAdpoRRv2",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Necklace%2010%25",
       "observations": [
         {
@@ -3475,7 +3475,7 @@
     {
       "marketHashName": "Worn Pants 10%",
       "name": "Worn Pants 10%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FydV1YVPbx-YhHo",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Pants%2010%25",
       "observations": [
         {
@@ -3496,7 +3496,7 @@
     {
       "marketHashName": "Worn Ring 10%",
       "name": "Worn Ring 10%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FydV1YVPtby_eDE",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Ring%2010%25",
       "observations": [
         {
@@ -3517,7 +3517,7 @@
     {
       "marketHashName": "Worn Sword 10%",
       "name": "Worn Sword 10%",
-      "imageUrl": null,
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5Ll8VYxoLE2rRTUg",
       "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Sword%2010%25",
       "observations": [
         {
