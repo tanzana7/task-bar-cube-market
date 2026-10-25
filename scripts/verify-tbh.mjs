@@ -13,7 +13,8 @@ import {
 
 const FIXTURE_PATH = new URL('../tests/fixtures/tbh-search-page.json', import.meta.url);
 const NEW_SEARCH_FIXTURE_PATH = new URL('../tests/fixtures/tbh-structured-search-contract.json', import.meta.url);
-const STRUCTURED_SEARCH_ENDPOINT = 'https://steamcommunity.com/market/search?appid=3678970';
+const STRUCTURED_SEARCH_ENDPOINT = 'https://steamcommunity.com/market/search?appid=3678970&sort=1&dir=1';
+const STRUCTURED_SEARCH_SCOPE = 'tbh-route-probe';
 
 export function tbhSearchUrl() {
   const url = new URL('https://steamcommunity.com/market/search/render/');
@@ -26,7 +27,18 @@ export function tbhSearchUrl() {
 export function tbhStructuredSearchUrl() { return STRUCTURED_SEARCH_ENDPOINT; }
 
 export function tbhStructuredSearchBody() {
-  return [{ appid: TBH_APPID, filters: {}, accessoryFilters: {}, price: { eCurrency: 1 }, start: 0 }];
+  return [{ appid: TBH_APPID, filters: {}, price: { eCurrency: 1 }, accessoryFilters: {}, sort: 1, direction: 1, start: 0 }];
+}
+
+export function tbhStructuredSearchHeaders() {
+  return {
+    Accept: '*/*',
+    'Content-Type': 'application/json; charset=utf-8',
+    Origin: 'https://steamcommunity.com',
+    Referer: 'https://steamcommunity.com/market/search?appid=3678970',
+    'x-valve-request-type': 'routeAction',
+    'x-valve-action-type': 'ZFJAHYDA:SearchMarketListings',
+  };
 }
 
 export function inspectStructuredSearch(payload, { expectedAppId = TBH_APPID } = {}) {
@@ -130,9 +142,9 @@ export async function inspectTbhStructuredMarket({ live = false, fetchImpl = fet
       policy: { ...policy, maxRequestsPerRun: 1 } });
     const result = await controller.request(tbhStructuredSearchUrl(), {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Origin: 'https://steamcommunity.com' },
+      headers: tbhStructuredSearchHeaders(),
       body: JSON.stringify(tbhStructuredSearchBody()),
-    });
+    }, { scope: STRUCTURED_SEARCH_SCOPE, endpoint: 'POST /market/search?appid=3678970&sort=1&dir=1' });
     requestsMade = controller.requestsMade;
     responseMs = result.durationMs;
     httpStatus = result.response.status;
@@ -145,19 +157,22 @@ export async function inspectTbhStructuredMarket({ live = false, fetchImpl = fet
       throw new Error(`Steam structured search failed: ${JSON.stringify({ httpStatus, contentType, responseMs, retryAfter, requestsMade })}`);
     }
     if (!/^application\/(?:[a-z0-9.+-]*\+)?json(?:\s*;|$)/i.test(contentType ?? '')) {
-      await controller.stop('non-json');
+      await controller.stop('non-json', { scope: STRUCTURED_SEARCH_SCOPE,
+        endpoint: 'POST /market/search?appid=3678970&sort=1&dir=1', httpStatus, retryAfter });
       throw new Error(`Steam structured search returned non-JSON Content-Type (${contentType ?? 'missing'}); stopped`);
     }
     try {
       payload = await result.response.json();
       if (payload === null) {
-        await controller.stop('invalid-response');
+        await controller.stop('invalid-response', { scope: STRUCTURED_SEARCH_SCOPE,
+          endpoint: 'POST /market/search?appid=3678970&sort=1&dir=1', httpStatus, retryAfter });
         throw new Error('Steam structured search returned literal null; stopped');
       }
       inspectStructuredSearch(payload);
     } catch (error) {
       if (error.message?.includes('literal null')) throw error;
-      await controller.stop('invalid-response');
+      await controller.stop('invalid-response', { scope: STRUCTURED_SEARCH_SCOPE,
+        endpoint: 'POST /market/search?appid=3678970&sort=1&dir=1', httpStatus, retryAfter });
       throw new Error(`Steam structured search response was incomplete; stopped: ${error.message}`, { cause: error });
     }
   } else {

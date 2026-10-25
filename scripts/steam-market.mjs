@@ -136,7 +136,14 @@ function validateCollectionState(value) {
       || !Number.isSafeInteger(value.requestsToday) || value.requestsToday < 0
       || !(value.lastRequestAt === null || (typeof value.lastRequestAt === 'string' && Number.isFinite(Date.parse(value.lastRequestAt))))
       || !(value.stop === null || (typeof value.stop === 'object' && [403, 429, 'non-json', 'invalid-response'].includes(value.stop.status)
-        && typeof value.stop.at === 'string' && Number.isFinite(Date.parse(value.stop.at))))) {
+        && typeof value.stop.at === 'string' && Number.isFinite(Date.parse(value.stop.at))))
+      || !(value.diagnostic === undefined || (typeof value.diagnostic === 'object' && value.diagnostic !== null
+        && typeof value.diagnostic.at === 'string' && Number.isFinite(Date.parse(value.diagnostic.at))
+        && typeof value.diagnostic.endpoint === 'string' && typeof value.diagnostic.status === 'string'))
+      || !(value.diagnostics === undefined || (Array.isArray(value.diagnostics) && value.diagnostics.length <= 20
+        && value.diagnostics.every(entry => entry && typeof entry === 'object'
+          && typeof entry.at === 'string' && Number.isFinite(Date.parse(entry.at))
+          && typeof entry.endpoint === 'string' && typeof entry.status === 'string')))) {
     throw new Error('Steam request budget state is invalid; refusing live collection');
   }
   return value;
@@ -162,13 +169,18 @@ async function saveCollectionState(path, state) {
   await rename(temporary, target);
 }
 
+function recordCollectionDiagnostic(state, diagnostic) {
+  state.diagnostic = diagnostic;
+  state.diagnostics = [...(state.diagnostics ?? []), diagnostic].slice(-20);
+}
+
 export function createSteamRequestController({ fetchImpl = fetch, pause = ms => new Promise(resolve => setTimeout(resolve, ms)),
   policy = DEFAULT_REQUEST_POLICY, statePath = null, now = () => new Date() } = {}) {
   let requestsMade = 0;
   let lastStartMs = null;
   let queue = Promise.resolve();
 
-  async function request(url, init = {}) {
+  async function request(url, init = {}, { scope = 'production', endpoint = url } = {}) {
     let unlock;
     const previous = queue;
     queue = new Promise(resolve => { unlock = resolve; });
@@ -204,12 +216,30 @@ export function createSteamRequestController({ fetchImpl = fetch, pause = ms => 
       }
       const durationMs = Math.max(0, now().valueOf() - startedAt);
       if (response.status === 403 || response.status === 429) {
+        recordCollectionDiagnostic(state, {
+          scope,
+          endpoint,
+          status: 'http-error',
+          httpStatus: response.status,
+          at: now().toISOString(),
+          retryAfter: response.headers?.get?.('Retry-After') ?? null,
+        });
         state.stop = { status: response.status, at: now().toISOString(), retryAfter: response.headers?.get?.('Retry-After') ?? null };
         await saveCollectionState(statePath, state);
       } else if (response.ok === false) {
-        // A non-success status is not a valid market observation; preserve a stop marker
-        // so a changed route or temporary server error is not retried by a later run.
-        state.stop = { status: 'invalid-response', at: now().toISOString(), retryAfter: response.headers?.get?.('Retry-After') ?? null };
+        // An experimental route can fail without disabling the established collector.
+        // Access-limit responses above remain global regardless of scope.
+        recordCollectionDiagnostic(state, {
+          scope,
+          endpoint,
+          status: 'http-error',
+          httpStatus: response.status,
+          at: now().toISOString(),
+          retryAfter: response.headers?.get?.('Retry-After') ?? null,
+        });
+        if (scope === 'production') {
+          state.stop = { status: 'invalid-response', at: now().toISOString(), retryAfter: response.headers?.get?.('Retry-After') ?? null };
+        }
         await saveCollectionState(statePath, state);
       }
       return { response, durationMs };
@@ -218,11 +248,15 @@ export function createSteamRequestController({ fetchImpl = fetch, pause = ms => 
     }
   }
 
-  async function stop(reason = 'non-json') {
+  async function stop(reason = 'non-json', { scope = 'production', endpoint = 'unknown', httpStatus = null, retryAfter = null } = {}) {
     if (![403, 429, 'non-json', 'invalid-response'].includes(reason)) throw new Error('Invalid stop reason');
     const current = now();
     const state = await loadCollectionState(statePath, current);
-    state.stop = { status: reason, at: current.toISOString(), retryAfter: null };
+    if (reason === 403 || reason === 429 || scope === 'production') {
+      state.stop = { status: reason, at: current.toISOString(), retryAfter };
+    } else {
+      recordCollectionDiagnostic(state, { scope, endpoint, status: reason, httpStatus, at: current.toISOString(), retryAfter });
+    }
     await saveCollectionState(statePath, state);
   }
 

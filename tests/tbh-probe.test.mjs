@@ -4,7 +4,8 @@ import { readFile, mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { inspectStructuredSearch, inspectTbhMarket, inspectTbhStructuredMarket, tbhSearchUrl, tbhStructuredSearchBody, tbhStructuredSearchUrl } from '../scripts/verify-tbh.mjs';
+import { createSteamRequestController } from '../scripts/steam-market.mjs';
+import { inspectStructuredSearch, inspectTbhMarket, inspectTbhStructuredMarket, tbhSearchUrl, tbhStructuredSearchBody, tbhStructuredSearchHeaders, tbhStructuredSearchUrl } from '../scripts/verify-tbh.mjs';
 
 const tbhFixture = JSON.parse(await readFile(new URL('./fixtures/tbh-search-page.json', import.meta.url), 'utf8'));
 const structuredContract = JSON.parse(await readFile(new URL('./fixtures/tbh-structured-search-contract.json', import.meta.url), 'utf8'));
@@ -131,9 +132,16 @@ test('new structured live probe makes one unauthenticated USD POST through share
         calls += 1;
         assert.equal(url, tbhStructuredSearchUrl());
         assert.equal(init.method, 'POST');
-        assert.equal(init.headers['Content-Type'], 'application/json');
+        assert.deepEqual(init.headers, tbhStructuredSearchHeaders());
+        assert.equal(init.headers['x-valve-request-type'], 'routeAction');
+        assert.equal(init.headers['x-valve-action-type'], 'ZFJAHYDA:SearchMarketListings');
+        assert.equal(new URL(url).searchParams.get('sort'), '1');
+        assert.equal(new URL(url).searchParams.get('dir'), '1');
         assert.equal(Object.hasOwn(init.headers, 'Cookie'), false);
         assert.deepEqual(JSON.parse(init.body), tbhStructuredSearchBody());
+        assert.deepEqual(JSON.parse(init.body)[0], {
+          appid: 3678970, filters: {}, price: { eCurrency: 1 }, accessoryFilters: {}, sort: 1, direction: 1, start: 0,
+        });
         return { ok: true, status: 200, headers: { get: name => name === 'Content-Type' ? 'application/json; charset=utf-8' : null }, json: async () => structuredContract };
       } });
     assert.equal(calls, 1);
@@ -147,12 +155,13 @@ test('new structured live probe makes one unauthenticated USD POST through share
   }
 });
 
-test('new structured probe stops after 403/429, HTML and JSON null without retry or fallback', async () => {
+test('new structured probe records route failures without globally stopping the legacy collector', async () => {
   for (const response of [
     { ok: false, status: 403, headers: { get: () => null } },
     { ok: false, status: 429, headers: { get: name => name === 'Retry-After' ? '600' : null } },
     { ok: false, status: 404, headers: { get: name => name === 'Content-Type' ? 'application/json' : null } },
     { ok: true, status: 200, headers: { get: name => name === 'Content-Type' ? 'text/html' : null }, text: async () => '<html>challenge</html>' },
+    { ok: true, status: 200, headers: { get: name => name === 'Content-Type' ? 'application/json' : null }, json: async () => { throw new SyntaxError('fixture invalid JSON'); } },
     { ok: true, status: 200, headers: { get: name => name === 'Content-Type' ? 'application/json' : null }, json: async () => null },
   ]) {
     const dir = await mkdtemp(join(tmpdir(), 'tbcm-new-market-stop-'));
@@ -172,10 +181,40 @@ test('new structured probe stops after 403/429, HTML and JSON null without retry
         assert.match(error.message, /"requestsMade":1/);
       }
       const state = JSON.parse(await readFile(statePath, 'utf8'));
-      if (response.status === 403 || response.status === 429 || response.status === 404 || response.headers.get('Content-Type') === 'text/html'
-          || response.status === 200) assert.notEqual(state.stop, null);
+      if (response.status === 403 || response.status === 429) assert.equal(state.stop.status, response.status);
+      else {
+        assert.equal(state.stop, null);
+        assert.equal(state.diagnostic.scope, 'tbh-route-probe');
+        assert.match(state.diagnostic.endpoint, /^POST \/market\/search\?appid=3678970/);
+        if (response.status === 404) {
+          assert.equal(state.diagnostic.httpStatus, 404);
+          assert.equal(state.diagnostic.status, 'http-error');
+        }
+      }
     } finally {
       await rm(dir, { recursive: true, force: true });
     }
+  }
+});
+
+test('a scoped route 404 preserves the daily budget and allows the established collector route', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'tbcm-scoped-route-stop-'));
+  const statePath = pathToFileURL(join(dir, 'state.json'));
+  const now = () => new Date('2026-10-25T00:00:00.000Z');
+  try {
+    await assert.rejects(inspectTbhStructuredMarket({ live: true, statePath, pause: async () => {}, now,
+      fetchImpl: async () => ({ ok: false, status: 404, headers: { get: () => null } }) }), /"httpStatus":404/);
+    const controller = createSteamRequestController({ statePath, now, pause: async () => {},
+      policy: { minIntervalMs: 15000, maxRequestsPerRun: 1, maxRequestsPerDay: 24 },
+      fetchImpl: async () => ({ ok: true, status: 200, headers: { get: () => null } }) });
+    const { response } = await controller.request('https://steamcommunity.com/market/search/render/?appid=5084200');
+    assert.equal(response.status, 200);
+    const state = JSON.parse(await readFile(statePath, 'utf8'));
+    assert.equal(state.requestsToday, 2);
+    assert.equal(state.stop, null);
+    assert.equal(state.diagnostic.httpStatus, 404);
+    assert.equal(state.diagnostic.scope, 'tbh-route-probe');
+  } finally {
+    await rm(dir, { recursive: true, force: true });
   }
 });

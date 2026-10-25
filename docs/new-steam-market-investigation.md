@@ -1,8 +1,45 @@
 # 新Steam Market検索方式の調査
 
+## v0.4.3追記（2026-10-25）
+
+### routeAction公開実装の確認
+
+[githuber53/steam-market-bucket-group-id](https://github.com/githuber53/steam-market-bucket-group-id)の指定ファイルを確認した。これはValveの公式仕様ではなく、公開された第三者実装である。
+
+- [`steam_market_params/client.py`](https://github.com/githuber53/steam-market-bucket-group-id/blob/main/steam_market_params/client.py)は`x-valve-request-type: routeAction`と`x-valve-action-type: ZFJAHYDA:SearchMarketListings`を設定し、JSON POSTを行う。
+- [`steam_market_params/names.py`](https://github.com/githuber53/steam-market-bucket-group-id/blob/main/steam_market_params/names.py)の本文は1要素配列で、`appid`、`filters`、`price.eCurrency`、`accessoryFilters`、`sort`、`direction`、`start`を含む。
+- [`steam_market_params/urls.py`](https://github.com/githuber53/steam-market-bucket-group-id/blob/main/steam_market_params/urls.py)は`/market/search?appid=…&sort=…&dir=…`を生成する。
+
+同実装にはUser-Agent/client-hintsの固定値、Cookie読込、retryable statusの再試行もある。今回の検証ではそれらを使わず、Cookie・認証情報・UA偽装・再試行を避けた。送信ヘッダーはAccept、Content-Type、Origin、Refererと上記2つのValveヘッダーに限定した。
+
+Steamの既存公開画面には「マーケットベータを終了」操作があり、現在のベータUIであることを確認できた。ただしChromeの過去Networkログはこの環境から取得できず、画面のロード時に何件のHTTP通信が発生したかや、Steam自身が送ったrouteAction本文は直接捕捉していない。[SteamのTBHマーケット画面](https://steamcommunity.com/market/search?appid=3678970)
+
+### 前回リクエストとrouteAction再試験
+
+| 試験 | リクエスト | HTTP | 診断 |
+| --- | --- | --- | --- |
+| 前回 | `POST /market/search?appid=3678970`。Valveヘッダー、`sort`、`direction`なし | 404 | Content-Type・応答時間・Retry-Afterは初版ログで未取得 |
+| 今回 | `POST /market/search?appid=3678970&sort=1&dir=1`。routeActionヘッダーと完全候補本文 | 400 | Content-Typeなし、409ms、Retry-Afterなし。1回のみ |
+
+今回の本文は次のとおり。Cookieなし・USD・先頭位置で送った。
+
+```json
+[{"appid":3678970,"filters":{},"price":{"eCurrency":1},"accessoryFilters":{},"sort":1,"direction":1,"start":0}]
+```
+
+400の本文は保存・表示しておらず、商品レスポンスもなかった。前回からHTTPステータスが変わったためリクエスト形式差が影響した可能性はあるが、404の原因や400の理由は特定できない。レスポンスが成功していないため、商品種類数、total_count、価格、画像、出品数、通貨、ID、ページングはいずれも今回確認できていない。再試行や別URLへのフォールバックはしていない。
+
+### 停止状態の分離
+
+前回の状態は404由来の`invalid-response`で、403/429ではなかった。既存カウントを消さず、404を`scope: tbh-route-probe`の診断履歴に移し、全経路に適用されていた停止フラグを解除した。今回の400も同じ試験用診断に記録した。2026-10-25 UTCの状態は3リクエスト、最終通信時刻`2026-10-25T05:30:38.120Z`、グローバルstopなしである（1件は過去の旧GET試験、2件は新routeAction試験）。403/429は試験経路を含む全経路でこれまでどおりグローバル停止する。
+
+routeActionのURL・ヘッダー・本文はTBH専用プローブとfixtureテストに隔離した。本番のTask Bar Cube AppID `5084200`は既存`search/render` USDコレクターのままで、商品JSON・履歴・ランキングを変更していない。市場の定期実行も有効化していない。
+
+今回のfixture/コードテストは63件成功、typecheckとbuildも成功した。routeActionがHTTP 200になっていないため、本番移行条件は満たしていない。
+
 ## 結論
 
-本番コレクターは従来のUSD `GET /market/search/render/`を維持する。新しい`POST /market/search`は、非公式資料からリクエスト形・レスポンス候補を把握できる一方、TBHを対象とした今回の1回限りの実リクエストはHTTP 404となり、返却件数、価格、ID、画像、出品数、ページングを一切検証できなかった。旧方式より有利という根拠がないため移行しない。
+本番コレクターは従来のUSD `GET /market/search/render/`を維持する。新しい`POST /market/search`は、前回の簡略リクエストが404、routeActionヘッダー・sort指定を足した今回の1回限りの試験が400だった。いずれも商品データを返しておらず、返却件数、価格、ID、画像、出品数、ページングは未検証である。旧方式より有利という根拠がないため移行しない。
 
 新APIを再試行したり旧API・掲載ページへフォールバックしたりしない。TBHの試験データは本番キャッシュや履歴に書き込んでいない。Task Bar Cubeの市場JSONはAppID `5084200`の0件を維持している。
 
@@ -11,7 +48,7 @@
 | 方式 | リクエスト・返却単位 | TBHで確認できた値 | 全件概算 | 判断 |
 | --- | --- | --- | ---: | --- |
 | 旧`GET /market/search/render/` | `appid`, `currency`, `country`, `start`, `count`; JSON内`results`は1商品種類/行 | 2026-10-25の既存1ページ試験で`count=100`に対し10行、`pagesize=10`,`total_count=1093`; USD価格・画像・出品数は各10/10 | `ceil(1093/10)=110` | 現在の既知の成功経路。商品ごとのUSD値を検証できた |
-| 新`POST /market/search` | 1要素配列のJSON body。ドキュメント上はgrouped `results`または個別`listings` | 今回1回POSTしHTTP 404。本文は保存しておらず、Content-Typeと応答時間は当時のプローブが出力していなかったため不明 | 算出不可。本文の`total_count`も得られず | 実レスポンスを確認できないので、本番移行しない |
+| 新`POST /market/search` | 1要素配列のJSON body。routeActionヘッダー、URL/bodyのsort指定あり | 簡略リクエストは404、routeAction候補はHTTP 400（409ms）。商品レスポンスなし | 算出不可。本文の`total_count`も得られず | 実レスポンスを確認できないので、本番移行しない |
 | Steam掲載ページSSR | 商品別の`/market/listings/{appid}/{market_hash_name}`を取得しSSR解析 | 今回はTBH掲載ページへアクセスしていない | 1商品種類あたり基本1件。全商品分の発見には別途一覧取得が必要 | 価格一覧だけの用途では商品別の追加通信が多く、今回採用しない |
 
 旧APIの10行/ページは過去の実測値であり、将来も同じとは限らない。Steamの公開レート制限値は確認できず、15秒間隔や6件/実行・24件/日もSteamが保証する値ではなくTBCMの運用上限である。
@@ -84,7 +121,7 @@ Valveの2026-05-12告知は、新しいカード表示、動的検索フィル�
 ## 発売後の初回運用手順
 
 1. Task Bar CubeのSteam Marketに実商品が現れたことをブラウザーで確認する。空なら本番JSONは0件のまま維持する。
-2. 停止状態`.market/steam-collection-state.json`を確認する。現在は新APIのHTTP 404を受けたため`invalid-response`で停止中。方式をレビューし、必要な場合に限り運用者が`npm run market:unblock`で明示解除する。
+2. 停止状態`.market/steam-collection-state.json`を確認する。routeActionの404/400はTBH試験の診断履歴に分離され、本番収集のグローバルstopとは独立する。403/429は経路を問わずグローバルstopとして記録されるため、解除には運用者のレビューと明示操作が必要。
 3. GitHub Actionsのfixtureモードを実行し、取得対象をAppID `5084200`の旧USDコレクターに固定する。live実行はSteamの利用条件と再配布条件の確認、運用許可変数`STEAM_MARKET_COLLECTION_ALLOWED=true`、予算確認後に手動で行う。定期scheduleは有効にしない。
 4. 初回スナップショットの価格・通貨・商品名・`market_hash_name`・画像URL・出品数を確認してから履歴/ランキングの更新とPages反映を確認する。JPY表示はfreshなFrankfurterレートを使う。
 
@@ -92,7 +129,7 @@ Valveの2026-05-12告知は、新しいカード表示、動的検索フィル�
 
 ## 未解決事項
 
-- 新POST検索がTBHで404となった原因は未特定。route、機能公開範囲、リクエストスキーマのどれかを決めつけない。
+- 新POST検索は初回404、routeAction候補での再試験400となった。どちらの理由も未特定。route、機能公開範囲、リクエストスキーマのどれかを決めつけない。
 - 実際のSteamフロントエンド通信を直接捕捉していない。Steam公式告知は検索・グループ化UIを説明するが、API bodyは公開していない。
 - 新APIのTBH価格、単位、商品ID、画像、sell-order件数、認証要否、ページサイズ、429挙動を確認できていない。
 - 旧方式の実測は過去の1ページであり、発売後市場の応答形式や取得可能ページ数を保証しない。

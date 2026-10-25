@@ -1,11 +1,33 @@
 {
   "schemaVersion": 1,
   "utcDate": "2026-10-25",
-  "requestsToday": 2,
-  "lastRequestAt": "2026-10-25T05:11:24.679Z",
-  "stop": {
-    "status": "invalid-response",
-    "at": "2026-10-25T05:12:08.926Z",
+  "requestsToday": 3,
+  "lastRequestAt": "2026-10-25T05:30:38.120Z",
+  "stop": null,
+  "diagnostic": {
+    "scope": "tbh-route-probe",
+    "endpoint": "POST /market/search?appid=3678970&sort=1&dir=1",
+    "status": "http-error",
+    "httpStatus": 400,
+    "at": "2026-10-25T05:30:38.529Z",
     "retryAfter": null
-  }
+  },
+  "diagnostics": [
+    {
+      "scope": "tbh-route-probe",
+      "endpoint": "POST /market/search?appid=3678970",
+      "status": "http-error",
+      "httpStatus": 404,
+      "at": "2026-10-25T05:12:08.926Z",
+      "retryAfter": null
+    },
+    {
+      "scope": "tbh-route-probe",
+      "endpoint": "POST /market/search?appid=3678970&sort=1&dir=1",
+      "status": "http-error",
+      "httpStatus": 400,
+      "at": "2026-10-25T05:30:38.529Z",
+      "retryAfter": null
+    }
+  ]
 }
