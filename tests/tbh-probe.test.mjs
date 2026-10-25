@@ -4,9 +4,10 @@ import { readFile, mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { inspectTbhMarket, tbhSearchUrl } from '../scripts/verify-tbh.mjs';
+import { inspectStructuredSearch, inspectTbhMarket, inspectTbhStructuredMarket, tbhSearchUrl, tbhStructuredSearchBody, tbhStructuredSearchUrl } from '../scripts/verify-tbh.mjs';
 
 const tbhFixture = JSON.parse(await readFile(new URL('./fixtures/tbh-search-page.json', import.meta.url), 'utf8'));
+const structuredContract = JSON.parse(await readFile(new URL('./fixtures/tbh-structured-search-contract.json', import.meta.url), 'utf8'));
 
 test('TBH probe defaults to one-page fixture analysis without network or cache writes', async () => {
   let calls = 0;
@@ -68,5 +69,113 @@ test('TBH probe persists 429 stop state, reports Retry-After, and does not retry
     assert.equal(state.stop.retryAfter, '600');
   } finally {
     await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('structured-search contract fixture validates USD groups without treating listings as products', async () => {
+  const result = await inspectTbhStructuredMarket();
+  assert.equal(result.source, 'fixture');
+  assert.equal(result.mode, 'grouped-products');
+  assert.equal(result.grouping, 1);
+  assert.equal(result.returnedProductKinds, 1);
+  assert.equal(result.usdPricesVerified, 1);
+  assert.equal(result.samplePrices[0].minor, 123);
+  assert.equal(result.sellOrderCountsAvailable, 1);
+  assert.equal(result.imagesAvailable, 1);
+  assert.equal(result.requestsMade, 0);
+
+  const direct = inspectStructuredSearch({ start: 0, total_count: 2, more: false, facets: [], listings: [
+    { listingid: 'listing-a', eCurrency: 1, unPrice: 123, unFee: 12, description: { appid: 3678970, market_hash_name: 'Fixture Item' } },
+    { listingid: 'listing-b', eCurrency: 1, unPrice: 124, unFee: 12, description: { appid: 3678970, market_hash_name: 'Fixture Item' } },
+  ] });
+  assert.equal(direct.mode, 'individual-listings');
+  assert.equal(direct.returnedRows, 2);
+  assert.equal(direct.returnedProductKinds, null);
+  assert.equal(direct.estimatedProductRequests, null);
+  assert.equal(direct.estimatedRowRequests, 1);
+});
+
+test('structured-search 10, 30 and 100 row scale fixtures use generated contract rows only', () => {
+  for (const count of [10, 30, 100]) {
+    const results = Array.from({ length: count }, (_, index) => {
+      const name = `Synthetic Fixture Item ${index + 1}`;
+      return { ...structuredContract.results[0], strHash: name, asset_description: { ...structuredContract.results[0].asset_description, market_hash_name: name } };
+    });
+    const result = inspectStructuredSearch({ ...structuredContract, total_count: count, results });
+    assert.equal(result.returnedProductKinds, count);
+    assert.equal(result.usdPricesVerified, count);
+    assert.equal(result.marketHashNamesAvailable, count);
+    assert.equal(result.estimatedProductRequests, 1);
+  }
+});
+
+test('structured-search rejects null, incomplete, mismatched currency, AppID and duplicate groups', () => {
+  assert.throws(() => inspectStructuredSearch(null), /null or a non-object/);
+  assert.throws(() => inspectStructuredSearch({ start: 0, total_count: 1, grouping: 1, facets: [], results: null }), /exactly one/);
+  assert.throws(() => inspectStructuredSearch({ ...structuredContract, grouping: 0 }), /not identified as grouped/);
+  assert.equal(inspectStructuredSearch({ ...structuredContract, results: [{ ...structuredContract.results[0], eCurrency: 2 }] }).usdPricesVerified, 0);
+  assert.throws(() => inspectStructuredSearch({ ...structuredContract, results: [{ ...structuredContract.results[0], asset_description: { ...structuredContract.results[0].asset_description, appid: 5084200 } }] }), /different AppID/);
+  const duplicated = { ...structuredContract, total_count: 2, results: [structuredContract.results[0], structuredContract.results[0]] };
+  assert.equal(inspectStructuredSearch(duplicated).identifiersUnique, false);
+  assert.equal(inspectStructuredSearch(duplicated).duplicateIds, 1);
+});
+
+test('new structured live probe makes one unauthenticated USD POST through shared request controls', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'tbcm-new-market-probe-'));
+  const statePath = pathToFileURL(join(dir, 'state.json'));
+  let calls = 0;
+  try {
+    const result = await inspectTbhStructuredMarket({ live: true, statePath, pause: async () => {},
+      now: () => new Date('2026-10-25T00:00:00.000Z'),
+      fetchImpl: async (url, init) => {
+        calls += 1;
+        assert.equal(url, tbhStructuredSearchUrl());
+        assert.equal(init.method, 'POST');
+        assert.equal(init.headers['Content-Type'], 'application/json');
+        assert.equal(Object.hasOwn(init.headers, 'Cookie'), false);
+        assert.deepEqual(JSON.parse(init.body), tbhStructuredSearchBody());
+        return { ok: true, status: 200, headers: { get: name => name === 'Content-Type' ? 'application/json; charset=utf-8' : null }, json: async () => structuredContract };
+      } });
+    assert.equal(calls, 1);
+    assert.equal(result.requestsMade, 1);
+    assert.equal(result.httpStatus, 200);
+    assert.equal(result.contentType, 'application/json; charset=utf-8');
+    const state = JSON.parse(await readFile(statePath, 'utf8'));
+    assert.equal(state.requestsToday, 1);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('new structured probe stops after 403/429, HTML and JSON null without retry or fallback', async () => {
+  for (const response of [
+    { ok: false, status: 403, headers: { get: () => null } },
+    { ok: false, status: 429, headers: { get: name => name === 'Retry-After' ? '600' : null } },
+    { ok: false, status: 404, headers: { get: name => name === 'Content-Type' ? 'application/json' : null } },
+    { ok: true, status: 200, headers: { get: name => name === 'Content-Type' ? 'text/html' : null }, text: async () => '<html>challenge</html>' },
+    { ok: true, status: 200, headers: { get: name => name === 'Content-Type' ? 'application/json' : null }, json: async () => null },
+  ]) {
+    const dir = await mkdtemp(join(tmpdir(), 'tbcm-new-market-stop-'));
+    const statePath = pathToFileURL(join(dir, 'state.json'));
+    let calls = 0;
+    try {
+      let error;
+      try {
+        await inspectTbhStructuredMarket({ live: true, statePath, pause: async () => {},
+          now: () => new Date('2026-10-25T00:00:00.000Z'), fetchImpl: async () => { calls += 1; return response; } });
+      } catch (caught) { error = caught; }
+      assert.equal(calls, 1);
+      assert.ok(error instanceof Error);
+      if (response.status === 404) {
+        assert.match(error.message, /"httpStatus":404/);
+        assert.match(error.message, /"contentType":"application\/json"/);
+        assert.match(error.message, /"requestsMade":1/);
+      }
+      const state = JSON.parse(await readFile(statePath, 'utf8'));
+      if (response.status === 403 || response.status === 429 || response.status === 404 || response.headers.get('Content-Type') === 'text/html'
+          || response.status === 200) assert.notEqual(state.stop, null);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
   }
 });

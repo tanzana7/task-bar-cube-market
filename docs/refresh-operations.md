@@ -33,7 +33,7 @@
 
 初期値は1リクエスト開始ごとの間隔15秒、1実行6件、UTC日次24件。最小間隔は設定変更でも15秒より短くできません。設定は`STEAM_MIN_INTERVAL_MS`、`STEAM_MAX_REQUESTS_PER_RUN`、`STEAM_MAX_REQUESTS_PER_DAY`で調整します。これらは運用上の保守的な予算で、Steamが保証する安全値ではありません。
 
-`.market/steam-collection-state.json`はリクエスト試行数と最終開始日時、403/429/非JSONによる停止状態を持ちます。HTTP 429では再試行・待機・別URLへの切替を行いません。Actionsは失敗後も状態だけを`[CF-Pages-Skip]`付きコミットで保存し、次の実行も停止させます。状態を確認し、待機後に人が判断して`npm run market:unblock`を実行してください。解除してもその日の残りリクエスト数は戻しません。
+`.market/steam-collection-state.json`はリクエスト試行数と最終開始日時、403/429/非JSON/HTTPエラー/不正レスポンスによる停止状態を持ちます。HTTP 429では再試行・待機・別URLへの切替を行いません。Actionsは失敗後も状態だけを`[CF-Pages-Skip]`付きコミットで保存し、次の実行も停止させます。状態を確認し、待機後に人が判断して`npm run market:unblock`を実行してください。解除してもその日の残りリクエスト数は戻しません。
 
 商品一覧は`count=100`を要求しますが、応答の`pagesize`と実返却行から全件必要数を推計します。上限超過、`total_count`変動、`start`不一致、ページ不足、重複、通貨/AppID不一致では収集を破棄し、正常な市場JSONと履歴を保持します。部分ページを既知商品一覧や価格履歴として公開しません。
 

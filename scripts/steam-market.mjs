@@ -135,7 +135,7 @@ function validateCollectionState(value) {
       || !/^\d{4}-\d{2}-\d{2}$/.test(value.utcDate)
       || !Number.isSafeInteger(value.requestsToday) || value.requestsToday < 0
       || !(value.lastRequestAt === null || (typeof value.lastRequestAt === 'string' && Number.isFinite(Date.parse(value.lastRequestAt))))
-      || !(value.stop === null || (typeof value.stop === 'object' && [403, 429, 'non-json'].includes(value.stop.status)
+      || !(value.stop === null || (typeof value.stop === 'object' && [403, 429, 'non-json', 'invalid-response'].includes(value.stop.status)
         && typeof value.stop.at === 'string' && Number.isFinite(Date.parse(value.stop.at))))) {
     throw new Error('Steam request budget state is invalid; refusing live collection');
   }
@@ -168,7 +168,7 @@ export function createSteamRequestController({ fetchImpl = fetch, pause = ms => 
   let lastStartMs = null;
   let queue = Promise.resolve();
 
-  async function request(url) {
+  async function request(url, init = {}) {
     let unlock;
     const previous = queue;
     queue = new Promise(resolve => { unlock = resolve; });
@@ -194,13 +194,22 @@ export function createSteamRequestController({ fetchImpl = fetch, pause = ms => 
       const startedAt = current.valueOf();
       let response;
       try {
-        response = await fetchImpl(url, { headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(15000) });
+        response = await fetchImpl(url, {
+          ...init,
+          headers: { Accept: 'application/json', ...init.headers },
+          signal: AbortSignal.timeout(15000),
+        });
       } catch (error) {
         throw new Error('Steam network request failed', { cause: error });
       }
       const durationMs = Math.max(0, now().valueOf() - startedAt);
       if (response.status === 403 || response.status === 429) {
         state.stop = { status: response.status, at: now().toISOString(), retryAfter: response.headers?.get?.('Retry-After') ?? null };
+        await saveCollectionState(statePath, state);
+      } else if (response.ok === false) {
+        // A non-success status is not a valid market observation; preserve a stop marker
+        // so a changed route or temporary server error is not retried by a later run.
+        state.stop = { status: 'invalid-response', at: now().toISOString(), retryAfter: response.headers?.get?.('Retry-After') ?? null };
         await saveCollectionState(statePath, state);
       }
       return { response, durationMs };
@@ -210,7 +219,7 @@ export function createSteamRequestController({ fetchImpl = fetch, pause = ms => 
   }
 
   async function stop(reason = 'non-json') {
-    if (![403, 429, 'non-json'].includes(reason)) throw new Error('Invalid stop reason');
+    if (![403, 429, 'non-json', 'invalid-response'].includes(reason)) throw new Error('Invalid stop reason');
     const current = now();
     const state = await loadCollectionState(statePath, current);
     state.stop = { status: reason, at: current.toISOString(), retryAfter: null };

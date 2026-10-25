@@ -1,7 +1,11 @@
 {
   "schemaVersion": 1,
   "utcDate": "2026-10-25",
-  "requestsToday": 1,
-  "lastRequestAt": "2026-10-25T04:52:12.849Z",
-  "stop": null
+  "requestsToday": 2,
+  "lastRequestAt": "2026-10-25T05:11:24.679Z",
+  "stop": {
+    "status": "invalid-response",
+    "at": "2026-10-25T05:12:08.926Z",
+    "retryAfter": null
+  }
 }

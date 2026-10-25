@@ -1,0 +1,21 @@
+{
+  "start": 0,
+  "total_count": 1,
+  "grouping": 1,
+  "facets": [],
+  "results": [
+    {
+      "strHash": "Fixture Item",
+      "cSellOrders": 7,
+      "cBuyOrders": 2,
+      "eCurrency": 1,
+      "strMinSellSubtotal": "$1.23",
+      "asset_description": {
+        "appid": 3678970,
+        "classid": "fixture-class",
+        "market_hash_name": "Fixture Item",
+        "icon_url": "fixture-icon"
+      }
+    }
+  ]
+}
