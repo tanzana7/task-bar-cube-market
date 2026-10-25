@@ -2,10 +2,12 @@ import { readdir, readFile, stat } from 'node:fs/promises';
 import { basename, extname, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { parsePriceMinor, normalizeResult, saveFilesAtomically } from './steam-market.mjs';
-import { parseQueryActionPage, validateQueryActionObservationStore } from './query-action-market.mjs';
+import { MAX_QUERY_OBSERVATIONS_PER_PRODUCT, parseQueryActionPage,
+  validateQueryActionObservationStore } from './query-action-market.mjs';
 
 export const TBC_APPID = 5084200;
 export const PUBLIC_OBSERVATIONS_PATH = new URL('../public/market-observations.json', import.meta.url);
+const MAX_QUERY_IMPORTS = 512;
 const SOURCE_LABELS = {
   'search-render': 'Steam Community Market search/render response supplied by operator',
   'query-action': 'Steam Community Market queryAction response supplied by operator',
@@ -399,7 +401,10 @@ function parseQueryActionStoreImport({ store, provenance, rightsConfirmed, now }
     steamUrl: product.steamUrl,
     observations: product.observations.map(point => {
       const key = `${point.observedAt}\0${point.pageStart}\0${point.totalCount}\0${point.pageSize}`;
-      pageGroups.set(key, (pageGroups.get(key) ?? 0) + 1);
+      if (store.retentionCutoff === undefined || store.retentionCutoff === null
+          || Date.parse(point.observedAt) >= Date.parse(store.retentionCutoff)) {
+        pageGroups.set(key, (pageGroups.get(key) ?? 0) + 1);
+      }
       return {
         observedAt: point.observedAt,
         sourceKind: 'query-action',
@@ -462,6 +467,14 @@ export function mergeMarketObservations(previous, incoming) {
       if (next.imageUrl) current.imageUrl = next.imageUrl;
     }
   }
+  let trimmedPoints = 0;
+  for (const product of productMap.values()) {
+    const queryPoints = product.observations.filter(point => point.sourceKind === 'query-action');
+    if (queryPoints.length <= MAX_QUERY_OBSERVATIONS_PER_PRODUCT) continue;
+    const keep = new Set(queryPoints.slice(-MAX_QUERY_OBSERVATIONS_PER_PRODUCT));
+    product.observations = product.observations.filter(point => point.sourceKind !== 'query-action' || keep.has(point));
+    trimmedPoints += queryPoints.length - MAX_QUERY_OBSERVATIONS_PER_PRODUCT;
+  }
   const merged = {
     ...base,
     generatedAt: addedPoints > 0 ? incoming.generatedAt : base.generatedAt,
@@ -483,9 +496,13 @@ export function mergeMarketObservations(previous, incoming) {
     }
   }
   merged.imports.sort((a, b) => Date.parse(a.observedAt) - Date.parse(b.observedAt) || a.start - b.start);
-  if (addedPoints === 0 && addedCaptures > 0) merged.generatedAt = incoming.generatedAt;
+  // Recent capture metadata is enough to diagnose paging; product timestamps preserve older
+  // observations. Cap this log separately so six-hour cycles cannot grow the public JSON forever.
+  merged.imports = merged.imports.slice(-MAX_QUERY_IMPORTS);
+  const capturesChanged = JSON.stringify(merged.imports) !== JSON.stringify(base.imports);
+  if (addedPoints === 0 && addedCaptures > 0 && capturesChanged) merged.generatedAt = incoming.generatedAt;
   validateMarketObservations(merged);
-  return { snapshot: merged, addedPoints, changed: addedPoints > 0 || addedCaptures > 0 };
+  return { snapshot: merged, addedPoints, changed: addedPoints > 0 || capturesChanged || trimmedPoints > 0 };
 }
 
 export async function importMarketFile({ inputPath, inputPaths = null, outputPath = PUBLIC_OBSERVATIONS_PATH,

@@ -416,7 +416,8 @@ function render() {
       const detail = document.createElement('small');
       const capture = importedSnapshot?.imports.find(entry => entry.sourceKind === observation.sourceKind
         && entry.observedAt === observation.observedAt && entry.provenance === observation.provenance);
-      const coverage = capture && !capture.complete ? '部分観測 · ' : '';
+      // 古いページ記録を保持上限で落としても、商品単位の観測を全件スナップショットに見せない。
+      const coverage = observation.sourceKind === 'query-action' || (capture && !capture.complete) ? '部分観測 · ' : '';
       const sourceNote = observation.sourceKind === 'query-action' ? '参考値・価格基準確認中'
         : observation.sourceKind === 'steam-dom' ? '画面参考値・価格基準未確認'
           : `観測・${observation.provenance}`;

@@ -7,6 +7,7 @@ const MARKET_ACTIONS_URL = 'https://steamcommunity.com/market/actions';
 const QUERY_ACTION = 'Search';
 const SOURCE = 'Steam Community Market queryAction';
 const PRICE_BASIS = 'min-sell-subtotal-unverified-fees';
+export const MAX_QUERY_OBSERVATIONS_PER_PRODUCT = 32;
 
 export class QueryActionCurrencyMismatchError extends Error {
   constructor(requestCurrencyId, responseCurrencyIds, message = 'queryAction request and response currencies do not match') {
@@ -161,7 +162,9 @@ function validUtcTimestamp(value) {
 export function validateQueryActionObservationStore(store) {
   if (!store || store.schemaVersion !== 1 || ![TBH_APPID, APPID].includes(store.appid)
       || store.source !== SOURCE || store.currency !== 'USD' || store.priceBasis !== PRICE_BASIS
-      || !Array.isArray(store.products) || !Array.isArray(store.completedRuns) || !store.progress) {
+      || !Array.isArray(store.products) || !Array.isArray(store.completedRuns) || !store.progress
+      || !(store.retentionCutoff === undefined || store.retentionCutoff === null
+        || validUtcTimestamp(store.retentionCutoff))) {
     throw new Error('Invalid queryAction observation store');
   }
   const products = new Set();
@@ -206,8 +209,10 @@ export function validateQueryActionObservationStore(store) {
       || !(progress.reportedTotalCount === null || isSafeInteger(progress.reportedTotalCount))
       || !isSafeInteger(progress.nextStart) || !isSafeInteger(progress.pagesFetched)
       || !(progress.requestCurrencyId === null || [1, 8].includes(progress.requestCurrencyId))
+      || ![0, 1, 2, 3, 4].includes(progress.sort ?? 3) || ![1, 2].includes(progress.direction ?? 1)
       || !Array.isArray(progress.seenMarketHashNames)
       || new Set(progress.seenMarketHashNames).size !== progress.seenMarketHashNames.length
+      || !(progress.totalCountChanged === undefined || typeof progress.totalCountChanged === 'boolean')
       || progress.orderingRisk !== true || progress.catalogComplete !== false) {
     throw new Error('Invalid queryAction collection progress');
   }
@@ -222,10 +227,13 @@ export function createEmptyQueryActionObservationStore(appid) {
     source: SOURCE,
     currency: 'USD',
     priceBasis: PRICE_BASIS,
+    retentionCutoff: null,
     products: [],
     completedRuns: [],
     progress: {
       status: 'idle', runId: null, startedAt: null, requestCurrencyId: null,
+      sort: 3, direction: 1,
+      totalCountChanged: false,
       reportedTotalCount: null, nextStart: 0, pagesFetched: 0, seenMarketHashNames: [],
       orderingRisk: true, catalogComplete: false,
     },
@@ -257,6 +265,10 @@ function archiveCurrentRun(store, finishedAt) {
       finishedAt,
       status: current.status,
       requestCurrencyId: current.requestCurrencyId,
+      sort: current.sort ?? 3,
+      direction: current.direction ?? 1,
+      restartReason: current.restartReason ?? null,
+      totalCountChanged: current.totalCountChanged === true,
       reportedTotalCount: current.reportedTotalCount,
       pagesFetched: current.pagesFetched,
       distinctProductsObserved: current.seenMarketHashNames.length,
@@ -266,7 +278,7 @@ function archiveCurrentRun(store, finishedAt) {
   }
 }
 
-function startCollectionRun(store, requestCurrencyId, now) {
+function startCollectionRun(store, requestCurrencyId, now, sort = 3, direction = 1) {
   const startedAt = now().toISOString();
   archiveCurrentRun(store, startedAt);
   store.progress = {
@@ -274,6 +286,9 @@ function startCollectionRun(store, requestCurrencyId, now) {
     runId: randomUUID(),
     startedAt,
     requestCurrencyId,
+    sort,
+    direction,
+    totalCountChanged: false,
     reportedTotalCount: null,
     nextStart: 0,
     pagesFetched: 0,
@@ -299,6 +314,7 @@ function recordPageObservations(store, page, observedAt, requestCurrencyId) {
   const productsByName = new Map(store.products.map(product => [product.marketHashName, product]));
   const seen = new Set(store.progress.seenMarketHashNames);
   let overlap = false;
+  let lastPrunedAt = -Infinity;
   for (const item of page.items) {
     if (seen.has(item.marketHashName)) overlap = true;
     seen.add(item.marketHashName);
@@ -346,6 +362,17 @@ function recordPageObservations(store, page, observedAt, requestCurrencyId) {
     product.steamUrl = item.steamUrl;
     product.lastObservedAt = observedAt;
     product.observations.push(observation);
+    if (product.observations.length > MAX_QUERY_OBSERVATIONS_PER_PRODUCT) {
+      const removed = product.observations.splice(0, product.observations.length - MAX_QUERY_OBSERVATIONS_PER_PRODUCT);
+      lastPrunedAt = Math.max(lastPrunedAt, ...removed.map(point => Date.parse(point.observedAt)));
+    }
+  }
+  if (lastPrunedAt !== -Infinity) {
+    // Older per-product checkpoints can no longer prove complete historical pages. The importer
+    // validates page cardinality only after this cutoff while retaining those latest checkpoints.
+    const cutoff = new Date(lastPrunedAt + 1).toISOString();
+    if (store.retentionCutoff === undefined || store.retentionCutoff === null
+        || Date.parse(cutoff) > Date.parse(store.retentionCutoff)) store.retentionCutoff = cutoff;
   }
   store.products = [...productsByName.values()].sort((a, b) => a.marketHashName.localeCompare(b.marketHashName));
   store.progress.seenMarketHashNames = [...seen].sort();
@@ -356,22 +383,28 @@ function recordPageObservations(store, page, observedAt, requestCurrencyId) {
 // and legacy price history are deliberately not involved while subtotal/fee semantics remain unresolved.
 export async function collectAndPersistQueryActionBatch({ fetchPage, appid = TBH_APPID, requestCurrencyId,
   maxPages = DEFAULT_REQUEST_POLICY.maxRequestsPerRun, storePath = queryActionObservationStorePath(appid),
-  now = () => new Date(), restart = false } = {}) {
+  now = () => new Date(), restart = false, restartOnMovement = false, sort = 3, direction = 1 } = {}) {
   if (typeof fetchPage !== 'function' || ![TBH_APPID, APPID].includes(appid)
       || ![1, 8].includes(requestCurrencyId) || !Number.isSafeInteger(maxPages) || maxPages < 1
-      || maxPages > DEFAULT_REQUEST_POLICY.maxRequestsPerRun) {
+      || maxPages > DEFAULT_REQUEST_POLICY.maxRequestsPerRun || ![0, 1, 2, 3, 4].includes(sort)
+      || ![1, 2].includes(direction)) {
     throw new Error('Invalid queryAction persisted collection options');
   }
   const store = await loadQueryActionObservationStore(storePath, appid);
-  if (store.progress.status === 'restart-required' && !restart) {
+  if (store.progress.status === 'restart-required' && !restart && !restartOnMovement) {
     throw new Error('queryAction paging detected a moving catalog; review the saved observations and pass restart explicitly');
   }
   if (store.progress.status === 'partial' && !restart) {
     if (store.progress.requestCurrencyId !== requestCurrencyId) {
       throw new Error('Cannot resume a queryAction run with a different request currency; restart it explicitly');
     }
+    if ((store.progress.sort ?? 3) !== sort || (store.progress.direction ?? 1) !== direction) {
+      throw new Error('Cannot resume a queryAction run with a different sort order; restart it explicitly');
+    }
   } else {
-    startCollectionRun(store, requestCurrencyId, now);
+    // A moving catalog ends this run. The next invocation starts only one new run and keeps
+    // every valid per-product observation; it never loops/retries within a failing run.
+    startCollectionRun(store, requestCurrencyId, now, sort, direction);
     await saveQueryActionObservationStore(storePath, store);
   }
 
@@ -396,13 +429,16 @@ export async function collectAndPersistQueryActionBatch({ fetchPage, appid = TBH
 
     const observedAt = now().toISOString();
     const totalChanged = progress.reportedTotalCount !== null && page.totalCount !== progress.reportedTotalCount;
-    if (progress.reportedTotalCount === null) progress.reportedTotalCount = page.totalCount;
+    if (totalChanged && sort === 1) progress.totalCountChanged = true;
+    // Name order avoids price-tie movement. A changing total still leaves possible gaps, so
+    // continue observing the next offset while catalogComplete remains false.
+    if (progress.reportedTotalCount === null || sort === 1) progress.reportedTotalCount = page.totalCount;
     const overlap = recordPageObservations(store, page, observedAt, requestCurrencyId);
     progress.pagesFetched += 1;
     progress.nextStart = page.start + page.pageSize;
-    if (totalChanged || overlap) {
+    if (overlap || (totalChanged && sort !== 1)) {
       progress.status = 'restart-required';
-      progress.restartReason = totalChanged ? 'total-count-changed' : 'overlapping-page-order';
+      progress.restartReason = totalChanged && sort !== 1 ? 'total-count-changed' : 'overlapping-page-order';
     } else if (progress.nextStart >= progress.reportedTotalCount) {
       progress.status = 'count-reached-unverified';
       progress.catalogComplete = false;
@@ -461,7 +497,8 @@ export async function collectQueryActionPages({ fetchPage, appid = TBH_APPID, st
 export async function collectLiveQueryActionPages({ appid = TBH_APPID, start = 0,
   maxPages = DEFAULT_REQUEST_POLICY.maxRequestsPerRun, requestCurrencyId,
   fetchImpl = fetch, pause, policy = DEFAULT_REQUEST_POLICY, statePath: requestedStatePath, storePath, now,
-  live = false, restart = false, testOnlyTransport = false } = {}) {
+  live = false, restart = false, restartOnMovement = false, sort = 3, direction = 1,
+  testOnlyTransport = false } = {}) {
   if (!policy || !Number.isSafeInteger(policy.maxRequestsPerRun) || maxPages > policy.maxRequestsPerRun) {
     throw new Error('queryAction page limit exceeds the request policy');
   }
@@ -471,21 +508,23 @@ export async function collectLiveQueryActionPages({ appid = TBH_APPID, start = 0
   const requestController = createSteamRequestController({ fetchImpl, pause, policy, statePath, now });
   if (start !== 0) throw new Error('Persistent queryAction progress selects its own resume offset; use --restart to start at zero');
   return collectAndPersistQueryActionBatch({ appid, maxPages, requestCurrencyId,
-    storePath: storePath ?? queryActionObservationStorePath(appid), now, restart,
+    storePath: storePath ?? queryActionObservationStorePath(appid), now, restart, restartOnMovement, sort, direction,
     fetchPage: offset => requestQueryActionPage({
-      appid, start: offset, requestCurrencyId, requestController, fetchImpl, rawPayload: true, live: true, statePath, testOnlyTransport,
+      appid, start: offset, requestCurrencyId, requestController, fetchImpl, rawPayload: true, live: true,
+      statePath, testOnlyTransport, sort, direction,
     }) });
 }
 
 export async function requestQueryActionPage({ appid = TBH_APPID, start = 0, requestCurrencyId, requestController,
-  fetchImpl = fetch, rawPayload = false, live = false, statePath: requestedStatePath, testOnlyTransport = false } = {}) {
+  fetchImpl = fetch, rawPayload = false, live = false, statePath: requestedStatePath, testOnlyTransport = false,
+  sort = 3, direction = 1 } = {}) {
   requireLivePermission({ live, fetchImpl, statePathWasProvided: requestedStatePath !== undefined, testOnlyTransport });
   const statePath = requestedStatePath === undefined ? DEFAULT_COLLECTION_STATE_PATH : requestedStatePath;
   if (![1, 8].includes(requestCurrencyId)) throw new Error('Pass --request-currency-id explicitly (1 for USD or 8 for JPY)');
   const controller = requestController ?? createSteamRequestController({ fetchImpl, statePath });
   const scope = requestScope(appid);
   const endpoint = `GET /market/actions?q=Search&appid=${appid}&start=${start}`;
-  const url = buildQueryActionUrl({ appid, start, requestCurrencyId });
+  const url = buildQueryActionUrl({ appid, start, requestCurrencyId, sort, direction });
   const { response } = await controller.request(url, { method: 'GET', headers: queryActionHeaders() }, {
     scope,
     endpoint,

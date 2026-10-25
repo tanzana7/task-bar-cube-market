@@ -58,7 +58,10 @@ export async function runQueryActionSourceCycle({ live = false, savedStorePath =
         if (isolated) await mkdir(join(resolve(isolationRoot), 'source'), { recursive: true });
         try {
           store = await collectImpl({ appid: APPID, requestCurrencyId: 1, maxPages, live: true,
-            statePath: DEFAULT_COLLECTION_STATE_PATH, storePath, policy: requestPolicyFromEnv(), restart });
+            statePath: DEFAULT_COLLECTION_STATE_PATH, storePath, policy: requestPolicyFromEnv(), restart,
+            // The price sort moved page boundaries even within one 15-second-spaced run.
+            // Name order was verified on TBC, but still cannot prove a complete snapshot.
+            sort: 1, direction: 1, restartOnMovement: true });
         } finally {
           if (!isolated) {
             // Include a newly created sanitized store, but never a raw response/HAR.
@@ -71,7 +74,8 @@ export async function runQueryActionSourceCycle({ live = false, savedStorePath =
       validateQueryActionObservationStore(store);
       if (store.appid !== APPID) throw new Error('Only TBC source observations can enter this pipeline');
       collection = { reportedTotalCount: store.progress.reportedTotalCount,
-        nextStart: store.progress.nextStart, status: store.progress.status, complete: false };
+        nextStart: store.progress.nextStart, status: store.progress.status,
+        sort: store.progress.sort ?? 3, direction: store.progress.direction ?? 1, complete: false };
       return JSON.stringify(store);
     } });
   return { ...result, collection };

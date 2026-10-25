@@ -335,3 +335,38 @@ test('persisted queryAction observations can be published as isolated reference 
   assert.ok(imported.snapshot.imports.every(capture => capture.complete === false));
   assert.equal(latestObservedItems(parseMarketObservations(imported.snapshot)).length, 30);
 });
+
+test('rolling queryAction retention keeps old product checkpoints without accepting incomplete recent pages', async t => {
+  const directory = await mkdtemp(join(tmpdir(), 'tbcm-query-retention-'));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const storePath = join(directory, 'store.json');
+  const full = structuredClone(tbh);
+  for (const row of full.data.results) row.asset_description.appid = TBC_APPID;
+  full.data.start = 0;
+  full.data.total_count = 30;
+  await collectAndPersistQueryActionBatch({ appid: TBC_APPID, requestCurrencyId: 1, maxPages: 1, storePath,
+    now: () => new Date(observedAt), fetchPage: async () => full });
+  const first = parseMarketImportBatch({ documents: [{ payload: JSON.parse(await readFile(storePath, 'utf8')) }],
+    provenance: 'isolated reference data', now: fixedNow });
+  const one = structuredClone(full);
+  one.data.total_count = 1;
+  one.data.results = [one.data.results[0]];
+  for (let index = 1; index <= 33; index += 1) {
+    await collectAndPersistQueryActionBatch({ appid: TBC_APPID, requestCurrencyId: 1, maxPages: 1, storePath,
+      now: () => new Date(Date.parse(observedAt) + index * 60_000), fetchPage: async () => one });
+  }
+  const retained = JSON.parse(await readFile(storePath, 'utf8'));
+  assert.equal(retained.products.length, 30);
+  assert.equal(retained.products.find(product => product.marketHashName === one.data.results[0].asset_description.market_hash_name)
+    .observations.length, 32);
+  assert.ok(retained.retentionCutoff);
+  const incoming = parseMarketImportBatch({ documents: [{ payload: retained }],
+    provenance: 'isolated reference data', now: fixedNow });
+  assert.ok(incoming.imports.every(capture => capture.pageSize === 1));
+  const merged = mergeMarketObservations(first, incoming);
+  assert.equal(merged.snapshot.products.length, 30);
+  assert.equal(merged.snapshot.products.find(product => product.marketHashName === one.data.results[0].asset_description.market_hash_name)
+    .observations.length, 32);
+  assert.equal(merged.snapshot.products.filter(product => product.observations.length === 1).length, 29);
+  assert.equal(validateMarketObservations(merged.snapshot), merged.snapshot);
+});

@@ -208,6 +208,55 @@ test('changing totals and page overlap persist valid observations but require a 
   });
 });
 
+test('name-ordered paging resumes only with the same sort and restarts a moving catalog once on the next run', async () => {
+  await withTempPaths(async ({ storePath }) => {
+    const starts = [];
+    const first = await collectAndPersistQueryActionBatch({ appid: 3678970, requestCurrencyId: 1,
+      sort: 1, direction: 1, maxPages: 1, storePath,
+      now: () => new Date('2026-10-25T00:00:00.000Z'),
+      fetchPage: async start => { starts.push(start); return clonePage(start, 90, uniqueRows('first')); } });
+    await assert.rejects(collectAndPersistQueryActionBatch({ appid: 3678970, requestCurrencyId: 1,
+      sort: 3, direction: 1, maxPages: 1, storePath,
+      fetchPage: async () => { throw new Error('must not request with another sort'); } }), /different sort order/);
+    assert.deepEqual(starts, [0]);
+    const moved = await collectAndPersistQueryActionBatch({ appid: 3678970, requestCurrencyId: 1,
+      sort: 1, direction: 1, maxPages: 1, storePath,
+      now: () => new Date('2026-10-25T00:01:00.000Z'),
+      fetchPage: async start => { starts.push(start); return clonePage(start, 90, uniqueRows('first')); } });
+    assert.equal(moved.progress.status, 'restart-required');
+    const resumed = await collectAndPersistQueryActionBatch({ appid: 3678970, requestCurrencyId: 1,
+      sort: 1, direction: 1, restartOnMovement: true, maxPages: 1, storePath,
+      now: () => new Date('2026-10-25T00:02:00.000Z'),
+      fetchPage: async start => { starts.push(start); return clonePage(start, 91, uniqueRows('third')); } });
+    assert.deepEqual(starts, [0, 30, 0]);
+    assert.notEqual(resumed.progress.runId, first.progress.runId);
+    assert.equal(resumed.progress.status, 'partial');
+    assert.equal(resumed.progress.sort, 1);
+    assert.equal(resumed.completedRuns.at(-1).restartReason, 'overlapping-page-order');
+    assert.equal(resumed.products.length, 60);
+    assert.equal(resumed.progress.catalogComplete, false);
+  });
+});
+
+test('name order keeps valid partial pages when total_count drifts without duplicate keys', async () => {
+  await withTempPaths(async ({ storePath }) => {
+    const starts = [];
+    const result = await collectAndPersistQueryActionBatch({ appid: 3678970, requestCurrencyId: 1,
+      sort: 1, direction: 1, maxPages: 3, storePath,
+      now: () => new Date('2026-10-25T00:00:00.000Z'),
+      fetchPage: async start => {
+        starts.push(start);
+        return clonePage(start, start === 0 ? 90 : 91, uniqueRows(`page-${start}`));
+      } });
+    assert.deepEqual(starts, [0, 30, 60]);
+    assert.equal(result.products.length, 90);
+    assert.equal(result.progress.reportedTotalCount, 91);
+    assert.equal(result.progress.totalCountChanged, true);
+    assert.equal(result.progress.status, 'partial');
+    assert.equal(result.progress.catalogComplete, false);
+  });
+});
+
 test('communication failure leaves the last saved page resumable and does not add an observation', async () => {
   await withTempPaths(async ({ storePath }) => {
     const first = await collectAndPersistQueryActionBatch({ appid: 3678970, requestCurrencyId: 1, maxPages: 1, storePath,

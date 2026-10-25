@@ -30,9 +30,14 @@ test('source collection flows through common import, resumes pages and updates a
   process.env.STEAM_MARKET_COLLECTION_ALLOWED = 'true';
   let cycle = 0;
   const offsets = [];
-  const collectImpl = options => collectAndPersistQueryActionBatch({ ...options,
-    now: () => new Date(Date.parse('2026-10-25T09:00:00.000Z') + cycle++ * 1000),
-    fetchPage: async start => { offsets.push(start); return testPage(start, offsets.length > 2); } });
+  const collectImpl = options => {
+    assert.equal(options.sort, 1);
+    assert.equal(options.direction, 1);
+    assert.equal(options.restartOnMovement, true);
+    return collectAndPersistQueryActionBatch({ ...options,
+      now: () => new Date(Date.parse('2026-10-25T09:00:00.000Z') + cycle++ * 1000),
+      fetchPage: async start => { offsets.push(start); return testPage(start, offsets.length > 2); } });
+  };
   try {
     const first = await runQueryActionSourceCycle({ live: true, isolationRoot: root, collectImpl });
     assert.equal(first.products, 30);

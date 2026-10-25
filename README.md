@@ -68,7 +68,7 @@ TBH検証は`node scripts/verify-tbh.mjs`で保存済みの最小fixtureを使�
 
 ## 継続更新の試作
 
-TBCのGET queryActionは、2026-10-25にCookieなし1要求でHTTP200・USD30商品（総数121）を実測しました。`npm run market:source`で収集から既存の観測統合・公開処理へ接続できます。手数料基準未確認の価格は参考値を維持し、本番の定期取得・商品公開は未有効化です。実測と未確認事項、直接取得の設定は[queryAction実通信・更新接続](docs/tbc-query-action-live-validation.md)を参照してください。
+TBCのGET queryActionは、2026-10-25にCookieなし・名前順で5ページ131種類を実測しました。`npm run market:source`で収集から既存の観測統合・公開処理へ接続できます。ページの観測時刻は異なるため原子的な全市場スナップショットとはせず、商品別の部分観測を維持します。手数料基準未確認の価格は参考値で、本番の定期取得・商品公開は未有効化です。実測と運用条件は[queryAction実通信・更新接続](docs/tbc-query-action-live-validation.md)を参照してください。
 
 HTTPフィード受信から既存の検証・観測統合・GitHub Push・Pages照合まで接続しました。許可済み供給元の設定がない現在は本番フィード処理を停止しています。Steamの定期アクセスは有効化していません。
 
