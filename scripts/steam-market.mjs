@@ -166,6 +166,41 @@ export async function collect(currency, fetchImpl = fetch, pause = ms => new Pro
   };
 }
 
+export function validateFxRateRecord(record, now = new Date()) {
+  const nowDate = now instanceof Date ? now : new Date(now);
+  const rateDate = record?.rateDate;
+  const published = typeof rateDate === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(rateDate)
+    ? Date.parse(`${rateDate}T00:00:00Z`) : NaN;
+  const fetchedAt = Date.parse(record?.fetchedAt);
+  const apiUrl = record?.apiUrl ?? record?.sourceUrl;
+  if (record?.source !== 'Frankfurter' || apiUrl !== FX_RATE_URL || record.base !== 'USD' || record.quote !== 'JPY'
+      || !Number.isFinite(record.rate) || record.rate < 1 || record.rate > 1000
+      || !Number.isFinite(published) || new Date(published).toISOString().slice(0, 10) !== rateDate
+      || rateDate > nowDate.toISOString().slice(0, 10)
+      || !Number.isFinite(fetchedAt) || !Number.isFinite(nowDate.valueOf())
+      || nowDate.valueOf() - published > 4 * 86400000 || published - nowDate.valueOf() > 86400000) {
+    throw new Error('FX rate is invalid or stale');
+  }
+  return { source: 'Frankfurter', sourceUrl: FX_RATE_URL, base: 'USD', quote: 'JPY', rate: record.rate,
+    rateDate, fetchedAt: new Date(fetchedAt).toISOString() };
+}
+
+export async function readFxRateCache(cachePath = new URL('../public/fx-rate.json', import.meta.url), now = new Date()) {
+  let record;
+  try {
+    record = JSON.parse(await readFile(cachePath, 'utf8'));
+  } catch (error) {
+    if (error.code === 'ENOENT') return null;
+    throw new Error('Could not read FX cache', { cause: error });
+  }
+  if (record?.schemaVersion !== 1) return null;
+  try {
+    return validateFxRateRecord(record, now);
+  } catch {
+    return null;
+  }
+}
+
 export async function fetchFxRate(fetchImpl = fetch, now = () => new Date()) {
   let response;
   try {
@@ -176,16 +211,9 @@ export async function fetchFxRate(fetchImpl = fetch, now = () => new Date()) {
   if (!response.ok) throw new Error(`FX HTTP ${response.status}`);
   const body = await response.json();
   const fetchedAt = now().toISOString();
-  const published = typeof body.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(body.date)
-    ? Date.parse(`${body.date}T00:00:00Z`) : NaN;
-  // Daily rates may span a weekend; reject a stale or future observation instead of silently reusing it.
-  if (body.base !== 'USD' || body.quote !== 'JPY' || !Number.isFinite(body.rate) || body.rate <= 0 || body.rate > 10000
-      || !Number.isFinite(published) || new Date(published).toISOString().slice(0, 10) !== body.date
-      || Date.parse(fetchedAt) - published > 4 * 86400000 || published - Date.parse(fetchedAt) > 86400000) {
-    throw new Error('FX rate is invalid or stale');
-  }
-  return { source: 'Frankfurter', sourceUrl: FX_RATE_URL, base: 'USD', quote: 'JPY', rate: body.rate,
-    rateDate: body.date, fetchedAt };
+  // Frankfurter publishes business-day observations. A Friday quote is still current over a normal weekend.
+  return validateFxRateRecord({ source: 'Frankfurter', sourceUrl: FX_RATE_URL, base: body.base, quote: body.quote,
+    rate: body.rate, rateDate: body.date, fetchedAt }, new Date(fetchedAt));
 }
 
 export function convertUsdToJpy(usd, fxRate) {
@@ -199,7 +227,7 @@ export function convertUsdToJpy(usd, fxRate) {
   return { ...usd, currency: 'JPY', priceSource: 'fx', fxRate, items };
 }
 
-export async function collectPair(fetchImpl = fetch, pause = ms => new Promise(resolve => setTimeout(resolve, ms)), rateFetchImpl = fetch, now = () => new Date()) {
+export async function collectPair(fetchImpl = fetch, pause = ms => new Promise(resolve => setTimeout(resolve, ms)), rateFetchImpl = fetch, now = () => new Date(), options = {}) {
   // Complete both sides before any cache write. Only an explicit currency mismatch permits FX fallback.
   const usd = await collect('USD', fetchImpl, pause);
   let jpy;
@@ -208,7 +236,8 @@ export async function collectPair(fetchImpl = fetch, pause = ms => new Promise(r
   } catch (error) {
     if (!(error instanceof CurrencyMismatchError)) throw error;
     console.warn('Steam JPY currency mismatch; using labeled FX reference prices');
-    jpy = convertUsdToJpy(usd, await fetchFxRate(rateFetchImpl, now));
+    const cachedRate = options.fxRateCachePath ? await readFxRateCache(options.fxRateCachePath, now()) : null;
+    jpy = convertUsdToJpy(usd, cachedRate ?? await fetchFxRate(rateFetchImpl, now));
   }
   return validateSnapshotPair({ JPY: jpy, USD: usd });
 }
@@ -328,7 +357,8 @@ async function main() {
     throw new Error('Live Steam collection requires --live and STEAM_MARKET_COLLECTION_ALLOWED=true');
   }
   // Collect both before writing either cache, so a network or currency failure cannot publish a partial pair.
-  const pair = await collectPair();
+  const pair = await collectPair(fetch, ms => new Promise(resolve => setTimeout(resolve, ms)), fetch,
+    () => new Date(), { fxRateCachePath: new URL('../public/fx-rate.json', import.meta.url) });
   await saveSnapshotPair(pair);
   await validateCachedPair();
   console.info(`Steam snapshots saved: JPY ${pair.JPY.items.length}, USD ${pair.USD.items.length}`);

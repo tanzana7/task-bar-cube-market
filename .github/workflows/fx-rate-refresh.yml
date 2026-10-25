@@ -1,0 +1,43 @@
+name: Refresh Frankfurter USD-JPY rate
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Frankfurter rates are daily business-day observations; this late UTC slot leaves time for publication.
+    - cron: '17 18 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: market-data-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      # This dedicated command fetches only Frankfurter's fixed USD/JPY endpoint.
+      - run: npm run fx:refresh
+      - run: npm run fx:validate
+      - name: Commit changed exchange rate
+        run: |
+          if git diff --quiet -- public/fx-rate.json; then
+            echo "No new published rate; retaining the existing observation"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/fx-rate.json
+          git commit -m "Update verified USD to JPY rate"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main

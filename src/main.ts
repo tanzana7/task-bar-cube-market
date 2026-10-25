@@ -1,16 +1,7 @@
 import './style.css';
-import { filterAndSort, prepareMarketPriceView, type MarketItem, type SortMode } from './market';
+import { deriveJpyReferenceSnapshot, filterAndSort, formatFxRateLabel, parseFreshFxRate, prepareMarketPriceView, type MarketSnapshot, type SortMode } from './market';
 
-type Snapshot = {
-  schemaVersion: number;
-  appid: number;
-  status: 'ok' | 'unavailable';
-  fetchedAt: string | null;
-  currency: 'JPY' | 'USD';
-  priceSource?: 'steam' | 'fx';
-  fxRate?: { source: 'Frankfurter'; rate: number; rateDate: string; fetchedAt: string };
-  items: MarketItem[];
-};
+type Snapshot = MarketSnapshot;
 
 const search = document.querySelector<HTMLInputElement>('#search')!;
 const sort = document.querySelector<HTMLSelectElement>('#sort')!;
@@ -20,6 +11,7 @@ const statusNode = document.querySelector<HTMLDivElement>('#status')!;
 const countNode = document.querySelector<HTMLSpanElement>('#result-count')!;
 const updatedNode = document.querySelector<HTMLSpanElement>('#updated-at')!;
 const noteNode = document.querySelector<HTMLParagraphElement>('#market-note')!;
+const fxRateNode = document.querySelector<HTMLParagraphElement>('#fx-rate')!;
 let snapshot: Snapshot | null = null;
 let loadSequence = 0;
 function storedValue(key: string): string | null {
@@ -28,6 +20,17 @@ function storedValue(key: string): string | null {
 function saveValue(key: string, value: string) {
   try { localStorage.setItem(key, value); } catch (error) { console.warn('Preference could not be saved', error); }
 }
+
+async function readOptionalJson(path: string): Promise<unknown | null> {
+  try {
+    const response = await fetch(path, { cache: 'no-cache' });
+    return response.ok ? await response.json() : null;
+  } catch {
+    // FX metadata is optional; its absence must not make valid market data unavailable.
+    return null;
+  }
+}
+
 currencySelect.value = storedValue('tbcm-currency') === 'USD' ? 'USD' : 'JPY';
 
 function isSnapshot(value: unknown): value is Snapshot {
@@ -139,12 +142,23 @@ async function load(currency: 'JPY' | 'USD') {
   countNode.textContent = '読み込み中';
   updatedNode.textContent = '更新日時 —';
   try {
-    const response = await fetch(`/market-${currency.toLowerCase()}.json`, { cache: 'no-cache' });
+    const [response, fxValue, usdValue] = await Promise.all([
+      fetch(`/market-${currency.toLowerCase()}.json`, { cache: 'no-cache' }),
+      readOptionalJson('/fx-rate.json'),
+      currency === 'JPY' ? readOptionalJson('/market-usd.json') : Promise.resolve(null),
+    ]);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const value: unknown = await response.json();
     if (!isSnapshot(value) || value.currency !== currency) throw new Error('Invalid snapshot');
     if (sequence !== loadSequence) return;
-    snapshot = value;
+    const currentFxRate = parseFreshFxRate(fxValue);
+    const usdSnapshot = currency === 'JPY' && isSnapshot(usdValue) && usdValue.currency === 'USD' ? usdValue : null;
+    const latestJpySnapshot = currency === 'JPY' && value.priceSource === 'fx' && currentFxRate && usdSnapshot
+      ? deriveJpyReferenceSnapshot(value, usdSnapshot, currentFxRate) : null;
+    snapshot = latestJpySnapshot ?? value;
+    const fxLabel = formatFxRateLabel(currentFxRate);
+    fxRateNode.hidden = !fxLabel;
+    fxRateNode.textContent = fxLabel ?? '';
     const priceView = prepareMarketPriceView(snapshot.items, snapshot.currency, snapshot.priceSource, snapshot.fxRate?.rateDate);
     noteNode.textContent = priceView.expiredFx
       ? '為替レートの期限切れにより、JPY参考価格を表示していません。商品情報はSteamでご確認ください。'

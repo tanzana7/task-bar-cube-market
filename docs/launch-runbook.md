@@ -107,7 +107,19 @@ Cloudflare Pagesの`task-bar-cube-market`で新しいProduction deploymentを確
 
 403・429・CAPTCHAでは即時停止する。再試行、ログインCookieの利用、VPN・プロキシによる回避を行わない。GitHubの許可変数や既存キャッシュを変更せず、Steam利用条件・アクセス制限の状況を確認できるまで待つ。古いJSONは元の取得時刻を保持し、取得に成功したように扱わない。
 
-## 11. ロールバック
+## 11. 為替レート単独更新
+
+`.github/workflows/fx-rate-refresh.yml`は毎日18:17 UTC（翌日03:17 JST）にFrankfurterのUSD/JPY日次レートだけを取得し、Steamにはアクセスしない。GitHub Actionsの分単位スケジュールはUTCで、毎時ちょうどの混雑を避けた時刻にしています。手動実行も可能。日次レートの公表日は週末に進まないため、4日以内のbusiness-dayレートは有効として保持する。同じ公表日・同じレートなら`fx-rate.json`を書き換えず、Cloudflare Pagesの不要な再ビルドを発生させない。新しいレートの日付・値が来たときだけコミットする。
+
+```powershell
+npm run fx:refresh
+npm run fx:validate
+Get-Content public/fx-rate.json
+```
+
+サイトは有効な`fx-rate.json`があれば、商品が0件でも公表日つきの参考為替を表示する。JPYが為替換算データの場合、USDスナップショットと商品識別子・取得日時が一致するときだけ、ブラウザー上で最新レートから再計算する。市場スナップショットの`fetchedAt`は変えず、Steamの直接JPY価格は再計算で上書きしない。
+
+## 12. ロールバック
 
 誤ったデータ更新コミットを特定し、`git revert`で打ち消すコミットを作成してPushする。Cloudflare PagesでrevertコミットのProduction deployment成功を確認する。`reset --hard`や履歴の強制Pushは使わない。
 
