@@ -3,6 +3,7 @@ import { filterHistoryPoints, type HistoryPoint, type HistoryRange } from './his
 
 export type MarketFilters = {
   query: string;
+  currency?: 'USD' | 'JPY';
   minimumPrice: number | null;
   maximumPrice: number | null;
   minimumListings: number | null;
@@ -48,8 +49,9 @@ export function filterMarketItems(items: MarketItem[], filters: MarketFilters, s
   const matches = items.filter(item => {
     if (needle && !item.name.toLocaleLowerCase().includes(needle)) return false;
     if (filters.favoritesOnly && !filters.favorites.has(item.marketHashName)) return false;
-    if (filters.minimumPrice !== null && (item.priceMinor === null || item.priceMinor < filters.minimumPrice)) return false;
-    if (filters.maximumPrice !== null && (item.priceMinor === null || item.priceMinor > filters.maximumPrice)) return false;
+    const comparison = comparablePrice(item, filters.currency ?? 'USD');
+    if (filters.minimumPrice !== null && (comparison === null || comparison < filters.minimumPrice)) return false;
+    if (filters.maximumPrice !== null && (comparison === null || comparison > filters.maximumPrice)) return false;
     if (filters.minimumListings !== null && (item.listings === null || item.listings < filters.minimumListings)) return false;
     return true;
   });
@@ -61,10 +63,20 @@ export function filterMarketItems(items: MarketItem[], filters: MarketFilters, s
       if (b.listings === null) return -1;
       return (sort === 'listings-desc' ? b.listings - a.listings : a.listings - b.listings) || collator.compare(a.name, b.name);
     }
-    if (a.priceMinor === null) return b.priceMinor === null ? collator.compare(a.name, b.name) : 1;
-    if (b.priceMinor === null) return -1;
-    return (sort === 'price-desc' ? b.priceMinor - a.priceMinor : a.priceMinor - b.priceMinor) || collator.compare(a.name, b.name);
+    const aPrice = comparablePrice(a, filters.currency ?? 'USD');
+    const bPrice = comparablePrice(b, filters.currency ?? 'USD');
+    if (aPrice === null) return bPrice === null ? collator.compare(a.name, b.name) : 1;
+    if (bPrice === null) return -1;
+    return (sort === 'price-desc' ? bPrice - aPrice : aPrice - bPrice) || collator.compare(a.name, b.name);
   });
+}
+
+function comparablePrice(item: MarketItem, currency: 'USD' | 'JPY'): number | null {
+  const value = item as MarketItem & { comparisonPriceMinor?: number | null; comparisonCurrency?: 'USD' | 'JPY' };
+  if (value.comparisonPriceMinor !== undefined) {
+    return value.comparisonCurrency === currency ? value.comparisonPriceMinor : null;
+  }
+  return item.priceMinor;
 }
 
 export function parseFavorites(value: string | null): Set<string> {

@@ -6,6 +6,7 @@ import { tmpdir } from 'node:os';
 import { importMarketFile, mergeMarketObservations, parseMarketImport, parseMarketImportBatch, validateMarketObservations } from '../scripts/market-import.mjs';
 import { latestObservedItems, parseMarketObservations, selectMarketDisplayItems } from '../src/market-observations.ts';
 import { collectAndPersistQueryActionBatch } from '../scripts/query-action-market.mjs';
+import { filterMarketItems, parsePriceFilterInput } from '../src/market-features.ts';
 
 const observedAt = '2026-10-25T09:00:00.000Z';
 const TBC_APPID = 5084200;
@@ -68,6 +69,23 @@ test('imports rendered Steam DOM rows as partial USD references without numeric 
   assert.equal(display.length, 56);
   assert.equal(display[0].priceMinor, null);
   assert.equal(display[0].importedPriceText, '$0.03～ USD');
+  const usdSelection = selectMarketDisplayItems([], null, display, 'USD');
+  assert.ok(usdSelection.items.every(item => item.priceMinor === null && item.comparisonPriceMinor === 3
+    && item.comparisonCurrency === 'USD' && item.comparisonKind === 'reference'));
+  assert.equal(filterMarketItems(usdSelection.items, { query: '', currency: 'USD', minimumPrice: 3,
+    maximumPrice: 3, minimumListings: null, favoritesOnly: false, favorites: new Set() }, 'price-asc').length, 56);
+  const jpySelection = selectMarketDisplayItems([], null, display, 'JPY', 150);
+  assert.ok(jpySelection.items.every(item => item.priceMinor === null && item.comparisonPriceMinor === 500
+    && item.comparisonCurrency === 'JPY' && item.importedPriceText.includes('為替換算参考')));
+  assert.equal(filterMarketItems(jpySelection.items, { query: '', currency: 'JPY', minimumPrice: parsePriceFilterInput('5', 'JPY').value,
+    maximumPrice: null, minimumListings: null, favoritesOnly: false, favorites: new Set() }, 'price-asc').length, 56);
+  assert.equal(filterMarketItems(jpySelection.items, { query: '', currency: 'USD', minimumPrice: 3,
+    maximumPrice: null, minimumListings: null, favoritesOnly: false, favorites: new Set() }, 'price-asc').length, 0);
+  assert.equal(jpySelection.items[0].priceMinor, null, 'display-only conversion must not become canonical price/history data');
+  const jpyWithoutRate = selectMarketDisplayItems([], null, display, 'JPY');
+  assert.ok(jpyWithoutRate.items.every(item => item.comparisonCurrency === 'USD' && item.comparisonPriceMinor === null));
+  assert.equal(filterMarketItems(jpyWithoutRate.items, { query: '', currency: 'JPY', minimumPrice: 0,
+    maximumPrice: null, minimumListings: null, favoritesOnly: false, favorites: new Set() }, 'price-asc').length, 0);
 });
 
 test('rendered Steam DOM capture rejects wrong AppID, currency, duplicate identity, and malformed links', () => {
@@ -191,7 +209,8 @@ test('newer imports replace stale duplicate display data without upgrading query
   const newer = selectMarketDisplayItems(canonical, '2026-10-25T09:00:00.000Z', imported, 'USD');
   assert.equal(newer.items[0].listings, imported[0].listings);
   assert.equal(newer.imported.get(imported[0].marketHashName)?.priceMinor, null);
-  assert.equal(newer.imported.get(imported[0].marketHashName)?.importedPriceText, '$0.03 USD · 参考値');
+  assert.equal(newer.imported.get(imported[0].marketHashName)?.importedPriceText, '$0.03～ USD');
+  assert.equal(newer.imported.get(imported[0].marketHashName)?.comparisonPriceMinor, 3);
   const older = selectMarketDisplayItems(canonical, '2026-10-25T10:00:00.000Z', imported, 'USD');
   assert.equal(older.items[0].priceMinor, 29);
   assert.equal(older.imported.has(imported[0].marketHashName), false);

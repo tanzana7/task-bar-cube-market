@@ -40,6 +40,22 @@ test('price ranges follow the currently selected USD or converted JPY units', ()
   assert.deepEqual(filterMarketItems(jpy.items, { ...filters, minimumPrice: parsePriceFilterInput('45', 'JPY').value }, 'price-asc').map(item => item.marketHashName), ['next']);
 });
 
+test('verified and reference prices compare by selected currency without mixing currency units', () => {
+  const items = [
+    { ...marketItem('verified', 'Verified', 29, 2) },
+    { ...marketItem('reference-usd', 'Reference USD', null, 3), comparisonPriceMinor: 3, comparisonCurrency: 'USD', comparisonKind: 'reference' },
+    { ...marketItem('reference-jpy', 'Reference JPY', null, 4), comparisonPriceMinor: 500, comparisonCurrency: 'JPY', comparisonKind: 'reference' },
+    marketItem('unknown', 'Unknown', null, 5),
+  ];
+  const base = { query: '', minimumPrice: null, maximumPrice: null, minimumListings: null, favoritesOnly: false, favorites: new Set() };
+  assert.deepEqual(filterMarketItems(items, { ...base, currency: 'USD' }, 'price-asc').map(item => item.name),
+    ['Reference USD', 'Verified', 'Reference JPY', 'Unknown']);
+  assert.deepEqual(filterMarketItems(items, { ...base, currency: 'USD', minimumPrice: 3, maximumPrice: 29 }, 'price-asc').map(item => item.name),
+    ['Reference USD', 'Verified']);
+  assert.deepEqual(filterMarketItems(items, { ...base, currency: 'JPY', minimumPrice: 500, maximumPrice: 500 }, 'price-asc').map(item => item.name),
+    ['Reference JPY']);
+});
+
 test('watchlist is keyed by market name and handles malformed storage without throwing', () => {
   assert.deepEqual([...parseFavorites('["Localized Name", "other"]')], ['Localized Name', 'other']);
   assert.equal(parseFavorites('{bad').size, 0);

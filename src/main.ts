@@ -1,6 +1,6 @@
 import './style.css';
 import { formatFxRateLabel, parseFreshFxRate, prepareMarketPriceView, type FxRateRecord, type MarketSnapshot } from './market';
-import { latestObservedItems, parseMarketObservations, selectMarketDisplayItems, type MarketObservations, type ObservationPoint } from './market-observations';
+import { latestObservedItems, parseMarketObservations, selectMarketDisplayItems, type ListedItem, type MarketObservations, type ObservationPoint } from './market-observations';
 import { filterHistoryPoints, formatHistoryPrice, makeChartPoints, parseHistoryIndex, parseProductHistory, type HistoryCurrency, type HistoryIndex, type HistoryRange, type ProductHistory } from './history';
 import { calculateTechnicalIndicators, currencyView, filterMarketItems, parseFavorites, parsePriceFilterInput, parseRankingSnapshot, priceStatistics, summarizeMarket, toggleFavorite, type MarketSort, type RankingSnapshot } from './market-features';
 
@@ -267,7 +267,7 @@ function renderHistoryChart() {
   historyStatus.textContent = `${historyFxFallbackNotice ? `${historyFxFallbackNotice} · ` : ''}観測点 ${points.length.toLocaleString('ja-JP')}件 · 点間の価格は未取得${longGaps ? ` · 長い観測間隔 ${longGaps}か所` : ''}`;
 }
 
-async function openHistory(item: MarketSnapshot['items'][number]) {
+async function openHistory(item: ListedItem | MarketSnapshot['items'][number]) {
   const request = ++historyLoadSequence;
   activeHistoryItem = item;
   selectedHistory = null;
@@ -278,11 +278,7 @@ async function openHistory(item: MarketSnapshot['items'][number]) {
   const imported = importedObservations.get(item.marketHashName);
   const visibleItem = imported ? item : snapshot?.items.find(candidate => candidate.marketHashName === item.marketHashName) ?? item;
   const currentPrice = imported
-    ? imported.sourceKind === 'query-action'
-      ? `${imported.referencePriceText} USD（参考値・価格基準確認中）`
-      : imported.sourceKind === 'steam-dom'
-        ? `${imported.referencePriceText} USD（画面参考値・価格基準未確認）`
-      : imported.priceText ? `${imported.priceText} USD（取込観測）` : '価格情報なし'
+    ? ('importedPriceText' in item ? item.importedPriceText : null) ?? (imported.priceText ? `${imported.priceText} USD（取込観測）` : '価格情報なし')
     : visibleItem.priceText ?? (currencySelect.value === 'JPY' ? '参考円価格は更新待ち' : '価格情報なし');
   const listings = visibleItem.listings === null ? '出品数 未取得' : `出品 ${visibleItem.listings.toLocaleString('ja-JP')}件`;
   const capturedAt = imported?.observedAt ?? usdSnapshot?.fetchedAt;
@@ -349,12 +345,13 @@ function render() {
   }
   const visibleCurrency = currencySelect.value as 'USD' | 'JPY';
   const selection = selectMarketDisplayItems(priceView.items, usdSnapshot?.fetchedAt ?? null,
-    latestObservedItems(importedSnapshot), visibleCurrency);
+    latestObservedItems(importedSnapshot), visibleCurrency, currentFxRate?.rate ?? null);
   importedObservations = new Map([...selection.imported].flatMap(([key, item]) => item.observation ? [[key, item.observation] as const] : []));
   const allItems = selection.items;
   const importedText = new Map([...selection.imported].map(([key, item]) => [key, item.importedPriceText ?? '価格情報なし']));
   const visible = filterMarketItems(allItems, {
     query: search.value,
+    currency: visibleCurrency,
     minimumPrice: minimumPrice.value,
     maximumPrice: maximumPrice.value,
     minimumListings,
@@ -464,7 +461,7 @@ function setFavorite(marketHashName: string) {
 function renderOverview() {
   if (!usdSnapshot) return;
   const selection = selectMarketDisplayItems(usdSnapshot.items, usdSnapshot.fetchedAt,
-    latestObservedItems(importedSnapshot), 'USD');
+    latestObservedItems(importedSnapshot), 'USD', currentFxRate?.rate ?? null);
   const combined = selection.items;
   const imported = [...selection.imported.values()];
   const overview = summarizeMarket(combined);
@@ -553,7 +550,7 @@ async function load(currency: 'JPY' | 'USD') {
     noteNode.textContent = latestCapture?.sourceKind === 'query-action'
       ? '取込データは商品ごとの部分観測です。queryActionのUSD表示額は参考値で、価格基準確認中です。購入前にSteamでご確認ください。'
       : latestCapture?.sourceKind === 'steam-dom'
-        ? 'Steam画面の部分観測です。表示価格は参考値で、価格基準は未確認です。購入前にSteamでご確認ください。'
+        ? `${latestCapture.pageSize}/${latestCapture.totalCount}件を部分観測。価格順・価格帯は選択通貨の表示参考価格で比較します。JPYは有効な為替レートがある場合のみ換算します。価格基準は未確認です。`
       : latestCapture
         ? '取込データはSteam応答の部分観測です。表示価格と出品数には商品ごとの観測日時を付けています。購入前にSteamでご確認ください。'
         : baseNote;
