@@ -2,7 +2,9 @@
 
 ## 現在
 
-`.github/workflows/market-refresh.yml`は`workflow_dispatch`のみ。既定の`fixture`はSteamへアクセスせず、複数ページ・通貨・欠損・429・キャッシュ保持のテストとビルドを実行する。`live`はリポジトリ変数`STEAM_MARKET_COLLECTION_ALLOWED=true`がなければ失敗する。スケジュールは未設定。
+`.github/workflows/market-refresh.yml`は`workflow_dispatch`のみ。既定の`fixture`はSteamへアクセスせず、`npm run market:validate`とビルドを実行する。`live`はfixture job成功後に実行され、リポジトリ変数`STEAM_MARKET_COLLECTION_ALLOWED=true`がなければ失敗する。スケジュールは未設定。
+
+ローカルの運用コマンドと本番反映手順は[本番稼働手順](launch-runbook.md)を参照。
 
 ## 実通信を有効にする前の条件
 

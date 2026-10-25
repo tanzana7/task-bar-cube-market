@@ -10,6 +10,33 @@ export type MarketItem = {
 
 export type SortMode = 'price-asc' | 'price-desc' | 'name';
 
+const FX_RATE_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;
+
+export function isFxRateExpired(rateDate: string, now = Date.now()): boolean {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(rateDate)) return true;
+  const publishedAt = Date.parse(`${rateDate}T00:00:00Z`);
+  if (!Number.isFinite(publishedAt) || new Date(publishedAt).toISOString().slice(0, 10) !== rateDate) return true;
+  return now - publishedAt > FX_RATE_MAX_AGE_MS || publishedAt - now > 24 * 60 * 60 * 1000;
+}
+
+export function displayItemsWithoutExpiredFx(items: MarketItem[], expired: boolean): MarketItem[] {
+  if (!expired) return items;
+  // Preserve identity, images, listing counts, and Steam links while removing stale sortable prices.
+  return items.map(item => ({ ...item, priceMinor: null, priceText: null }));
+}
+
+export function prepareMarketPriceView(
+  items: MarketItem[],
+  currency: 'JPY' | 'USD',
+  priceSource: 'steam' | 'fx' | undefined,
+  rateDate: string | undefined,
+  now = Date.now(),
+): { items: MarketItem[]; expiredFx: boolean } {
+  const expiredFx = currency === 'JPY' && priceSource === 'fx'
+    && (!rateDate || isFxRateExpired(rateDate, now));
+  return { items: displayItemsWithoutExpiredFx(items, expiredFx), expiredFx };
+}
+
 function currencyKey(item: MarketItem): string | null {
   return item.priceText?.replace(/[\d\s.,\u00a0-]/g, '') || null;
 }

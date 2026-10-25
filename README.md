@@ -31,5 +31,8 @@ Viteの出力は`dist/`です。Cloudflare Pagesはビルドコマンド`npm run
 - [更新運用](docs/refresh-operations.md)
 - [TBH実レスポンス検証](docs/tbh-live-validation.md)
 - [JPY/USD取得方式の調査](docs/currency-investigation.md)
+- [本番稼働手順](docs/launch-runbook.md)
+
+発売後の確認・運用コマンドは`npm run market:check`（fixture、Steam通信なし）、`npm run market:check -- --live`（先頭ページ1回）、`npm run market:validate`（ローカル検証）、`npm run market:refresh`（許可環境変数必須、Pushなし）です。
 
 TBH検証は`node scripts/verify-tbh.mjs`で保存済みの最小fixtureを使用します。明示的な`--live`を付けた場合だけ、TBH AppID 3678970の先頭10件を読み取ります。本番JSONには書き込みません。

@@ -1,5 +1,5 @@
 import './style.css';
-import { filterAndSort, type MarketItem, type SortMode } from './market';
+import { filterAndSort, prepareMarketPriceView, type MarketItem, type SortMode } from './market';
 
 type Snapshot = {
   schemaVersion: number;
@@ -67,17 +67,10 @@ function safeSteamUrl(url: string): string | null {
 
 function render() {
   if (!snapshot) return;
-  const visible = filterAndSort(snapshot.items, search.value, sort.value as SortMode);
+  const priceView = prepareMarketPriceView(snapshot.items, snapshot.currency, snapshot.priceSource, snapshot.fxRate?.rateDate);
+  const visible = filterAndSort(priceView.items, search.value, sort.value as SortMode);
   countNode.textContent = `${visible.length}件のアイテム`;
   itemsNode.replaceChildren();
-  // Keep an old valid cache on disk, but do not present its expired conversion as a current JPY reference.
-  if (snapshot.priceSource === 'fx' && snapshot.fxRate
-      && Date.now() - Date.parse(snapshot.fxRate.rateDate) > 4 * 24 * 60 * 60 * 1000) {
-    statusNode.hidden = false;
-    statusNode.textContent = 'JPY参考価格は更新待ちです';
-    itemsNode.hidden = true;
-    return;
-  }
   if (snapshot.status === 'unavailable') {
     statusNode.hidden = false;
     statusNode.textContent = `${snapshot.currency}の価格情報は未取得です`;
@@ -121,7 +114,7 @@ function render() {
     main.append(name, listings);
     const price = document.createElement('span');
     price.className = 'price';
-    price.textContent = item.priceText ?? '価格情報なし';
+    price.textContent = priceView.expiredFx ? '参考円価格は更新待ち' : item.priceText ?? '価格情報なし';
     if (item.priceText && snapshot.priceSource === 'fx') {
       // Converted yen must remain visibly distinct from a Steam JPY listing.
       const note = document.createElement('small');
@@ -152,8 +145,11 @@ async function load(currency: 'JPY' | 'USD') {
     if (!isSnapshot(value) || value.currency !== currency) throw new Error('Invalid snapshot');
     if (sequence !== loadSequence) return;
     snapshot = value;
-    noteNode.textContent = snapshot.priceSource === 'fx'
-      ? 'JPYはSteamのUSD最安価格を為替換算した参考価格です。購入時はSteamでご確認ください。'
+    const priceView = prepareMarketPriceView(snapshot.items, snapshot.currency, snapshot.priceSource, snapshot.fxRate?.rateDate);
+    noteNode.textContent = priceView.expiredFx
+      ? '為替レートの期限切れにより、JPY参考価格を表示していません。商品情報はSteamでご確認ください。'
+      : snapshot.priceSource === 'fx'
+        ? 'JPYはSteamのUSD最安価格を為替換算した参考価格です。購入時はSteamでご確認ください。'
       : '価格は取得時点の最安出品価格です。購入時はSteamでご確認ください。';
     if (snapshot.fetchedAt) {
       const date = new Date(snapshot.fetchedAt);
@@ -164,7 +160,9 @@ async function load(currency: 'JPY' | 'USD') {
     if (snapshot.priceSource === 'fx' && snapshot.fxRate) {
       const rateDate = new Date(snapshot.fxRate.fetchedAt);
       if (!Number.isNaN(rateDate.valueOf())) {
-        updatedNode.textContent += ` · 為替 ${snapshot.fxRate.rate}円/USD（${snapshot.fxRate.rateDate}・Frankfurter、取得 ${new Intl.DateTimeFormat('ja-JP', { dateStyle: 'short', timeStyle: 'short', timeZone: 'Asia/Tokyo' }).format(rateDate)}）`;
+        updatedNode.textContent += priceView.expiredFx
+          ? ` · 為替レート期限切れ（${snapshot.fxRate.rateDate}・Frankfurter）`
+          : ` · 為替 ${snapshot.fxRate.rate}円/USD（${snapshot.fxRate.rateDate}・Frankfurter、取得 ${new Intl.DateTimeFormat('ja-JP', { dateStyle: 'short', timeStyle: 'short', timeZone: 'Asia/Tokyo' }).format(rateDate)}）`;
       }
     }
     // Static snapshots can outlive a failed refresh; show the true capture time.
