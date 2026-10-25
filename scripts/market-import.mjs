@@ -290,15 +290,17 @@ export function mergeMarketObservations(previous, incoming) {
     products: [...productMap.values()].sort((a, b) => a.marketHashName.localeCompare(b.marketHashName)),
     imports: [...base.imports],
   };
-  const incomingCapture = incoming.imports[0];
   let addedCaptures = 0;
   for (const capture of incoming.imports) {
-    const sameCapture = base.imports.some(existing => existing.sourceKind === capture.sourceKind
+    const sameCapture = base.imports.find(existing => existing.sourceKind === capture.sourceKind
       && existing.observedAt === capture.observedAt && existing.provenance === capture.provenance
       && existing.start === capture.start && existing.totalCount === capture.totalCount
       && existing.pageSize === capture.pageSize && existing.complete === capture.complete);
     if (!sameCapture) {
       merged.imports.push(capture);
+      addedCaptures += 1;
+    } else if (capture.rightsConfirmed === true && sameCapture.rightsConfirmed !== true) {
+      sameCapture.rightsConfirmed = true;
       addedCaptures += 1;
     }
   }

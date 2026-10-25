@@ -407,7 +407,10 @@ function render() {
       : importedText.get(item.marketHashName) ?? item.priceText ?? '価格情報なし';
     if (observation) {
       const detail = document.createElement('small');
-      detail.textContent = `${observation.sourceKind === 'query-action' ? '参考値・価格基準確認中' : `観測・${observation.provenance}`} · ${formatObservedAt(observation.observedAt)}`;
+      const capture = importedSnapshot?.imports.find(entry => entry.sourceKind === observation.sourceKind
+        && entry.observedAt === observation.observedAt && entry.provenance === observation.provenance);
+      const coverage = capture && !capture.complete ? '部分観測 · ' : '';
+      detail.textContent = `${observation.sourceKind === 'query-action' ? '参考値・価格基準確認中' : `観測・${observation.provenance}`} · ${coverage}${formatObservedAt(observation.observedAt)}`;
       card.dataset.marketObservation = 'imported';
       price.append(detail);
     }

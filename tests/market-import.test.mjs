@@ -148,6 +148,10 @@ test('invalid data never replaces a previous valid public cache; duplicate obser
   const duplicate = mergeMarketObservations(valid, valid);
   assert.equal(duplicate.changed, false);
   assert.equal(duplicate.snapshot.products[0].observations.length, 1);
+  const attested = parseMarketImport({ payload: renderPayload, observedAt, provenance: 'operator feed', rightsConfirmed: true, now: fixedNow });
+  const confirmation = mergeMarketObservations(valid, attested);
+  assert.equal(confirmation.changed, true);
+  assert.equal(confirmation.snapshot.imports[0].rightsConfirmed, true);
 });
 
 test('bad AppID, duplicate item, malformed USD price and invalid time are rejected', () => {
