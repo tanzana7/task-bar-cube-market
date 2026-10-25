@@ -1,4 +1,4 @@
-import { readFile, writeFile, rename } from 'node:fs/promises';
+import { readFile, writeFile, rename, unlink } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -31,11 +31,25 @@ function safeSteamImage(value) {
   }
 }
 
+export function parsePriceMinor(text, currency) {
+  if (typeof text !== 'string') return null;
+  // Steamworks documents these currencies in hundredths. The undocumented market
+  // endpoint must still prove the same relationship before a price is cached.
+  const normalized = text.trim().replace(/[\u00a0\u202f\u3000]/g, ' ');
+  const pattern = currency === 'JPY'
+    ? /^(?:JP¥|[¥￥]) *(0|[1-9]\d*|[1-9]\d{0,2}(?:,\d{3})+)(?: +JPY)?$/
+    : currency === 'USD'
+      ? /^(?:US\$|\$) *(0|[1-9]\d*|[1-9]\d{0,2}(?:,\d{3})+)\.(\d{2})(?: +USD)?$/
+      : null;
+  const match = pattern?.exec(normalized);
+  if (!match) return null;
+  const units = Number(match[1].replaceAll(',', ''));
+  const minor = units * 100 + (currency === 'USD' ? Number(match[2]) : 0);
+  return Number.isSafeInteger(minor) ? minor : null;
+}
+
 export function priceMatchesCurrency(text, currency) {
-  if (typeof text !== 'string' || !text.trim()) return false;
-  if (currency === 'JPY') return /^(?:JP¥|¥|￥|JPY\s*)\s*[\d,]+(?:\.00)?$/.test(text.trim());
-  if (currency === 'USD') return /^(?:US\$|\$|USD\s*)\s*[\d,]+(?:\.\d{2})?$/.test(text.trim());
-  return false;
+  return parsePriceMinor(text, currency) !== null;
 }
 
 export function normalizeResult(result, currency = 'JPY') {
@@ -50,11 +64,15 @@ export function normalizeResult(result, currency = 'JPY') {
   if (asset?.appid !== undefined && Number(asset.appid) !== APPID) throw new Error('Unexpected Steam appid');
   const priceText = typeof result.sell_price_text === 'string' && result.sell_price_text.trim() ? result.sell_price_text.trim() : null;
   const priceAmount = Number.isSafeInteger(result.sell_price) && result.sell_price >= 0 ? result.sell_price : null;
-  if (priceText !== null && !priceMatchesCurrency(priceText, currency)) {
+  const displayedMinor = priceText === null ? null : parsePriceMinor(priceText, currency);
+  if (priceText !== null && displayedMinor === null) {
     throw new Error(`Currency could not be verified for ${currency}`);
   }
+  if (displayedMinor !== null && priceAmount !== null && displayedMinor !== priceAmount) {
+    throw new Error('Steam numeric and displayed prices disagree');
+  }
   // A numeric price without a matching display currency must never become a sortable price.
-  const verifiedPrice = priceText === null ? null : priceAmount;
+  const verifiedPrice = displayedMinor === null ? null : priceAmount;
   const listings = Number.isSafeInteger(result.sell_listings) && result.sell_listings >= 0 ? result.sell_listings : null;
   return {
     name,
@@ -73,6 +91,7 @@ export function parsePage(body, expectedStart, expectedTotal = null) {
       || body.results.length > Math.max(0, body.total_count - expectedStart)
       || (body.start !== undefined && body.start !== expectedStart)
       || (body.pagesize !== undefined && (!Number.isSafeInteger(body.pagesize) || body.pagesize < 1))
+      || (body.pagesize !== undefined && body.results.length > body.pagesize)
       || (expectedTotal !== null && body.total_count !== expectedTotal)) {
     throw new Error('Steam search response shape changed');
   }
@@ -121,9 +140,10 @@ export async function collect(currency, fetchImpl = fetch, pause = ms => new Pro
   const unique = new Map();
   for (const raw of all) {
     const item = normalizeResult(raw, currency);
-    const previous = unique.get(item.marketHashName);
-    // Steam can repeat rows across pages; prefer the row with more active listings.
-    if (!previous || (item.listings ?? -1) > (previous.listings ?? -1)) unique.set(item.marketHashName, item);
+    // A repeated listing can hide an item skipped by a changing result order.
+    // Discard the whole collection instead of publishing an incomplete snapshot.
+    if (unique.has(item.marketHashName)) throw new Error('Steam result pages contain duplicate items');
+    unique.set(item.marketHashName, item);
   }
   return {
     schemaVersion: 2,
@@ -136,17 +156,37 @@ export async function collect(currency, fetchImpl = fetch, pause = ms => new Pro
   };
 }
 
+export async function collectPair(fetchImpl = fetch, pause = ms => new Promise(resolve => setTimeout(resolve, ms))) {
+  // Complete and validate both currencies before any cache write.
+  const jpy = await collect('JPY', fetchImpl, pause);
+  const usd = await collect('USD', fetchImpl, pause);
+  validateSnapshot(jpy, 'JPY');
+  validateSnapshot(usd, 'USD');
+  return { JPY: jpy, USD: usd };
+}
+
 export function validateSnapshot(snapshot, currency) {
   if (!snapshot || snapshot.schemaVersion !== 2 || snapshot.appid !== APPID || snapshot.currency !== currency
       || !['ok', 'unavailable'].includes(snapshot.status) || !Array.isArray(snapshot.items)
       || (snapshot.status === 'ok' && snapshot.items.length === 0)) throw new Error('Invalid market snapshot');
   for (const item of snapshot.items) {
     if (typeof item.marketHashName !== 'string' || typeof item.name !== 'string'
-        || (item.priceText !== null && !priceMatchesCurrency(item.priceText, currency))) {
+        || (item.priceText !== null && !priceMatchesCurrency(item.priceText, currency))
+        || (item.priceMinor !== null && item.priceMinor !== parsePriceMinor(item.priceText, currency))) {
       throw new Error('Invalid market item');
     }
   }
   return snapshot;
+}
+
+export async function validateCachedPair(paths = {
+  JPY: new URL('../public/market-jpy.json', import.meta.url),
+  USD: new URL('../public/market-usd.json', import.meta.url),
+}) {
+  for (const currency of ['JPY', 'USD']) {
+    const snapshot = JSON.parse(await readFile(paths[currency], 'utf8'));
+    validateSnapshot(snapshot, currency);
+  }
 }
 
 export async function saveSnapshot(snapshot, currency, cachePath = new URL(`../public/${CURRENCIES[currency].file}`, import.meta.url)) {
@@ -165,26 +205,61 @@ export async function saveSnapshot(snapshot, currency, cachePath = new URL(`../p
   await rename(temporary, cachePath);
 }
 
+export async function saveSnapshotPair(pair, paths = {
+  JPY: new URL('../public/market-jpy.json', import.meta.url),
+  USD: new URL('../public/market-usd.json', import.meta.url),
+}) {
+  const originals = {};
+  const temporary = {};
+  for (const currency of ['JPY', 'USD']) {
+    validateSnapshot(pair[currency], currency);
+    originals[currency] = await readFile(paths[currency], 'utf8');
+    const previous = JSON.parse(originals[currency]);
+    if (previous.status === 'ok' && pair[currency].status !== 'ok') {
+      throw new Error(`Refusing to replace populated ${currency} cache`);
+    }
+    temporary[currency] = new URL(paths[currency].href + '.tmp');
+  }
+  try {
+    for (const currency of ['JPY', 'USD']) {
+      await writeFile(temporary[currency], JSON.stringify(pair[currency]) + '\n', 'utf8');
+    }
+    await rename(temporary.JPY, paths.JPY);
+    try {
+      await rename(temporary.USD, paths.USD);
+    } catch (error) {
+      // A failed second rename must not leave a mixed-capture pair on disk.
+      try {
+        await writeFile(temporary.JPY, originals.JPY, 'utf8');
+        await rename(temporary.JPY, paths.JPY);
+      } catch (rollbackError) {
+        throw new AggregateError([error, rollbackError], 'USD write and JPY rollback both failed');
+      }
+      throw error;
+    }
+  } finally {
+    for (const currency of ['JPY', 'USD']) {
+      try { await unlink(temporary[currency]); }
+      catch (error) { if (error.code !== 'ENOENT') console.warn('Temporary cache cleanup failed', error); }
+    }
+  }
+}
+
 async function main() {
+  if (process.argv.includes('--validate-cache')) {
+    await validateCachedPair();
+    console.info('Both market caches are valid');
+    return;
+  }
   const live = process.argv.includes('--live');
   if (!live || process.env.STEAM_MARKET_COLLECTION_ALLOWED !== 'true') {
     throw new Error('Live Steam collection requires --live and STEAM_MARKET_COLLECTION_ALLOWED=true');
   }
   // Collect both before writing either cache, so a network or currency failure cannot publish a partial pair.
-  const jpy = await collect('JPY');
-  const usd = await collect('USD');
-  validateSnapshot(jpy, 'JPY');
-  validateSnapshot(usd, 'USD');
-  for (const [currency, next] of [['JPY', jpy], ['USD', usd]]) {
-    const path = new URL(`../public/${CURRENCIES[currency].file}`, import.meta.url);
-    const previous = JSON.parse(await readFile(path, 'utf8'));
-    if (previous.status === 'ok' && next.status !== 'ok') {
-      throw new Error(`Refusing to replace populated ${currency} cache`);
-    }
-  }
-  await saveSnapshot(jpy, 'JPY');
-  await saveSnapshot(usd, 'USD');
-  console.info(`Steam snapshots saved: JPY ${jpy.items.length}, USD ${usd.items.length}`);
+  const pair = await collectPair();
+  await saveSnapshotPair(pair);
+  await validateCachedPair();
+  console.info(`Steam snapshots saved: JPY ${pair.JPY.items.length}, USD ${pair.USD.items.length}`);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {

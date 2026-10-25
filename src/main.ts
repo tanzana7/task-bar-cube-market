@@ -1,6 +1,5 @@
 import './style.css';
 import { filterAndSort, type MarketItem, type SortMode } from './market';
-import { createAnalytics } from './analytics';
 
 type Snapshot = {
   schemaVersion: number;
@@ -20,38 +19,12 @@ const countNode = document.querySelector<HTMLSpanElement>('#result-count')!;
 const updatedNode = document.querySelector<HTMLSpanElement>('#updated-at')!;
 let snapshot: Snapshot | null = null;
 let loadSequence = 0;
-const analytics = createAnalytics(import.meta.env.VITE_GA4_MEASUREMENT_ID, location.origin + location.pathname, window, url => {
-  const script = document.createElement('script');
-  script.async = true;
-  script.src = url;
-  document.head.append(script);
-});
-const consentNode = document.querySelector<HTMLDivElement>('#analytics-consent')!;
-const settingsButton = document.querySelector<HTMLButtonElement>('#analytics-settings')!;
-settingsButton.hidden = !analytics.enabled;
 function storedValue(key: string): string | null {
   try { return localStorage.getItem(key); } catch { return null; }
 }
 function saveValue(key: string, value: string) {
   try { localStorage.setItem(key, value); } catch (error) { console.warn('Preference could not be saved', error); }
 }
-if (analytics.enabled) {
-  const consent = storedValue('tbcm-analytics-consent');
-  if (consent === 'granted') analytics.grant();
-  else if (consent !== 'denied') consentNode.hidden = false;
-}
-document.querySelector<HTMLButtonElement>('#analytics-accept')!.addEventListener('click', () => {
-  saveValue('tbcm-analytics-consent', 'granted');
-  analytics.grant();
-  consentNode.hidden = true;
-});
-document.querySelector<HTMLButtonElement>('#analytics-decline')!.addEventListener('click', () => {
-  saveValue('tbcm-analytics-consent', 'denied');
-  consentNode.hidden = true;
-  // Reload removes an already initialized tag when a visitor revokes consent.
-  if (analytics.isLoaded()) location.reload();
-});
-settingsButton.addEventListener('click', () => { consentNode.hidden = false; });
 currencySelect.value = storedValue('tbcm-currency') === 'USD' ? 'USD' : 'JPY';
 
 function isSnapshot(value: unknown): value is Snapshot {
@@ -112,7 +85,6 @@ function render() {
     card.href = link;
     card.target = '_blank';
     card.rel = 'noopener noreferrer';
-    card.addEventListener('click', () => analytics.event('steam_market_click', { destination: 'steam_market' }));
     const imageBox = document.createElement('span');
     imageBox.className = 'image-box';
     const imageUrl = safeImage(item.imageUrl);
@@ -182,7 +154,6 @@ sort.addEventListener('change', render);
 currencySelect.addEventListener('change', () => {
   const currency = currencySelect.value === 'USD' ? 'USD' : 'JPY';
   saveValue('tbcm-currency', currency);
-  analytics.event('currency_change', { currency });
   void load(currency);
 });
 void load(currencySelect.value as 'JPY' | 'USD');

@@ -23,10 +23,6 @@ Viteの出力は`dist/`です。Cloudflare Pagesはビルドコマンド`npm run
 
 `Validate and refresh market snapshots`は`workflow_dispatch`のみです。既定の`fixture`はSteamへ通信せず、テストとビルドを確認します。`live`は許諾確認後にリポジトリ変数`STEAM_MARKET_COLLECTION_ALLOWED=true`を設定した場合のみ動き、更新JSONに変更があればコミット・Pushします。PagesのGit連携がデプロイします。条件と手順は[更新運用](docs/refresh-operations.md)を参照してください。
 
-## アクセス解析
-
-GA4の測定IDは`.env.production`の`VITE_GA4_MEASUREMENT_ID`で設定します。現在のIDはユーザー提供の`G-1H7ZSVY2G8`です。許可するまでタグは読み込まず、拒否した場合は計測しません。設定を削除またはプレースホルダーにすると無効になります。[プライバシー説明](public/privacy.html)も参照してください。
-
 ## 資料
 
 - [参考サイト調査](docs/reference-analysis.md)

@@ -6,6 +6,10 @@
 
 [Steamworksの通貨一覧](https://partner.steamgames.com/doc/store/pricing/currencies?l=english&language=english)ではJPY=8、USD=1を確認できる。ただし、これは検索エンドポイントの通貨指定が機能することの証拠ではない。実際に商品が返ったときは、要求した通貨と`sell_price_text`の表記が一致しなければ取得を停止する。`sell_price`の単位は実データで未検証のため、表示にはSteamの文字列を使い、整数は同一通貨内の順序比較にだけ使う。
 
+v0.2.1では[Steamworksの対応通貨資料](https://partner.steamgames.com/doc/store/pricing/currencies?l=english&language=english)にある「JPYは銭、USDはセント」を基準に、検索結果の整数値と表示価格が100分の1単位で一致する場合だけ採用する。これは文書化された市場検索レスポンスの仕様ではない。JPYは`¥`・`￥`、USDは`$`・`US$`を認識し、空白、ノーブレークスペース、正しい3桁区切りを許す。異なる通貨記号、端数のある円、不正な桁区切り、整数値との不一致は拒否する。実商品が出た際にこの検証が失敗したら、推測で緩めず実レスポンスを確認する。
+
+ページ送りは初回の実返却件数を幅として使い、後続の件数、任意の`start`・`pagesize`、一定の`total_count`を照合する。重複商品は商品欠落の兆候として収集全体を失敗させる。取得中の件数変動・途中通信失敗・403/429・JSON欠損ではキャッシュを更新しない。現状は0件であり、再試行による負荷は追加しない。
+
 採用候補は一覧検索`/market/search/render/`。個別`/market/priceoverview/`は必要項目が一覧で得られない場合だけ検討する。文書化されたSteam Web APIの市場一覧取得経路は確認できなかった。
 
 [Steam Subscriber Agreement](https://store.steampowered.com/agreement/?l=english)は自動化やコンテンツの利用・再配布に制限を置いている。今回の収集方式について明示的な許諾は確認できていない。定期自動取得は有効にせず、手動実行可能な独立スクリプトとして準備した。403、429、CAPTCHAでは回避せず停止する。更新失敗時は前回のJSONを保持する。

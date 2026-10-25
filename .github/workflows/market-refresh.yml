@@ -30,6 +30,7 @@ jobs:
       - run: npm ci
       # All collection tests inject fixture responses; this job makes no Steam request.
       - run: npm test
+      - run: node scripts/steam-market.mjs --validate-cache
       - run: npm run build
 
   live:
@@ -52,6 +53,7 @@ jobs:
         run: test "$STEAM_MARKET_COLLECTION_ALLOWED" = true
       - run: npm ci
       - run: node scripts/steam-market.mjs --live
+      - run: node scripts/steam-market.mjs --validate-cache
       - name: Commit only verified changes
         run: |
           if git diff --quiet -- public/market-jpy.json public/market-usd.json; then
