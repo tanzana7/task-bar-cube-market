@@ -2,7 +2,7 @@ import type { MarketItem } from './market';
 
 export type ObservationPoint = {
   observedAt: string;
-  sourceKind: 'search-render' | 'query-action';
+  sourceKind: 'search-render' | 'query-action' | 'steam-dom';
   currency: 'USD';
   requestCurrencyId: number | null;
   responseCurrencyId: number | null;
@@ -28,7 +28,7 @@ export type MarketObservations = {
   currency: 'USD';
   generatedAt: string;
   products: ObservedProduct[];
-  imports: Array<{ sourceKind: 'search-render' | 'query-action'; provenance: string; observedAt: string; rightsConfirmed?: boolean;
+  imports: Array<{ sourceKind: 'search-render' | 'query-action' | 'steam-dom'; provenance: string; observedAt: string; rightsConfirmed?: boolean;
     start: number; totalCount: number; pageSize: number; complete: boolean }>;
 };
 
@@ -55,7 +55,11 @@ function validUsdText(text: unknown, minor: unknown): boolean {
 
 function validSteamImage(value: unknown): value is string | null {
   return value === null || (typeof value === 'string'
-    && /^https:\/\/community\.cloudflare\.steamstatic\.com\/economy\/image\/[A-Za-z0-9_/?=&%-]+$/.test(value));
+    && /^https:\/\/(?:community\.steamstatic\.com|community\.cloudflare\.steamstatic\.com)\/economy\/image\/[A-Za-z0-9_/?=&%-]+$/.test(value));
+}
+
+function validUsdReferenceText(text: unknown): text is string {
+  return typeof text === 'string' && /^\$\s*(?:\d{1,3}(?:,\d{3})+|\d+)\.\d{2}～?$/.test(text);
 }
 
 export function parseMarketObservations(value: unknown): MarketObservations | null {
@@ -75,19 +79,23 @@ export function parseMarketObservations(value: unknown): MarketObservations | nu
     for (const point of product.observations) {
       if (!point || typeof point !== 'object') return null;
       const observedMs = Date.parse(point?.observedAt);
-      const reference = point?.sourceKind === 'query-action';
-      const validPrice = reference
+      const reference = point?.sourceKind === 'query-action' || point?.sourceKind === 'steam-dom';
+      const validPrice = point?.sourceKind === 'query-action'
         ? point.priceBasis === 'min-sell-subtotal-unverified-fees' && point.priceMinor === null
           && point.priceText === null && typeof point.referencePriceText === 'string'
           && validUsdText(point.referencePriceText, Number(point.referencePriceText.replace(/[^\d.]/g, '').replace('.', '')))
-        : point.priceBasis === 'steam-search-render-sell-price'
+        : point?.sourceKind === 'steam-dom'
+          ? point.priceBasis === 'steam-market-rendered-ui-unverified-price' && point.priceMinor === null
+            && point.priceText === null && validUsdReferenceText(point.referencePriceText)
+          : point.priceBasis === 'steam-search-render-sell-price'
           && ((point.priceMinor === null && point.priceText === null)
             || (point.priceMinor !== null && validUsdText(point.priceText, point.priceMinor)))
           && point.referencePriceText === null;
       if (!isIsoTimestamp(point?.observedAt) || observedMs <= previous
-          || !['query-action', 'search-render'].includes(point.sourceKind) || point.currency !== 'USD'
+          || !['query-action', 'search-render', 'steam-dom'].includes(point.sourceKind) || point.currency !== 'USD'
           || (reference && (!(point.requestCurrencyId === null || point.requestCurrencyId === 1)
-            || point.responseCurrencyId !== 1))
+            || (point.sourceKind === 'query-action' ? point.responseCurrencyId !== 1
+              : point.requestCurrencyId !== null || point.responseCurrencyId !== null)))
           || (!reference && (!(point.requestCurrencyId === null || point.requestCurrencyId === 1)
             || point.responseCurrencyId !== null))
           || !validPrice || typeof point.provenance !== 'string' || !point.provenance.trim() || point.provenance.length > 240
@@ -98,7 +106,7 @@ export function parseMarketObservations(value: unknown): MarketObservations | nu
   let previousImport = -Infinity;
   for (const capture of data.imports) {
     const captureMs = Date.parse(capture?.observedAt);
-    if (!capture || !['query-action', 'search-render'].includes(capture.sourceKind)
+    if (!capture || !['query-action', 'search-render', 'steam-dom'].includes(capture.sourceKind)
         || !isIsoTimestamp(capture.observedAt) || typeof capture.provenance !== 'string' || !capture.provenance.trim()
         || (capture.rightsConfirmed !== undefined && typeof capture.rightsConfirmed !== 'boolean')
         || !Number.isSafeInteger(capture.start) || capture.start < 0 || !Number.isSafeInteger(capture.totalCount)
@@ -126,6 +134,8 @@ export function latestObservedItems(data: MarketObservations | null): ListedItem
       observation,
       importedPriceText: observation.sourceKind === 'query-action'
         ? `${observation.referencePriceText} USD · 参考値`
+        : observation.sourceKind === 'steam-dom'
+          ? `${observation.referencePriceText} USD`
         : observation.priceText ? `${observation.priceText} USD · 取込値` : '価格情報なし',
     };
   });
@@ -147,7 +157,7 @@ export function selectMarketDisplayItems(
     const selected = {
       ...imported,
       // USD imports are retained as raw USD values. JPY mode never compares USD minor units
-      // against yen, and queryAction subtotal observations remain non-numeric in either view.
+      // against yen, and rendered UI/queryAction reference observations remain non-numeric in either view.
       priceMinor: currency === 'USD' && imported.observation?.sourceKind === 'search-render' ? imported.priceMinor : null,
       priceText: currency === 'USD' && imported.observation?.sourceKind === 'search-render' ? imported.priceText : null,
     };

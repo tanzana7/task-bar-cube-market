@@ -57,6 +57,8 @@ GitHub Actionsの市場更新に30分scheduleはありません。今回のTBH�
 
 CLIはSteamへ通信しません。生のSteam JSON、DevTools HAR、複数ページJSON、または検証済みTBC queryAction観測ストアを入力できます。ディレクトリ指定では直下の`.json`を名前順に処理します。形式・AppID 5084200・商品キー重複・価格と表示文字列・出品数・画像URL・Steam URL・観測日時を検証します。HARではTBCの`search/render`と`q=Search`の`actions`だけを選び、AppID・ページ位置・通貨をrequest/response間で照合します。別AppID、別action、無関係なAPI応答は無視し、対象通信の不正JSONは拒否します。HARの観測時刻は`startedDateTime`を使用します。Cookieや認証ヘッダーは公開出力へコピーしません。生JSONに日時がない場合、操作者が信頼できる実観測時刻を指定する必要があり、現在時刻やファイル時刻は補いません。
 
+`format: "steam-market-dom"`のJSONも入力できます。DOMから得た表示価格は`priceMinor: null`の参考値にとどめ、売り手受取額・手数料・購入者支払額のいずれかだと断定しません。取得できた商品数とページ開始位置、表示上の総件数を保存し、全件フラグは常にfalseです。CLIの既定はdry-runです。
+
 ```sh
 # まずdry-run（ファイル変更なし）
 npm run market:import -- --input <file-or-directory> [--observed-at <UTC ISO timestamp>] [--provenance <source>]

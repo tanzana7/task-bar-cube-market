@@ -100,7 +100,9 @@ function safeImage(url: string | null): string | null {
   if (!url) return null;
   try {
     const parsed = new URL(url);
-    return parsed.protocol === 'https:' && parsed.hostname === 'community.cloudflare.steamstatic.com' ? parsed.href : null;
+    return parsed.protocol === 'https:'
+      && ['community.cloudflare.steamstatic.com', 'community.steamstatic.com'].includes(parsed.hostname)
+      && parsed.pathname.startsWith('/economy/image/') ? parsed.href : null;
   } catch {
     return null;
   }
@@ -278,6 +280,8 @@ async function openHistory(item: MarketSnapshot['items'][number]) {
   const currentPrice = imported
     ? imported.sourceKind === 'query-action'
       ? `${imported.referencePriceText} USD（参考値・価格基準確認中）`
+      : imported.sourceKind === 'steam-dom'
+        ? `${imported.referencePriceText} USD（画面参考値・価格基準未確認）`
       : imported.priceText ? `${imported.priceText} USD（取込観測）` : '価格情報なし'
     : visibleItem.priceText ?? (currencySelect.value === 'JPY' ? '参考円価格は更新待ち' : '価格情報なし');
   const listings = visibleItem.listings === null ? '出品数 未取得' : `出品 ${visibleItem.listings.toLocaleString('ja-JP')}件`;
@@ -414,7 +418,10 @@ function render() {
       const capture = importedSnapshot?.imports.find(entry => entry.sourceKind === observation.sourceKind
         && entry.observedAt === observation.observedAt && entry.provenance === observation.provenance);
       const coverage = capture && !capture.complete ? '部分観測 · ' : '';
-      detail.textContent = `${observation.sourceKind === 'query-action' ? '参考値・価格基準確認中' : `観測・${observation.provenance}`} · ${coverage}${formatObservedAt(observation.observedAt)}`;
+      const sourceNote = observation.sourceKind === 'query-action' ? '参考値・価格基準確認中'
+        : observation.sourceKind === 'steam-dom' ? '画面参考値・価格基準未確認'
+          : `観測・${observation.provenance}`;
+      detail.textContent = `${sourceNote} · ${coverage}${formatObservedAt(observation.observedAt)}`;
       card.dataset.marketObservation = 'imported';
       price.append(detail);
     }
@@ -545,6 +552,8 @@ async function load(currency: 'JPY' | 'USD') {
       : '価格は取得時点の最安出品価格です。購入時はSteamでご確認ください。';
     noteNode.textContent = latestCapture?.sourceKind === 'query-action'
       ? '取込データは商品ごとの部分観測です。queryActionのUSD表示額は参考値で、価格基準確認中です。購入前にSteamでご確認ください。'
+      : latestCapture?.sourceKind === 'steam-dom'
+        ? 'Steam画面の部分観測です。表示価格は参考値で、価格基準は未確認です。購入前にSteamでご確認ください。'
       : latestCapture
         ? '取込データはSteam応答の部分観測です。表示価格と出品数には商品ごとの観測日時を付けています。購入前にSteamでご確認ください。'
         : baseNote;

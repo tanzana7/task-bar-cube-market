@@ -9,6 +9,7 @@ export const PUBLIC_OBSERVATIONS_PATH = new URL('../public/market-observations.j
 const SOURCE_LABELS = {
   'search-render': 'Steam Community Market search/render response supplied by operator',
   'query-action': 'Steam Community Market queryAction response supplied by operator',
+  'steam-dom': 'Steam Community Market visible DOM observation supplied by operator',
 };
 
 function validTimestamp(value) {
@@ -27,6 +28,7 @@ function canonicalTimestamp(value) {
 
 export function detectMarketImportFormat(payload) {
   if (payload?.source === 'Steam Community Market queryAction' && payload?.priceBasis === 'min-sell-subtotal-unverified-fees') return 'query-action-store';
+  if (payload?.format === 'steam-market-dom') return 'steam-dom';
   if (payload?.data?.grouping === 1 && Array.isArray(payload.data.results)) return 'query-action';
   if (payload?.success === true && Array.isArray(payload.results) && Number.isSafeInteger(payload.total_count)) return 'search-render';
   throw new Error('Could not identify Steam search/render or queryAction response format');
@@ -107,11 +109,14 @@ function responseDocuments(value, inherited = {}) {
     }));
   }
   const response = value.response ?? value.payload ?? value;
+  // The exported DOM document uses a descriptive wire-format name; normalize it
+  // to the importer discriminator while leaving the original payload untouched.
+  const declaredFormat = value.format ?? inherited.format ?? null;
   return [{
     payload: response,
     observedAt: value.observedAt ?? value.capturedAt ?? inherited.observedAt ?? null,
     provenance: value.provenance ?? inherited.provenance ?? null,
-    format: value.format ?? inherited.format ?? null,
+    format: declaredFormat === 'steam-market-dom' ? 'steam-dom' : declaredFormat,
     request: value.request ?? inherited.request ?? null,
   }];
 }
@@ -217,6 +222,57 @@ function parseQueryAction(payload, observedAt, request = null) {
   };
 }
 
+function parseSteamDom(payload, observedAt) {
+  if (!payload || payload.format !== 'steam-market-dom' || payload.appid !== TBC_APPID
+      || payload.currency !== 'USD' || (payload.observedAt !== undefined && payload.observedAt !== observedAt)
+      || !Number.isSafeInteger(payload.start) || payload.start < 0
+      || !Number.isSafeInteger(payload.totalCount) || payload.totalCount < 0
+      || !Array.isArray(payload.products) || payload.products.length === 0
+      || payload.products.length > payload.totalCount - payload.start
+      || payload.complete !== false) {
+    throw new Error('Invalid or complete Steam rendered-DOM observation; DOM captures must be explicit partial observations');
+  }
+  const seen = new Set();
+  const products = payload.products.map(row => {
+    if (!row || row.currency !== 'USD' || typeof row.marketHashName !== 'string' || !row.marketHashName.trim()
+        || typeof row.name !== 'string' || !row.name.trim()
+        || row.listings !== null && (!Number.isSafeInteger(row.listings) || row.listings < 0)
+        || typeof row.priceText !== 'string' || !/^\$\s*(?:\d{1,3}(?:,\d{3})+|\d+)\.\d{2}～?$/.test(row.priceText)) {
+      throw new Error('Invalid rendered-DOM item name, USD reference price, or listing count');
+    }
+    const steamUrl = `https://steamcommunity.com/market/listings/${TBC_APPID}/${encodeURIComponent(row.marketHashName)}`;
+    let parsedUrl;
+    try { parsedUrl = new URL(row.steamUrl); } catch { throw new Error('Rendered-DOM item has an invalid Steam link'); }
+    if (parsedUrl.href !== steamUrl) throw new Error('Rendered-DOM item link does not match its market_hash_name and AppID');
+    if (row.name !== row.marketHashName) throw new Error('Rendered-DOM name must match the listing title in its Steam link');
+    if (seen.has(row.marketHashName)) throw new Error('Rendered-DOM capture contains duplicate market_hash_name values');
+    seen.add(row.marketHashName);
+    if (row.imageUrl !== null && (typeof row.imageUrl !== 'string'
+        || !/^https:\/\/(?:community|community\.cloudflare)\.steamstatic\.com\/economy\/image\/[A-Za-z0-9_/?=&%-]+$/.test(row.imageUrl))) {
+      throw new Error('Rendered-DOM item has an invalid Steam image URL');
+    }
+    return {
+      marketHashName: row.marketHashName,
+      name: row.name,
+      imageUrl: row.imageUrl,
+      steamUrl,
+      observations: [{
+        observedAt,
+        sourceKind: 'steam-dom',
+        currency: 'USD',
+        requestCurrencyId: null,
+        responseCurrencyId: null,
+        priceBasis: 'steam-market-rendered-ui-unverified-price',
+        priceMinor: null,
+        priceText: null,
+        referencePriceText: row.priceText,
+        listings: row.listings,
+      }],
+    };
+  });
+  return { start: payload.start, totalCount: payload.totalCount, pageSize: products.length, products, complete: false };
+}
+
 export function validateMarketObservations(value) {
   if (!value || value.schemaVersion !== 1 || value.appid !== TBC_APPID || value.currency !== 'USD'
       || !validTimestamp(value.generatedAt) || !Array.isArray(value.products) || !Array.isArray(value.imports)) {
@@ -226,7 +282,7 @@ export function validateMarketObservations(value) {
   for (const product of value.products) {
     if (!product || typeof product.marketHashName !== 'string' || !product.marketHashName.trim()
         || keys.has(product.marketHashName) || typeof product.name !== 'string' || !product.name.trim()
-        || (product.imageUrl !== null && (!/^https:\/\/community\.cloudflare\.steamstatic\.com\/economy\/image\/[A-Za-z0-9_/?=&%-]+$/.test(product.imageUrl)))
+        || (product.imageUrl !== null && (!/^https:\/\/(?:community\.steamstatic\.com|community\.cloudflare\.steamstatic\.com)\/economy\/image\/[A-Za-z0-9_/?=&%-]+$/.test(product.imageUrl)))
         || product.steamUrl !== `https://steamcommunity.com/market/listings/${TBC_APPID}/${encodeURIComponent(product.marketHashName)}`
         || !Array.isArray(product.observations) || product.observations.length === 0) {
       throw new Error('Invalid or duplicate public product observation');
@@ -237,16 +293,21 @@ export function validateMarketObservations(value) {
       if (!point || typeof point !== 'object') throw new Error('Invalid public observation point');
       const time = Date.parse(point?.observedAt);
       const queryAction = point?.sourceKind === 'query-action';
-      if (!validTimestamp(point?.observedAt) || time <= previous || !['query-action', 'search-render'].includes(point.sourceKind)
+      const steamDom = point?.sourceKind === 'steam-dom';
+      if (!validTimestamp(point?.observedAt) || time <= previous || !['query-action', 'search-render', 'steam-dom'].includes(point.sourceKind)
           || point.currency !== 'USD' || !safeProvenance(point.provenance)
           || (queryAction && (!(point.requestCurrencyId === null || point.requestCurrencyId === 1) || point.responseCurrencyId !== 1
             || point.priceBasis !== 'min-sell-subtotal-unverified-fees' || point.priceMinor !== null
             || point.priceText !== null || parsePriceMinor(point.referencePriceText, 'USD') === null))
+          || (steamDom && (point.requestCurrencyId !== null || point.responseCurrencyId !== null
+            || point.priceBasis !== 'steam-market-rendered-ui-unverified-price' || point.priceMinor !== null
+            || point.priceText !== null || typeof point.referencePriceText !== 'string'
+            || !/^\$\s*(?:\d{1,3}(?:,\d{3})+|\d+)\.\d{2}～?$/.test(point.referencePriceText)))
           || (!queryAction && (!(point.requestCurrencyId === null || point.requestCurrencyId === 1) || point.responseCurrencyId !== null
-            || point.priceBasis !== 'steam-search-render-sell-price'
+            || (!steamDom && point.priceBasis !== 'steam-search-render-sell-price')
             || (point.priceMinor === null) !== (point.priceText === null)
             || (point.priceMinor !== null && parsePriceMinor(point.priceText, 'USD') !== point.priceMinor)
-            || point.referencePriceText !== null))
+            || (!steamDom && point.referencePriceText !== null)))
           || (point.listings !== null && (!Number.isSafeInteger(point.listings) || point.listings < 0))) {
         throw new Error('Invalid public observation point');
       }
@@ -254,7 +315,7 @@ export function validateMarketObservations(value) {
     }
   }
   for (const capture of value.imports) {
-    if (!capture || !['query-action', 'search-render'].includes(capture.sourceKind) || !safeProvenance(capture.provenance)
+    if (!capture || !['query-action', 'search-render', 'steam-dom'].includes(capture.sourceKind) || !safeProvenance(capture.provenance)
         || !validTimestamp(capture.observedAt) || !Number.isSafeInteger(capture.start) || capture.start < 0
         || (capture.rightsConfirmed !== undefined && typeof capture.rightsConfirmed !== 'boolean')
         || !Number.isSafeInteger(capture.totalCount) || capture.totalCount < capture.start
@@ -277,7 +338,8 @@ export function parseMarketImport({ payload, format = null, request = null, obse
   if (provenance === null) provenance = `${SOURCE_LABELS[format]}; supplied as operator input`;
   if (!safeProvenance(provenance)) throw new Error('provenance must be 1-240 characters without line breaks');
   if (typeof rightsConfirmed !== 'boolean') throw new Error('rightsConfirmed must be a boolean operator attestation');
-  const capture = format === 'search-render' ? parseSearchRender(payload, observedAt, request) : parseQueryAction(payload, observedAt, request);
+  const capture = format === 'search-render' ? parseSearchRender(payload, observedAt, request)
+    : format === 'steam-dom' ? parseSteamDom(payload, observedAt) : parseQueryAction(payload, observedAt, request);
   const products = capture.products.map(product => ({
     ...product,
     observations: product.observations.map(point => ({ ...point, provenance })),
@@ -475,7 +537,7 @@ async function main() {
     rightsConfirmed: options.rightsConfirmed === true,
   });
   const snapshot = result.snapshot ?? result.preview;
-  console.info(JSON.stringify({ mode: result.snapshot ? 'published' : 'preview', appid: TBC_APPID,
+  console.info(JSON.stringify({ mode: options.publish ? 'published' : 'dry-run', appid: TBC_APPID,
     products: snapshot.products.length, addedPoints: result.addedPoints, changed: result.changed,
     completeCapture: snapshot.imports.at(-1)?.complete ?? snapshot.imports[0]?.complete ?? false }));
 }

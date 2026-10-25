@@ -39,6 +39,77 @@ test('queryAction subtotal remains a reference and never becomes a sortable or h
     && product.observations[0].responseCurrencyId === 1));
 });
 
+test('imports rendered Steam DOM rows as partial USD references without numeric prices', () => {
+  const payload = {
+    format: 'steam-market-dom', appid: TBC_APPID, observedAt, currency: 'USD', start: 0,
+    totalCount: 73, complete: false,
+    products: Array.from({ length: 56 }, (_, index) => {
+      const marketHashName = `Cube item ${index}`;
+      return {
+        marketHashName, name: marketHashName,
+        steamUrl: `https://steamcommunity.com/market/listings/${TBC_APPID}/${encodeURIComponent(marketHashName)}`,
+        priceText: '$0.03～', currency: 'USD', listings: index + 1,
+        imageUrl: 'https://community.steamstatic.com/economy/image/abc_123',
+      };
+    }),
+  };
+  const imported = parseImport({ payload, observedAt, provenance: 'isolated Steam DOM capture' });
+  assert.equal(imported.products.length, 56);
+  assert.equal(imported.imports[0].totalCount, 73);
+  assert.equal(imported.imports[0].pageSize, 56);
+  assert.equal(imported.imports[0].complete, false);
+  assert.ok(imported.products.every(product => {
+    const point = product.observations[0];
+    return point.sourceKind === 'steam-dom' && point.currency === 'USD'
+      && point.priceMinor === null && point.priceText === null
+      && point.referencePriceText === '$0.03～' && point.listings !== null;
+  }));
+  const display = latestObservedItems(parseMarketObservations(imported));
+  assert.equal(display.length, 56);
+  assert.equal(display[0].priceMinor, null);
+  assert.equal(display[0].importedPriceText, '$0.03～ USD');
+});
+
+test('rendered Steam DOM capture rejects wrong AppID, currency, duplicate identity, and malformed links', () => {
+  const product = {
+    marketHashName: 'Cube item', name: 'Cube item',
+    steamUrl: `https://steamcommunity.com/market/listings/${TBC_APPID}/Cube%20item`,
+    priceText: '$0.03～', currency: 'USD', listings: 1,
+    imageUrl: 'https://community.steamstatic.com/economy/image/abc_123',
+  };
+  const base = { format: 'steam-market-dom', appid: TBC_APPID, observedAt, currency: 'USD', start: 0,
+    totalCount: 2, complete: false, products: [product] };
+  assert.throws(() => parseImport({ payload: { ...base, appid: 3678970 }, observedAt }), /invalid|AppID/i);
+  assert.throws(() => parseImport({ payload: { ...base, currency: 'JPY' }, observedAt }), /invalid|USD/i);
+  assert.throws(() => parseImport({ payload: { ...base, products: [product, product] }, observedAt }), /duplicate/i);
+  assert.throws(() => parseImport({ payload: { ...base, products: [{ ...product, steamUrl: 'https://steamcommunity.com/market/listings/3678970/Cube%20item' }] }, observedAt }), /link|identity/i);
+  assert.throws(() => parseImport({ payload: { ...base, products: [{ ...product, name: 'Chest Cube item' }] }, observedAt }), /name/i);
+  assert.throws(() => parseImport({ payload: { ...base, products: [{ ...product, priceText: '$3.00 USD' }] }, observedAt }), /reference price/i);
+});
+
+test('file import auto-detects the Steam DOM export format without writing production data', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'tbcm-dom-import-'));
+  try {
+    const inputPath = join(directory, 'visible-market.json');
+    const outputPath = join(directory, 'observations.json');
+    const payload = {
+      format: 'steam-market-dom', appid: TBC_APPID, currency: 'USD', start: 0,
+      totalCount: 2, complete: false,
+      products: [{ marketHashName: 'Cube DOM item', name: 'Cube DOM item',
+        steamUrl: `https://steamcommunity.com/market/listings/${TBC_APPID}/Cube%20DOM%20item`,
+        priceText: '$0.29～', currency: 'USD', listings: 7, imageUrl: null }],
+    };
+    await writeFile(inputPath, JSON.stringify(payload));
+    const result = await importMarketFile({ inputPath, outputPath, observedAt, now: fixedNow });
+    assert.equal(result.snapshot.products.length, 1);
+    assert.equal(result.preview.products.length, 1);
+    assert.equal(result.preview.products[0].observations[0].priceMinor, null);
+    await assert.rejects(readFile(outputPath, 'utf8'), { code: 'ENOENT' });
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
 test('public UI parser renders imported prices with source time and keeps queryAction values non-numeric', () => {
   const tbcCopy = structuredClone(tbh);
   for (const row of tbcCopy.data.results) row.asset_description.appid = 5084200;
