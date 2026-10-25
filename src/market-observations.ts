@@ -141,7 +141,7 @@ export function selectMarketDisplayItems(
   const items: ListedItem[] = canonicalItems.map(item => {
     const imported = importedByKey.get(item.marketHashName);
     const importedTime = imported?.observation ? Date.parse(imported.observation.observedAt) : NaN;
-    if (!imported || (Number.isFinite(canonicalTime) && importedTime <= canonicalTime)) return item;
+    if (!imported || !Number.isFinite(canonicalTime) || !Number.isFinite(importedTime) || importedTime <= canonicalTime) return item;
     const selected = {
       ...imported,
       // USD imports are retained as raw USD values. JPY mode never compares USD minor units

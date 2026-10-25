@@ -97,6 +97,7 @@ test('newer imports replace stale duplicate display data without upgrading query
   const older = selectMarketDisplayItems(canonical, '2026-10-25T10:00:00.000Z', imported, 'USD');
   assert.equal(older.items[0].priceMinor, 29);
   assert.equal(older.imported.has(imported[0].marketHashName), false);
+  assert.equal(selectMarketDisplayItems(canonical, null, imported, 'USD').items[0].priceMinor, 29);
   const yen = selectMarketDisplayItems(canonical, '2026-10-25T09:00:00.000Z', imported, 'JPY');
   assert.equal(yen.items[0].priceMinor, null);
 });
