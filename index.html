@@ -26,13 +26,16 @@
     </section>
     <section class="market" aria-label="アイテム一覧">
       <div class="controls"><label class="search"><span class="search-icon" aria-hidden="true">⌕</span><span class="sr-only">アイテム名で検索</span><input id="search" type="search" placeholder="アイテム名で検索" autocomplete="off" /></label><label class="sort"><span class="sr-only">通貨</span><select id="currency"><option value="JPY">JPY</option><option value="USD">USD</option></select></label><label class="sort"><span class="sr-only">並び替え</span><select id="sort"><option value="price-asc">価格が安い順</option><option value="price-desc">価格が高い順</option><option value="name">名前順</option><option value="listings-desc">出品数が多い順</option><option value="listings-asc">出品数が少ない順</option></select></label></div>
-      <form id="filters" class="filter-panel">
-        <label>最低価格<input id="minimum-price" type="number" min="0" step="0.01" inputmode="decimal" /></label>
-        <label>最高価格<input id="maximum-price" type="number" min="0" step="0.01" inputmode="decimal" /></label>
-        <label>最低出品数<input id="minimum-listings" type="number" min="0" step="1" inputmode="numeric" /></label>
-        <label class="favorite-filter"><input id="favorites-only" type="checkbox" /> お気に入りのみ <span id="favorite-count">0</span></label>
-        <button id="reset-filters" type="reset">リセット</button>
-      </form>
+      <details id="filter-disclosure" class="filter-disclosure" open>
+        <summary>絞り込み</summary>
+        <form id="filters" class="filter-panel">
+          <label>最低価格<input id="minimum-price" type="number" min="0" step="0.01" inputmode="decimal" /></label>
+          <label>最高価格<input id="maximum-price" type="number" min="0" step="0.01" inputmode="decimal" /></label>
+          <label>最低出品数<input id="minimum-listings" type="number" min="0" step="1" inputmode="numeric" /></label>
+          <label class="favorite-filter"><input id="favorites-only" type="checkbox" /> お気に入りのみ <span id="favorite-count">0</span></label>
+          <button id="reset-filters" type="reset">リセット</button>
+        </form>
+      </details>
       <p id="filter-error" class="filter-error" role="status" hidden></p>
       <div class="list-head"><span id="result-count">読み込み中</span><span id="updated-at">更新日時 —</span></div>
       <div id="status" class="status" role="status">マーケットデータを読み込んでいます…</div>

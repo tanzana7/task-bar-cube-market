@@ -25,6 +25,7 @@ const historyCurrency = document.querySelector<HTMLSelectElement>('#history-curr
 const historySteam = document.querySelector<HTMLAnchorElement>('#history-steam')!;
 const historyClose = document.querySelector<HTMLButtonElement>('#history-close')!;
 const filterForm = document.querySelector<HTMLFormElement>('#filters')!;
+const filterDisclosure = document.querySelector<HTMLDetailsElement>('#filter-disclosure')!;
 const filterErrorNode = document.querySelector<HTMLParagraphElement>('#filter-error')!;
 const minimumPriceInput = document.querySelector<HTMLInputElement>('#minimum-price')!;
 const maximumPriceInput = document.querySelector<HTMLInputElement>('#maximum-price')!;
@@ -76,6 +77,9 @@ async function readOptionalJson(path: string): Promise<unknown | null> {
 }
 
 currencySelect.value = storedValue('tbcm-currency') === 'USD' ? 'USD' : 'JPY';
+// On narrow screens, keep the frequent search and sort controls visible while allowing
+// the less frequent price/listing filters to be opened without pushing results far down.
+if (window.matchMedia('(max-width: 620px)').matches) filterDisclosure.open = false;
 
 function isSnapshot(value: unknown): value is Snapshot {
   if (!value || typeof value !== 'object') return false;
