@@ -12,6 +12,12 @@ on:
           - fixture
           - live
           - query-action
+          - publish-query-action
+      publish_query_action_rights_confirmed:
+        description: I have independently confirmed rights to publish this TBC observation data (this does not grant Valve permission)
+        required: true
+        default: false
+        type: boolean
       query_action_target:
         description: queryAction validation target (does not affect the production snapshot)
         required: true
@@ -178,3 +184,30 @@ jobs:
       - name: Fail when collection failed
         if: always() && steps.collect.outcome == 'failure'
         run: exit 1
+
+  publish-query-action:
+    if: ${{ inputs.mode == 'publish-query-action' }}
+    needs: fixture
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      PUBLISH_QUERY_ACTION_RIGHTS_CONFIRMED: ${{ inputs.publish_query_action_rights_confirmed }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Require operator rights confirmation
+        run: test "$PUBLISH_QUERY_ACTION_RIGHTS_CONFIRMED" = true
+      - run: npm ci
+      - name: Validate, publish isolated reference observations, and verify Cloudflare Pages
+        run: >-
+          npm run market:publish --
+          --input .market/query-action-observations-5084200.json
+          --provenance "Validated persisted TBC queryAction observations"
+          --publish --rights-confirmed

@@ -5,8 +5,10 @@ import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { importMarketFile, mergeMarketObservations, parseMarketImport, parseMarketImportBatch, validateMarketObservations } from '../scripts/market-import.mjs';
 import { latestObservedItems, parseMarketObservations, selectMarketDisplayItems } from '../src/market-observations.ts';
+import { collectAndPersistQueryActionBatch } from '../scripts/query-action-market.mjs';
 
 const observedAt = '2026-10-25T09:00:00.000Z';
+const TBC_APPID = 5084200;
 const fixedNow = new Date('2026-10-25T10:00:00.000Z');
 const parseImport = options => parseMarketImport({ ...options, now: fixedNow });
 const tbh = JSON.parse(await readFile(new URL('./fixtures/tbh-query-action-real-start30-usd.json', import.meta.url), 'utf8'));
@@ -65,6 +67,31 @@ test('auto-detects and merges multiple pages while preserving per-page times and
   assert.equal(result.imports.length, 2);
   assert.ok(result.imports.every(capture => capture.complete === false));
   assert.throws(() => parseMarketImportBatch({ documents: [{ payload: renderPayload }], now: fixedNow }), /observation time/);
+});
+
+test('imports 100 distinct items over two partial pages and keeps an explicit empty response non-destructive', () => {
+  const rows = Array.from({ length: 100 }, (_, index) => ({
+    ...renderRow,
+    name: `Cube sample ${index}`,
+    sell_price: index + 1,
+    sell_price_text: `$${((index + 1) / 100).toFixed(2)}`,
+    asset_description: { ...renderRow.asset_description, market_hash_name: `Cube sample ${index}` },
+  }));
+  const pages = [0, 1].map(page => ({
+    format: 'search-render',
+    payload: { success: true, start: page * 50, pagesize: 50, total_count: 100, results: rows.slice(page * 50, (page + 1) * 50) },
+    observedAt: page === 0 ? observedAt : '2026-10-25T09:01:00.000Z',
+    provenance: 'isolated 100 item fixture',
+  }));
+  const imported = parseMarketImportBatch({ documents: pages, now: fixedNow });
+  assert.equal(imported.products.length, 100);
+  assert.equal(imported.products[99].observations[0].priceMinor, 100);
+  assert.ok(imported.imports.every(capture => capture.complete === false));
+
+  const existing = parseImport({ payload: renderPayload, format: 'search-render', observedAt, provenance: 'existing' });
+  const empty = parseImport({ payload: { success: true, start: 0, pagesize: 0, total_count: 0, results: [] },
+    format: 'search-render', observedAt: '2026-10-25T09:02:00.000Z', provenance: 'empty check' });
+  assert.equal(mergeMarketObservations(existing, empty).snapshot.products.length, 1);
 });
 
 test('file import reads a directory of timestamped response JSON without writing public data', async t => {
@@ -161,4 +188,60 @@ test('bad AppID, duplicate item, malformed USD price and invalid time are reject
   assert.throws(() => parseImport({ payload: { ...renderPayload, results: [{ ...renderRow, sell_price_text: '$0.30' }] }, format: 'search-render', observedAt, provenance: 'x' }), /price/);
   assert.throws(() => parseImport({ payload: renderPayload, format: 'search-render', observedAt: 'yesterday', provenance: 'x' }), /timestamp/);
   assert.throws(() => parseImport({ payload: renderPayload, format: 'search-render', observedAt: '2026-10-25T10:10:00.000Z', provenance: 'x' }), /future/);
+});
+
+test('HAR import ignores unrelated Market actions and validates TBC queryAction request metadata', async t => {
+  const directory = await mkdtemp(join(tmpdir(), 'tbcm-har-filter-'));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const inputPath = join(directory, 'mixed.har.json');
+  const tbcPayload = structuredClone(tbh);
+  for (const row of tbcPayload.data.results) row.asset_description.appid = TBC_APPID;
+  const actionUrl = (appid, currency) => {
+    const url = new URL('https://steamcommunity.com/market/actions');
+    url.searchParams.set('q', 'Search');
+    url.searchParams.set('qp', JSON.stringify([{ appid, filters: {}, price: { eCurrency: currency }, start: 30 }]));
+    return url.href;
+  };
+  const entries = [
+    { startedDateTime: observedAt, request: { url: 'https://steamcommunity.com/market/actions?q=GetMarketStatus' },
+      response: { content: { mimeType: 'text/html', text: '<html>unrelated</html>' } } },
+    { startedDateTime: observedAt, request: { url: actionUrl(3678970, 8) },
+      response: { status: 200, content: { mimeType: 'application/json', text: '{broken unrelated game response' } } },
+    { startedDateTime: observedAt, request: { url: actionUrl(TBC_APPID, 1) },
+      response: { status: 200, content: { mimeType: 'application/json; charset=utf-8', text: JSON.stringify(tbcPayload) } } },
+  ];
+  await writeFile(inputPath, JSON.stringify({ log: { entries } }));
+  const imported = await importMarketFile({ inputPath, outputPath: join(directory, 'public.json'), now: fixedNow });
+  assert.equal(imported.preview.products.length, 30);
+  assert.equal(imported.preview.products[0].observations[0].requestCurrencyId, 1);
+  assert.equal(imported.preview.products[0].observations[0].responseCurrencyId, 1);
+
+  entries[2].request.url = actionUrl(TBC_APPID, 8);
+  await writeFile(inputPath, JSON.stringify({ log: { entries } }));
+  await assert.rejects(importMarketFile({ inputPath, outputPath: join(directory, 'rejected.json'), now: fixedNow }), /request currency 8 does not match response currency 1/i);
+});
+
+test('persisted queryAction observations can be published as isolated reference observations', async t => {
+  const directory = await mkdtemp(join(tmpdir(), 'tbcm-query-store-'));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const storePath = join(directory, 'query-action-observations-5084200.json');
+  const tbcPayload = structuredClone(tbh);
+  for (const row of tbcPayload.data.results) row.asset_description.appid = TBC_APPID;
+  tbcPayload.data.start = 0;
+  await collectAndPersistQueryActionBatch({
+    appid: TBC_APPID,
+    requestCurrencyId: 1,
+    maxPages: 1,
+    storePath,
+    now: () => new Date(observedAt),
+    fetchPage: async () => tbcPayload,
+  });
+  const outputPath = join(directory, 'public.json');
+  const imported = await importMarketFile({ inputPath: storePath, outputPath, now: fixedNow,
+    provenance: 'operator-provided permitted observation', publish: true, rightsConfirmed: true });
+  assert.equal(imported.snapshot.products.length, 30);
+  assert.ok(imported.snapshot.products.every(product => product.observations[0].priceMinor === null
+    && product.observations[0].referencePriceText === '$0.03'));
+  assert.ok(imported.snapshot.imports.every(capture => capture.complete === false));
+  assert.equal(latestObservedItems(parseMarketObservations(imported.snapshot)).length, 30);
 });

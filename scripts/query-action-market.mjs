@@ -158,7 +158,7 @@ function validUtcTimestamp(value) {
     && new Date(value).toISOString() === value;
 }
 
-function validateObservationStore(store) {
+export function validateQueryActionObservationStore(store) {
   if (!store || store.schemaVersion !== 1 || ![TBH_APPID, APPID].includes(store.appid)
       || store.source !== SOURCE || store.currency !== 'USD' || store.priceBasis !== PRICE_BASIS
       || !Array.isArray(store.products) || !Array.isArray(store.completedRuns) || !store.progress) {
@@ -177,6 +177,9 @@ function validateObservationStore(store) {
     for (const observation of product.observations) {
       const observedMs = Date.parse(observation?.observedAt);
       if (!validUtcTimestamp(observation?.observedAt) || observedMs <= previous
+          || !isSafeInteger(observation.pageStart) || !isSafeInteger(observation.pageSize)
+          || observation.pageSize < 1 || !isSafeInteger(observation.totalCount)
+          || observation.totalCount < observation.pageStart + observation.pageSize
           || ![1, 8].includes(observation.requestCurrencyId) || observation.responseCurrencyId !== 1
           || observation.requestCurrencyId !== observation.responseCurrencyId
           || !Number.isSafeInteger(observation.minSellSubtotalMinor) || observation.minSellSubtotalMinor < 0
@@ -213,7 +216,7 @@ function validateObservationStore(store) {
 
 export function createEmptyQueryActionObservationStore(appid) {
   if (![TBH_APPID, APPID].includes(appid)) throw new Error('Unsupported queryAction observation AppID');
-  return validateObservationStore({
+  return validateQueryActionObservationStore({
     schemaVersion: 1,
     appid,
     source: SOURCE,
@@ -231,7 +234,7 @@ export function createEmptyQueryActionObservationStore(appid) {
 
 export async function loadQueryActionObservationStore(path, appid) {
   try {
-    const store = validateObservationStore(JSON.parse(await readFile(path, 'utf8')));
+    const store = validateQueryActionObservationStore(JSON.parse(await readFile(path, 'utf8')));
     if (store.appid !== appid) throw new Error('queryAction observation store AppID does not match its requested target');
     return store;
   } catch (error) {
@@ -241,7 +244,7 @@ export async function loadQueryActionObservationStore(path, appid) {
 }
 
 async function saveQueryActionObservationStore(path, store) {
-  validateObservationStore(store);
+  validateQueryActionObservationStore(store);
   await saveFilesAtomically([{ path, content: `${JSON.stringify(store, null, 2)}\n` }]);
 }
 
@@ -281,7 +284,10 @@ function startCollectionRun(store, requestCurrencyId, now) {
 }
 
 function sameObservation(left, right) {
-  return left.strHash === right.strHash
+  return left.pageStart === right.pageStart
+    && left.pageSize === right.pageSize
+    && left.totalCount === right.totalCount
+    && left.strHash === right.strHash
     && left.requestCurrencyId === right.requestCurrencyId
     && left.responseCurrencyId === right.responseCurrencyId
     && left.minSellSubtotalText === right.minSellSubtotalText
@@ -298,6 +304,9 @@ function recordPageObservations(store, page, observedAt, requestCurrencyId) {
     seen.add(item.marketHashName);
     const observation = {
       observedAt,
+      pageStart: page.start,
+      pageSize: page.pageSize,
+      totalCount: page.totalCount,
       strHash: item.strHash,
       requestCurrencyId,
       responseCurrencyId: page.responseCurrencyId,
@@ -401,7 +410,7 @@ export async function collectAndPersistQueryActionBatch({ fetchPage, appid = TBH
     await saveQueryActionObservationStore(storePath, store);
     if (progress.status !== 'partial') break;
   }
-  return validateObservationStore(store);
+  return validateQueryActionObservationStore(store);
 }
 
 // This helper can resume from a saved offset, but it never persists or publishes partial results.

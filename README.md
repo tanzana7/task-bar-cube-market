@@ -34,9 +34,11 @@ npm run market:import -- --input path/to/steam-pages --observed-at 2026-10-25T09
 npm run market:publish -- --input path/to/steam-response.json --observed-at 2026-10-25T09:00:00.000Z --provenance "operator-provided Steam response" --publish --rights-confirmed
 ```
 
-HAR形式ならSteam Marketの`search/render`または`actions`応答を自動抽出し、HARのリクエスト開始時刻を観測時刻として使います。生のJSONに信頼できる取得時刻がない場合は`--observed-at`を指定してください。ファイル時刻や処理時刻を商品観測時刻に流用しません。`--rights-confirmed`は操作者が利用・公開権限を確認したという記録であり、Valveの許可を付与するものではありません。
+HAR形式ならTBC AppIDのSteam Market `search/render`と`q=Search`の`actions`通信だけを自動抽出し、HARのリクエスト開始時刻を観測時刻として使います。別AppID、別action、無関係なAPI応答は無視します。対象通信ではURL/`qp`のAppID・ページ位置・通貨をレスポンスと照合し、通貨不一致や破損した対象応答は拒否します。Cookieや認証ヘッダーは取り込まず、出力にも保存しません。生のJSONに信頼できる取得時刻がない場合は`--observed-at`を指定してください。ファイル時刻や処理時刻を商品観測時刻に流用しません。`--rights-confirmed`は操作者の確認記録であり、Valveの許可を付与するものではありません。
 
 `market:publish`は既定でdry-runです。公開モードではmainがorigin/mainと一致し、作業ツリーがcleanであることを確認してから、検証済みの`public/market-observations.json`だけをビルド・コミット・Pushし、Cloudflare Pagesへ届いたJSONを確認します。同一入力の再実行は変更なしとしてPushしません。入力AppIDは5084200固定で、TBH fixtureは拒否されます。`queryAction`の`strMinSellSubtotal`は価格基準確認中の参考値として隔離し、検証済み価格履歴・ランキングには接続しません。既存商品は観測日時が新しいデータを表示し、未観測商品を0価格・0出品にしません。
+
+既存の`.market/query-action-observations-5084200.json`に保存されたTBC観測も、権限確認後に同じ公開経路へ渡せます。これはSteamへアクセスせず、商品別の観測時刻を保ったまま、価格を非数値の参考値として公開JSONへ変換します。手動Actionsで行う場合は`market-refresh.yml`の`publish-query-action`を選び、再配布権限を独立して確認してください。チェックボックスと`STEAM_MARKET_COLLECTION_ALLOWED`はValveの許可ではありません。
 
 `tests/fixtures/tbh-query-action-real-start30-usd.json`はAppIDが3678970のため本番取込では拒否されます。取込テストはfixtureを一時ディレクトリでのみ解析し、本番商品一覧には書き込みません。
 

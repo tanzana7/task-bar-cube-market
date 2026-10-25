@@ -49,13 +49,13 @@ AppID別の途中観測は`.market/query-action-observations-<appid>.json`に商
 
 Pages上のfixture表示テストは[queryAction表示テスト](https://task-bar-cube-market.pages.dev/query-action-demo.html)。保存済みTBHレスポンスfixtureのみを使用し、画面・JSONともTask Bar Hero AppID 3678970と「テスト表示・価格基準検証中」を明示します。取得日時・request通貨対応・価格の手数料基準は未確認です。検索と表示額/出品数の並び替え、画像、Steamリンクだけを独立に試せます。このページはrobots metaと`X-Robots-Tag`でnoindexとなり、トップページ・sitemap・TBC商品/履歴/ランキングには含めません。`npm run build`がfixtureとJSONを再検証・生成します。
 
-GitHub Actionsにはmanual-onlyの`query-action` modeがあります。運用許可変数が設定されていてもユーザーがworkflow_dispatchで選ぶまで実行されません。成功・失敗とも予算と観測ストアだけを`[CF-Pages-Skip]`コミットで保存し、Steam定期実行はありません。新APIは価格手数料基準、通貨不一致の由来、AppID 5084200の実応答、ページ順変動への完全性が未確認のため本番サイト・価格履歴へ採用しないでください。詳細は[new Steam Market investigation](new-steam-market-investigation.md)を参照。
+GitHub Actionsにはmanual-onlyの`query-action` modeがあります。運用フラグが設定されていてもユーザーがworkflow_dispatchで選ぶまで実行されません。成功・失敗とも予算と観測ストアだけを`[CF-Pages-Skip]`コミットで保存し、Steam定期実行はありません。`publish-query-action` modeはSteamへアクセスせず、既存の`.market/query-action-observations-5084200.json`を検証して、商品別観測日時を保った参考観測としてPages公開まで行います。公開権限の手動確認が必要で、その入力もValveの許可を意味しません。`strMinSellSubtotal`は引き続き数値価格・既存履歴から隔離します。新APIの価格基準、通貨不一致の由来、AppID 5084200の実レスポンス、ページ順変動への完全性は未確認のため、既存の検証済み価格履歴へ接続しません。詳細は[new Steam Market investigation](new-steam-market-investigation.md)を参照。
 
 GitHub Actionsの市場更新に30分scheduleはありません。今回のTBH市場で`count=100`に対して実応答ページサイズ10を観測し、全件に約110 requestsと見積もられました。現状の6件/実行制限と完全スナップショット要件では収集を完了できず、途中データは公開しません。複数実行に分割する場合は商品別`observedAt`を持ち、異なる時刻を同時点の完全市場として扱わない別設計が必要です。
 
 ## TBC公開JSONの正規取込
 
-CLIはSteamへ通信しません。生のSteam JSON、DevTools HAR、または複数ページJSONを自動判定し、ディレクトリ指定では直下の`.json`を名前順に処理します。形式・AppID 5084200・商品キー重複・価格と表示文字列・出品数・画像URL・Steam URL・観測日時を検証します。HARのSteam MarketレスポンスはHARの`startedDateTime`を使います。生JSONに日時がない場合、操作者が信頼できる実観測時刻を指定する必要があり、現在時刻やファイル時刻は補いません。
+CLIはSteamへ通信しません。生のSteam JSON、DevTools HAR、複数ページJSON、または検証済みTBC queryAction観測ストアを入力できます。ディレクトリ指定では直下の`.json`を名前順に処理します。形式・AppID 5084200・商品キー重複・価格と表示文字列・出品数・画像URL・Steam URL・観測日時を検証します。HARではTBCの`search/render`と`q=Search`の`actions`だけを選び、AppID・ページ位置・通貨をrequest/response間で照合します。別AppID、別action、無関係なAPI応答は無視し、対象通信の不正JSONは拒否します。HARの観測時刻は`startedDateTime`を使用します。Cookieや認証ヘッダーは公開出力へコピーしません。生JSONに日時がない場合、操作者が信頼できる実観測時刻を指定する必要があり、現在時刻やファイル時刻は補いません。
 
 ```sh
 # まずdry-run（ファイル変更なし）
@@ -66,6 +66,8 @@ npm run market:publish -- --input <file-or-directory> [--observed-at <UTC ISO ti
 ```
 
 `market:publish`は実行前にTBCの入力を一時JSONへ検証・統合し、既存キャッシュも検証します。公開モードはcleanな`main`が`origin/main`と一致する場合だけ、market/fx検証とビルドに成功してから公開JSONを更新します。JSON差分がなければコミット・Push・Pagesビルドを省略します。差分がある場合は対象ファイルだけをコミット・Pushし、公開JSONに新しい観測が届くまでCloudflare Pagesを確認します。失敗時はビルド前に既存JSONを保護します。Push成功後のデプロイ失敗はジョブ失敗として報告され、コミットを成功扱いにしません。
+
+`.market/query-action-observations-5084200.json`を直接`--input`に渡すと、検証済みのTBC商品観測を商品別時刻付きの部分観測として公開JSONへ変換します。queryActionのsubtotalは参考表示のまま、数値価格・確定履歴へ昇格しません。GitHub Actionsから公開する場合は`publish-query-action` modeを明示選択し、`publish_query_action_rights_confirmed=true`を入力します。この同意は運用者の記録でありValveの権利許諾ではありません。
 
 `--rights-confirmed`は操作者の確認記録で、Valveの許可を意味しません。許諾未確認の方法で取得・再配布したデータは公開しないでください。対象AppIDは固定で5084200、TBH fixtureは拒否されます。新規商品・新しい観測点だけを統合し、同一観測の再投入は冪等です。商品ごとの最新観測日時が正規市場スナップショットより新しい時だけ、一覧表示を取込観測へ切り替えます。価格基準未確認のqueryAction subtotalは数値価格や価格履歴に昇格しません。部分取得はページ単位で記録し、取得範囲外の商品を削除したり0価格・0出品にしたりしません。
 

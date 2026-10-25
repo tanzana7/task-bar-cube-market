@@ -280,6 +280,19 @@ Valveの2026-05-12告知は、新しいカード表示、動的検索フィル�
 - 新APIのTBH価格、単位、商品ID、画像、sell-order件数、認証要否、ページサイズ、429挙動を確認できていない。
 - 旧方式の実測は過去の1ページであり、発売後市場の応答形式や取得可能ページ数を保証しない。
 - Steamの利用条件・自動取得および市場情報再配布の条件を確認できていないため、Steam定期実行は引き続き無効。
+
+## v1.0 RC: 取込・公開経路レビュー
+
+2026-10-25のレビューではSteamへの通信を行わず、保存済みfixture・既存JSON・GitHub Actions設定を確認した。
+
+- HAR入力は従来、`/market/actions`のURLパスだけで対象判定し、HARリクエストの`qp`、AppID、currency、startを応答と照合していなかった。別用途のMarket actionや別AppIDの壊れた応答が取込全体を失敗させる可能性があった。修正後はTBC AppIDの`q=Search`のみ選び、対象requestのAppID/start/currencyをresponseと検証する。対象外のaction・AppID・無関係APIはbodyを解析せず無視する。対象通信の欠損・不正応答は失敗として扱う。
+- HARのCookie/Authorizationヘッダーは入力全体から保存せず、最小化した商品観測・出典・時刻だけをpublic JSONへ写す。テストで一時認証文字列がGit履歴と生成JSONに含まれないことを検証する。
+- 既存queryAction workflowは商品別観測を`.market/query-action-observations-<appid>.json`へ保存するが、そのままではサイトが読む`public/market-observations.json`に届かなかった。TBC用ストアの検証済み観測から、商品別観測時刻・ページ開始位置を保った公開用の部分観測へ変換するimport pathを追加した。参照subtotalは引き続き非数値・価格履歴外であり、既存の価格キャッシュは上書きしない。
+- workflowにSteam通信なしの`publish-query-action`手動modeを追加。既存のTBC観測ストアをmarket:publishで検証・Pushし、Cloudflare Pagesの公開JSONが一致するまで待つ。権限確認の入力を必須にしているが、これもValveの許可ではない。通常のSteam queryAction modeは手動実行のままであり、定期scheduleは追加していない。
+- 利用可能な無料の公式Community Market価格feed/APIとその再配布許可は今回確認できなかった。Steam Web API documentationは公開APIを列挙するが、Community Market一覧価格APIを掲載していない。Steam Subscriber Agreementは自動化とコンテンツの複製・公開・配布に制限を記載している。許諾されたfeedまたはValveからの明示的な許可が得られるまでは、自動収集・公開を有効にしない。参照：[Steam Subscriber Agreement](https://store.steampowered.com/agreement/?l=english)、[Steam Web API Documentation](https://steamcommunity.com/dev)。
+- 確認可能な価格形式は旧`search/render` USDの`$x.xx` textと整数centの一致、およびqueryAction USDの`strMinSellSubtotal`表記のみ。後者は`unSteamFee`/`unPublisherFee`を含む購入者支払総額との同一性が未確認のまま。両者は同じ履歴に混ぜない。
+
+運用上の最短経路は、正当に取得・公開可能なTBC JSON/HARを`market:publish -- --input ... --publish --rights-confirmed`へ渡すこと。既にActionsで保存したTBC queryActionストアは、独立した`publish-query-action` workflowで公開JSONへ反映できる。HAR形式はTBC対象検索通信だけが抽出されるため、1ファイルの複数応答からCookieを含む他通信を切り離せる。外部から継続的に供給される許可済みfeedは依然として未確保。
 # v0.6: 利用許可と本番商品取込
 
 2026-10-25時点で、公開Steam Market検索用のqueryActionはSteamブラウザ通信を観察した実測経路である一方、Steam Subscriber Agreementに照らした自動収集・価格/画像の再配布許可が確認できていない。アプリ内の`STEAM_MARKET_COLLECTION_ALLOWED=true`はValveの利用許可ではない。今回は追加のSteam通信を実施していない。

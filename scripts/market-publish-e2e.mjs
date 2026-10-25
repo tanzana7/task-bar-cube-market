@@ -73,6 +73,15 @@ function captureEntry(payload, observedAt) {
   };
 }
 
+function unrelatedMarketActionEntry(observedAt, appid, action) {
+  const url = new URL('https://steamcommunity.com/market/actions');
+  url.searchParams.set('q', action);
+  if (appid !== null) url.searchParams.set('qp', JSON.stringify([{ appid, filters: {} }]));
+  return { startedDateTime: observedAt,
+    request: { method: 'GET', url: url.href },
+    response: { status: 200, content: { mimeType: 'text/html', text: 'unrelated non-json Market response' } } };
+}
+
 async function writeHar(rows, baseTime, changedProduct = null) {
   const pageRows = rows.map((row, index) => {
     const next = { ...row };
@@ -98,6 +107,8 @@ async function writeHar(rows, baseTime, changedProduct = null) {
       creator: { name: 'isolated TBCM publish E2E', version: '1.0' },
       entries: [
         unrelated,
+        unrelatedMarketActionEntry(time0, null, 'GetMarketStatus'),
+        unrelatedMarketActionEntry(time0, 3678970, 'Search'),
         captureEntry(marketPage(pageRows.slice(0, 15), 0), time0),
         captureEntry(marketPage(pageRows.slice(15), 15), time1),
       ],

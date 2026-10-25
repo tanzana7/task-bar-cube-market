@@ -86,8 +86,10 @@ export function parseMarketObservations(value: unknown): MarketObservations | nu
           && point.referencePriceText === null;
       if (!isIsoTimestamp(point?.observedAt) || observedMs <= previous
           || !['query-action', 'search-render'].includes(point.sourceKind) || point.currency !== 'USD'
-          || (reference && (point.requestCurrencyId !== null || point.responseCurrencyId !== 1))
-          || (!reference && (point.requestCurrencyId !== null || point.responseCurrencyId !== null))
+          || (reference && (!(point.requestCurrencyId === null || point.requestCurrencyId === 1)
+            || point.responseCurrencyId !== 1))
+          || (!reference && (!(point.requestCurrencyId === null || point.requestCurrencyId === 1)
+            || point.responseCurrencyId !== null))
           || !validPrice || typeof point.provenance !== 'string' || !point.provenance.trim() || point.provenance.length > 240
           || (point.listings !== null && (!Number.isSafeInteger(point.listings) || point.listings < 0))) return null;
       previous = observedMs;
@@ -102,7 +104,7 @@ export function parseMarketObservations(value: unknown): MarketObservations | nu
         || !Number.isSafeInteger(capture.start) || capture.start < 0 || !Number.isSafeInteger(capture.totalCount)
         || capture.totalCount < capture.start || !Number.isSafeInteger(capture.pageSize) || capture.pageSize < 0
         || capture.pageSize > capture.totalCount - capture.start
-        || capture.complete !== (capture.start === 0 && capture.pageSize === capture.totalCount)
+        || (capture.complete && !(capture.start === 0 && capture.pageSize === capture.totalCount))
         || captureMs < previousImport) return null;
     previousImport = captureMs;
   }

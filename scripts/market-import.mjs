@@ -2,7 +2,7 @@ import { readdir, readFile, stat } from 'node:fs/promises';
 import { basename, extname, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { parsePriceMinor, normalizeResult, saveFilesAtomically } from './steam-market.mjs';
-import { parseQueryActionPage } from './query-action-market.mjs';
+import { parseQueryActionPage, validateQueryActionObservationStore } from './query-action-market.mjs';
 
 export const TBC_APPID = 5084200;
 export const PUBLIC_OBSERVATIONS_PATH = new URL('../public/market-observations.json', import.meta.url);
@@ -26,24 +26,75 @@ function canonicalTimestamp(value) {
 }
 
 export function detectMarketImportFormat(payload) {
+  if (payload?.source === 'Steam Community Market queryAction' && payload?.priceBasis === 'min-sell-subtotal-unverified-fees') return 'query-action-store';
   if (payload?.data?.grouping === 1 && Array.isArray(payload.data.results)) return 'query-action';
   if (payload?.success === true && Array.isArray(payload.results) && Number.isSafeInteger(payload.total_count)) return 'search-render';
   throw new Error('Could not identify Steam search/render or queryAction response format');
 }
 
+function parseHarMarketRequest(rawUrl) {
+  let url;
+  try { url = new URL(rawUrl); } catch { return null; }
+  if (url.protocol !== 'https:' || url.hostname !== 'steamcommunity.com') return null;
+  const query = url.searchParams;
+  if (url.pathname === '/market/search/render/') {
+    const appid = Number(query.get('appid'));
+    // HARs often contain unrelated Market traffic. Ignore it before looking at response bodies.
+    if (appid !== TBC_APPID) return null;
+    const startText = query.get('start');
+    const currencyText = query.get('currency');
+    return {
+      format: 'search-render', appid,
+      start: startText === null ? 0 : Number(startText),
+      requestCurrencyId: currencyText === null ? null : Number(currencyText),
+    };
+  }
+  if (url.pathname !== '/market/actions' || query.get('q') !== 'Search') return null;
+  const qpText = query.get('qp');
+  let params;
+  try { params = JSON.parse(qpText ?? ''); } catch { return null; }
+  if (!Array.isArray(params)) return null;
+  const matching = params.filter(entry => entry?.appid === TBC_APPID);
+  if (matching.length === 0) return null;
+  if (matching.length !== 1) throw new Error('HAR contains multiple queryAction requests for the TBC AppID in one qp');
+  const request = matching[0];
+  return {
+    format: 'query-action', appid: request.appid,
+    start: request.start,
+    requestCurrencyId: request.price?.eCurrency ?? null,
+  };
+}
+
 function responseDocuments(value, inherited = {}) {
   if (Array.isArray(value)) return value.flatMap(entry => responseDocuments(entry, inherited));
   if (!value || typeof value !== 'object') throw new Error('Import JSON must contain an object response');
+  if (value.source === 'Steam Community Market queryAction' && value.priceBasis === 'min-sell-subtotal-unverified-fees') {
+    return [{ payload: value, observedAt: inherited.observedAt ?? null, provenance: inherited.provenance
+      ?? 'Validated persisted queryAction observations', format: 'query-action-store' }];
+  }
   if (value.log && Array.isArray(value.log.entries)) {
     return value.log.entries.flatMap(entry => {
-      const url = entry?.request?.url;
-      const relevantUrl = typeof url === 'string' && /^https:\/\/steamcommunity\.com\/market\/(?:search\/render\/|actions)(?:\?|$)/.test(url);
+      const request = parseHarMarketRequest(entry?.request?.url);
       const body = entry?.response?.content?.text;
-      if (!relevantUrl || typeof body !== 'string') return [];
+      if (!request) return [];
+      if (!Number.isSafeInteger(request.start) || request.start < 0
+          || !(request.requestCurrencyId === null || [1, 8].includes(request.requestCurrencyId))) {
+        throw new Error('Invalid TBC Steam Market request parameters in HAR');
+      }
+      const status = entry?.response?.status;
+      if (!Number.isSafeInteger(status) || status < 200 || status >= 300) {
+        throw new Error(`TBC Steam Market HAR response was not successful (HTTP ${Number.isSafeInteger(status) ? status : 'unknown'})`);
+      }
+      if (typeof body !== 'string') throw new Error('TBC Steam Market HAR response body is missing');
       try {
         const decoded = entry.response.content.encoding === 'base64'
           ? Buffer.from(body, 'base64').toString('utf8') : body;
-        return responseDocuments(JSON.parse(decoded), { observedAt: canonicalTimestamp(entry.startedDateTime), provenance: 'Steam DevTools HAR response' });
+        return responseDocuments(JSON.parse(decoded), {
+          observedAt: canonicalTimestamp(entry.startedDateTime),
+          provenance: 'Steam DevTools HAR response',
+          format: request.format,
+          request,
+        });
       } catch (error) {
         throw new Error('Could not parse a Steam Market JSON response in HAR', { cause: error });
       }
@@ -61,6 +112,7 @@ function responseDocuments(value, inherited = {}) {
     observedAt: value.observedAt ?? value.capturedAt ?? inherited.observedAt ?? null,
     provenance: value.provenance ?? inherited.provenance ?? null,
     format: value.format ?? inherited.format ?? null,
+    request: value.request ?? inherited.request ?? null,
   }];
 }
 
@@ -85,7 +137,7 @@ async function readInputDocuments(inputPaths) {
   return documents;
 }
 
-function parseSearchRender(payload, observedAt) {
+function parseSearchRender(payload, observedAt, request = null) {
   if (!payload || payload.success !== true || !Array.isArray(payload.results)
       || !Number.isSafeInteger(payload.total_count) || payload.total_count < 0) {
     throw new Error('Invalid search/render response envelope');
@@ -95,6 +147,10 @@ function parseSearchRender(payload, observedAt) {
       || payload.results.length > payload.total_count - start
       || (payload.pagesize !== undefined && (!Number.isSafeInteger(payload.pagesize) || payload.pagesize < payload.results.length))) {
     throw new Error('Invalid search/render page metadata');
+  }
+  if (request && (request.format !== 'search-render' || request.appid !== TBC_APPID
+      || request.start !== start || (request.requestCurrencyId !== null && request.requestCurrencyId !== 1))) {
+    throw new Error('search/render request and response AppID, start, or USD currency do not match');
   }
   const seen = new Set();
   const products = payload.results.map(row => {
@@ -114,7 +170,7 @@ function parseSearchRender(payload, observedAt) {
         observedAt,
         sourceKind: 'search-render',
         currency: 'USD',
-        requestCurrencyId: null,
+        requestCurrencyId: request?.requestCurrencyId ?? null,
         responseCurrencyId: null,
         priceBasis: 'steam-search-render-sell-price',
         priceMinor: item.priceMinor,
@@ -128,9 +184,16 @@ function parseSearchRender(payload, observedAt) {
     complete: start === 0 && products.length === payload.total_count };
 }
 
-function parseQueryAction(payload, observedAt) {
-  const start = payload?.data?.start;
-  const page = parseQueryActionPage(payload, { expectedStart: start, expectedAppId: TBC_APPID, requestCurrencyId: null });
+function parseQueryAction(payload, observedAt, request = null) {
+  const start = request?.start ?? payload?.data?.start;
+  const requestCurrencyId = request?.requestCurrencyId ?? null;
+  const page = parseQueryActionPage(payload, { expectedStart: start, expectedAppId: TBC_APPID, requestCurrencyId });
+  if (request && (request.format !== 'query-action' || request.appid !== TBC_APPID)) {
+    throw new Error('queryAction request and response AppID do not match');
+  }
+  if (requestCurrencyId !== null && page.requestResponseCurrencyMatch !== true) {
+    throw new Error(`queryAction request currency ${requestCurrencyId} does not match response currency ${page.responseCurrencyId ?? 'missing'}`);
+  }
   return {
     start: page.start, totalCount: page.totalCount, pageSize: page.pageSize, complete: page.start === 0 && page.pageSize === page.totalCount,
     products: page.items.map(item => ({
@@ -142,7 +205,7 @@ function parseQueryAction(payload, observedAt) {
         observedAt,
         sourceKind: 'query-action',
         currency: 'USD',
-        requestCurrencyId: null,
+        requestCurrencyId,
         responseCurrencyId: page.responseCurrencyId,
         priceBasis: item.priceBasis,
         priceMinor: null,
@@ -176,10 +239,10 @@ export function validateMarketObservations(value) {
       const queryAction = point?.sourceKind === 'query-action';
       if (!validTimestamp(point?.observedAt) || time <= previous || !['query-action', 'search-render'].includes(point.sourceKind)
           || point.currency !== 'USD' || !safeProvenance(point.provenance)
-          || (queryAction && (point.requestCurrencyId !== null || point.responseCurrencyId !== 1
+          || (queryAction && (!(point.requestCurrencyId === null || point.requestCurrencyId === 1) || point.responseCurrencyId !== 1
             || point.priceBasis !== 'min-sell-subtotal-unverified-fees' || point.priceMinor !== null
             || point.priceText !== null || parsePriceMinor(point.referencePriceText, 'USD') === null))
-          || (!queryAction && (point.requestCurrencyId !== null || point.responseCurrencyId !== null
+          || (!queryAction && (!(point.requestCurrencyId === null || point.requestCurrencyId === 1) || point.responseCurrencyId !== null
             || point.priceBasis !== 'steam-search-render-sell-price'
             || (point.priceMinor === null) !== (point.priceText === null)
             || (point.priceMinor !== null && parsePriceMinor(point.priceText, 'USD') !== point.priceMinor)
@@ -197,14 +260,14 @@ export function validateMarketObservations(value) {
         || !Number.isSafeInteger(capture.totalCount) || capture.totalCount < capture.start
         || !Number.isSafeInteger(capture.pageSize) || capture.pageSize < 0
         || capture.pageSize > capture.totalCount - capture.start
-        || capture.complete !== (capture.start === 0 && capture.pageSize === capture.totalCount)) {
+        || (capture.complete && !(capture.start === 0 && capture.pageSize === capture.totalCount))) {
       throw new Error('Invalid market import metadata');
     }
   }
   return value;
 }
 
-export function parseMarketImport({ payload, format = null, observedAt, provenance = null, rightsConfirmed = false, now = new Date() }) {
+export function parseMarketImport({ payload, format = null, request = null, observedAt, provenance = null, rightsConfirmed = false, now = new Date() }) {
   format ??= detectMarketImportFormat(payload);
   if (format !== detectMarketImportFormat(payload)) throw new Error('The requested format does not match the response');
   if (!validTimestamp(observedAt)) throw new Error('observed-at must be a valid UTC ISO timestamp');
@@ -214,7 +277,7 @@ export function parseMarketImport({ payload, format = null, observedAt, provenan
   if (provenance === null) provenance = `${SOURCE_LABELS[format]}; supplied as operator input`;
   if (!safeProvenance(provenance)) throw new Error('provenance must be 1-240 characters without line breaks');
   if (typeof rightsConfirmed !== 'boolean') throw new Error('rightsConfirmed must be a boolean operator attestation');
-  const capture = format === 'search-render' ? parseSearchRender(payload, observedAt) : parseQueryAction(payload, observedAt);
+  const capture = format === 'search-render' ? parseSearchRender(payload, observedAt, request) : parseQueryAction(payload, observedAt, request);
   const products = capture.products.map(product => ({
     ...product,
     observations: product.observations.map(point => ({ ...point, provenance })),
@@ -233,6 +296,10 @@ export function parseMarketImport({ payload, format = null, observedAt, provenan
 
 export function parseMarketImportBatch({ documents, observedAt = null, provenance = null, rightsConfirmed = false, now = new Date() }) {
   if (!Array.isArray(documents) || documents.length === 0) throw new Error('At least one Steam Market response is required');
+  if (documents.length === 1 && (documents[0].format ?? detectMarketImportFormat(documents[0].payload)) === 'query-action-store') {
+    return parseQueryActionStoreImport({ store: documents[0].payload,
+      provenance: provenance ?? documents[0].provenance, rightsConfirmed, now });
+  }
   let combined = null;
   for (const document of documents) {
     const pageObservedAt = document.observedAt ?? observedAt;
@@ -240,6 +307,7 @@ export function parseMarketImportBatch({ documents, observedAt = null, provenanc
     const incoming = parseMarketImport({
       payload: document.payload,
       format: document.format ?? null,
+      request: document.request ?? null,
       observedAt: pageObservedAt,
       provenance: document.provenance ?? provenance,
       rightsConfirmed: document.rightsConfirmed === true || rightsConfirmed === true,
@@ -248,6 +316,50 @@ export function parseMarketImportBatch({ documents, observedAt = null, provenanc
     combined = mergeMarketObservations(combined, incoming).snapshot;
   }
   return validateMarketObservations(combined);
+}
+
+function parseQueryActionStoreImport({ store, provenance, rightsConfirmed, now }) {
+  validateQueryActionObservationStore(store);
+  if (store.appid !== TBC_APPID) throw new Error('Import contains a non-TBC AppID');
+  if (!safeProvenance(provenance)) throw new Error('provenance must be 1-240 characters without line breaks');
+  if (typeof rightsConfirmed !== 'boolean') throw new Error('rightsConfirmed must be a boolean operator attestation');
+  if (!store.products.length) throw new Error('queryAction store contains no observed TBC products');
+
+  const pageGroups = new Map();
+  const products = store.products.map(product => ({
+    marketHashName: product.marketHashName,
+    name: product.name,
+    imageUrl: product.imageUrl,
+    steamUrl: product.steamUrl,
+    observations: product.observations.map(point => {
+      const key = `${point.observedAt}\0${point.pageStart}\0${point.totalCount}\0${point.pageSize}`;
+      pageGroups.set(key, (pageGroups.get(key) ?? 0) + 1);
+      return {
+        observedAt: point.observedAt,
+        sourceKind: 'query-action',
+        currency: 'USD',
+        requestCurrencyId: point.requestCurrencyId,
+        responseCurrencyId: point.responseCurrencyId,
+        priceBasis: 'min-sell-subtotal-unverified-fees',
+        priceMinor: null,
+        priceText: null,
+        referencePriceText: point.minSellSubtotalText,
+        listings: point.listings,
+        provenance,
+      };
+    }),
+  }));
+  const imports = [...pageGroups.entries()].map(([key, pageSize]) => {
+    const [timestamp, startText, totalText, expectedPageSizeText] = key.split('\0');
+    const start = Number(startText);
+    const totalCount = Number(totalText);
+    if (pageSize !== Number(expectedPageSizeText)) throw new Error('Persisted queryAction page is missing observations');
+    // The private collector does not prove a stable full-market snapshot. Keep every imported page partial.
+    return { sourceKind: 'query-action', provenance, observedAt: timestamp, rightsConfirmed,
+      start, totalCount, pageSize, complete: false };
+  }).sort((a, b) => Date.parse(a.observedAt) - Date.parse(b.observedAt) || a.start - b.start);
+  return validateMarketObservations({ schemaVersion: 1, appid: TBC_APPID, currency: 'USD',
+    generatedAt: now.toISOString(), products, imports });
 }
 
 export function mergeMarketObservations(previous, incoming) {
