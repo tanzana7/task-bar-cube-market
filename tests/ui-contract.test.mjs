@@ -26,7 +26,9 @@ test('market cards use a responsive image grid and type-specific artwork fallbac
   assert.match(css, /\.items\{display:grid;grid-template-columns:repeat\(5,minmax\(0,1fr\)\)/);
   assert.match(css, /@media\(max-width:900px\)\{\.items\{grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/);
   assert.match(css, /@media\(max-width:620px\)\{\.items\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
-  assert.match(css, /\.image-box\{[^}]*aspect-ratio:1/);
+  assert.match(css, /\.items>\.item\{display:flex;flex-direction:column/);
+  assert.match(css, /\.items>\.item>\.item-main>\.image-box\{[^}]*aspect-ratio:1/);
+  assert.match(css, /\.items>\.item>\.item-main>\.image-box img\{display:block;width:100%;height:100%;max-width:none;max-height:none;object-fit:contain\}/);
   assert.match(main, /function createItemArtwork\(name: string, imageUrl: string \| null, className: string\)/);
   assert.match(main, /image\.loading = 'lazy'/);
   assert.match(main, /image\.decoding = 'async'/);

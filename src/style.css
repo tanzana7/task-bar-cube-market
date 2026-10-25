@@ -154,3 +154,17 @@ body[data-preview="watchlist"] .ranking-section{display:none}
 @media(max-width:620px){.items{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding:10px}.item-main{gap:7px;padding:8px 8px 44px}.item-main strong{font-size:12px}.item-price{font-size:13px}.item-price-note{display:block;margin:2px 0 0}.item-type{font-size:9px}.favorite-button{top:16px;right:16px;width:34px;height:34px}.item-steam{right:8px;bottom:8px;min-height:30px;padding:0 7px;font-size:10px}}
 @media(max-width:360px){.items{gap:7px;padding:8px}.item-main{padding-inline:6px}.item-price{font-size:12px}.favorite-button{top:14px;right:14px;width:31px;height:31px}.item-steam{font-size:9px}}
 @media(prefers-reduced-motion:reduce){.item{transition:none}}
+
+/* The legacy list layout assigns the artwork to a 48px grid column. Market cards
+   are true image-first cards at every breakpoint, so the square artwork must be
+   taken out of that old grid placement. */
+.items>.item{display:flex;flex-direction:column;align-items:stretch;gap:0;min-height:0;height:100%;padding:10px;background:#111d2e;border:1px solid #2b4058;border-radius:13px}
+.items>.item>.item-main{display:flex;flex:1;flex-direction:column;align-items:stretch;gap:8px;min-width:0;width:100%;padding:0 0 42px;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer}
+.items>.item>.item-main>.image-box{position:relative;display:grid;grid-column:auto;grid-row:auto;flex:none;width:100%;height:auto;aspect-ratio:1;place-items:center;margin:0 0 2px;border:1px solid #2d4259;border-radius:10px;overflow:hidden}
+.items>.item>.item-main>.image-box img{display:block;width:100%;height:100%;max-width:none;max-height:none;object-fit:contain}
+.items>.item>.item-main>strong{display:-webkit-box;min-height:2.5em;overflow:hidden;overflow-wrap:anywhere;-webkit-box-orient:vertical;-webkit-line-clamp:2;text-overflow:ellipsis}
+.items>.item>.item-main>.item-info{min-height:1.4em}
+.items>.item>.favorite-button{position:absolute;z-index:1;top:18px;right:18px;display:grid;place-items:center;border:1px solid #6d7890;border-radius:50%;background:#0b1728dd}
+.items>.item>.item-steam{position:absolute;right:10px;bottom:10px;min-height:32px;padding:7px 10px;border:1px solid #3b536e;border-radius:8px;background:#15243a}
+@media(max-width:620px){.items>.item{padding:8px}.items>.item>.item-main{gap:7px;padding-bottom:39px}.items>.item>.favorite-button{top:14px;right:14px}.items>.item>.item-steam{right:8px;bottom:8px;min-height:29px;padding:5px 8px}}
+@media(max-width:360px){.items>.item{padding:7px}.items>.item>.item-main{gap:6px;padding-bottom:37px}.items>.item>.item-main>strong{font-size:11px}.items>.item>.item-steam{font-size:9px}}
