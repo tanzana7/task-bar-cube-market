@@ -336,6 +336,31 @@ test('persisted queryAction observations can be published as isolated reference 
   assert.equal(latestObservedItems(parseMarketObservations(imported.snapshot)).length, 30);
 });
 
+test('operator-directed factual publication keeps rights unconfirmed and strips Steam images', async t => {
+  const directory = await mkdtemp(join(tmpdir(), 'tbcm-factual-publish-'));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const storePath = join(directory, 'query-action-observations.json');
+  const payload = structuredClone(tbh);
+  for (const row of payload.data.results) row.asset_description.appid = TBC_APPID;
+  payload.data.start = 0;
+  await collectAndPersistQueryActionBatch({ appid: TBC_APPID, requestCurrencyId: 1, maxPages: 1,
+    storePath, now: () => new Date(observedAt), fetchPage: async () => payload });
+  const outputPath = join(directory, 'public.json');
+  const published = await importMarketFile({ inputPath: storePath, outputPath, now: fixedNow,
+    provenance: 'operator-directed factual observations; images omitted; rights unconfirmed',
+    publish: true, factualObservationPublication: true });
+  assert.equal(published.snapshot.products.length, 30);
+  assert.ok(published.snapshot.products.every(product => product.imageUrl === null));
+  assert.ok(published.snapshot.products.every(product => product.observations[0].priceMinor === null
+    && product.observations[0].referencePriceText === '$0.03'));
+  assert.ok(published.snapshot.imports.every(capture => capture.rightsConfirmed === false));
+  assert.ok(published.snapshot.imports.every(capture => capture.complete === false));
+  assert.equal(validateMarketObservations(JSON.parse(await readFile(outputPath, 'utf8'))).products.length, 30);
+  await assert.rejects(importMarketFile({ inputPath: storePath, outputPath: join(directory, 'rejected.json'), now: fixedNow,
+    provenance: 'operator-directed factual observations', publish: true, factualObservationPublication: true,
+    rightsConfirmed: true }), /cannot attest rights/);
+});
+
 test('rolling queryAction retention keeps old product checkpoints without accepting incomplete recent pages', async t => {
   const directory = await mkdtemp(join(tmpdir(), 'tbcm-query-retention-'));
   t.after(() => rm(directory, { recursive: true, force: true }));

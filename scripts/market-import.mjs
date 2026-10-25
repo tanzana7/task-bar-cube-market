@@ -506,7 +506,8 @@ export function mergeMarketObservations(previous, incoming) {
 }
 
 export async function importMarketFile({ inputPath, inputPaths = null, outputPath = PUBLIC_OBSERVATIONS_PATH,
-  format = null, observedAt = null, provenance = null, publish = false, rightsConfirmed = false, now = new Date() }) {
+  format = null, observedAt = null, provenance = null, publish = false, rightsConfirmed = false,
+  factualObservationPublication = false, now = new Date() }) {
   const paths = inputPaths ?? (inputPath ? [inputPath] : []);
   if (paths.length === 0) throw new Error('--input is required');
   const documents = await readInputDocuments(paths);
@@ -514,12 +515,29 @@ export async function importMarketFile({ inputPath, inputPaths = null, outputPat
     for (const document of documents) if (!document.format) document.format = format;
   }
   const incoming = parseMarketImportBatch({ documents, observedAt, provenance, rightsConfirmed, now });
+  if (factualObservationPublication) {
+    if (rightsConfirmed || incoming.imports.some(capture => capture.sourceKind !== 'query-action')) {
+      throw new Error('Factual observation publication accepts only unverified queryAction observations and cannot attest rights');
+    }
+    // The operator requested publishing factual names, observed figures and Steam links.
+    // Steam/game images are omitted until image-use rights are independently confirmed.
+    for (const product of incoming.products) product.imageUrl = null;
+  }
   let previous = null;
   try { previous = JSON.parse(await readFile(outputPath, 'utf8')); }
   catch (error) { if (error.code !== 'ENOENT') throw new Error('Could not read previous public observations; refusing to overwrite', { cause: error }); }
   const result = mergeMarketObservations(previous, incoming);
+  if (factualObservationPublication) {
+    let imagesRemoved = false;
+    for (const product of result.snapshot.products) {
+      if (product.imageUrl !== null) imagesRemoved = true;
+      product.imageUrl = null;
+    }
+    if (imagesRemoved) result.changed = true;
+    validateMarketObservations(result.snapshot);
+  }
   if (!publish) return { ...result, preview: result.snapshot };
-  if (rightsConfirmed !== true) {
+  if (!factualObservationPublication && rightsConfirmed !== true) {
     throw new Error('Publishing requires --rights-confirmed; this records your attestation but does not grant Valve permission');
   }
   if (result.changed) await saveFilesAtomically([{ path: outputPath, content: `${JSON.stringify(result.snapshot, null, 2)}\n` }]);
@@ -530,6 +548,7 @@ function parseArgs(argv) {
   const options = { inputs: [] };
   for (let i = 0; i < argv.length; i += 1) {
     if (argv[i] === '--publish') { options.publish = true; continue; }
+    if (argv[i] === '--factual-observations') { options.factualObservationPublication = true; continue; }
     if (argv[i] === '--dry-run') { options.dryRun = true; continue; }
     if (argv[i] === '--rights-confirmed') { options.rightsConfirmed = true; continue; }
     const match = /^--([^=]+)(?:=(.*))?$/.exec(argv[i]);
@@ -542,7 +561,12 @@ function parseArgs(argv) {
     else options[key] = value;
   }
   if (options.publish && options.dryRun) throw new Error('Choose either --dry-run or --publish');
-  if (options.publish && !options.rightsConfirmed) throw new Error('Publishing requires --rights-confirmed');
+  if (options.factualObservationPublication && options.rightsConfirmed) {
+    throw new Error('--factual-observations cannot be combined with --rights-confirmed');
+  }
+  if (options.publish && !options.rightsConfirmed && !options.factualObservationPublication) {
+    throw new Error('Publishing requires --rights-confirmed or --factual-observations');
+  }
   return options;
 }
 
@@ -556,6 +580,7 @@ async function main() {
     provenance: options.provenance,
     publish: options.publish === true,
     rightsConfirmed: options.rightsConfirmed === true,
+    factualObservationPublication: options.factualObservationPublication === true,
   });
   const snapshot = result.snapshot ?? result.preview;
   console.info(JSON.stringify({ mode: options.publish ? 'published' : 'dry-run', appid: TBC_APPID,

@@ -27,6 +27,13 @@ function parseArgs(argv) {
     if (arg === '--dry-run') { options.dryRun = true; continue; }
     if (arg === '--publish') { options.publish = true; options.dryRun = false; continue; }
     if (arg === '--rights-confirmed') { options.rightsConfirmed = true; continue; }
+    if (arg === '--factual-observations') { options.factualObservationPublication = true; continue; }
+    if (arg === '--publish-factual-observations') {
+      options.publish = true;
+      options.factualObservationPublication = true;
+      options.dryRun = false;
+      continue;
+    }
     const match = /^--([^=]+)(?:=(.*))?$/.exec(arg);
     if (!match) throw new Error(`Unknown argument: ${arg}`);
     const key = match[1];
@@ -37,7 +44,12 @@ function parseArgs(argv) {
     else throw new Error(`Unknown option --${key}`);
   }
   if (options.publish && options.dryRun) throw new Error('Choose either --dry-run or --publish');
-  if (options.publish && !options.rightsConfirmed) throw new Error('--publish requires --rights-confirmed (operator attestation, not Valve permission)');
+  if (options.factualObservationPublication && options.rightsConfirmed) {
+    throw new Error('--publish-factual-observations cannot be combined with --rights-confirmed');
+  }
+  if (options.publish && !options.rightsConfirmed && !options.factualObservationPublication) {
+    throw new Error('--publish requires --rights-confirmed or the explicit --publish-factual-observations mode');
+  }
   if (options.inputs.length === 0) throw new Error('At least one --input is required');
   options.dryRun = !options.publish;
   return options;
@@ -153,7 +165,8 @@ async function main() {
     existingPublic = await readFile(publicPath, 'utf8').catch(error => error.code === 'ENOENT' ? null : Promise.reject(error));
     const result = await importMarketFile({ inputPaths: options.inputs, outputPath: stagedOutput,
       observedAt: options['observed-at'] ?? null, provenance: options.provenance ?? null,
-      publish: options.publish === true, rightsConfirmed: options.rightsConfirmed === true });
+      publish: options.publish === true, rightsConfirmed: options.rightsConfirmed === true,
+      factualObservationPublication: options.factualObservationPublication === true });
     if (!result.changed) {
       console.info(`No data change; ${result.snapshot.products.length} TBC products are already current.`);
       return;

@@ -7,6 +7,7 @@ import { evaluateWatchTarget, mergeFavoriteKeys, parseWatchTargetPrice, parseWat
 
 type Snapshot = MarketSnapshot;
 const isDemoPreview = document.body.dataset.preview === 'watchlist';
+const FALLBACK_IMAGE_URL = '/market-item-placeholder.svg';
 
 const search = document.querySelector<HTMLInputElement>('#search')!;
 const sort = document.querySelector<HTMLSelectElement>('#sort')!;
@@ -307,9 +308,8 @@ async function openHistory(item: ListedItem | MarketSnapshot['items'][number]) {
   historyFavoriteButton.setAttribute('aria-pressed', String(favorites.has(item.marketHashName)));
   historyFavoriteButton.textContent = favorites.has(item.marketHashName) ? '★ ウォッチ中' : '☆ ウォッチ';
   const imageUrl = safeImage(item.imageUrl);
-  historyImage.hidden = !imageUrl;
-  if (imageUrl) historyImage.src = imageUrl;
-  else historyImage.removeAttribute('src');
+  historyImage.hidden = false;
+  historyImage.src = imageUrl ?? FALLBACK_IMAGE_URL;
   const steamUrl = isDemoPreview ? 'https://steamcommunity.com/market/search?appid=5084200' : safeSteamUrl(item.steamUrl);
   historySteam.hidden = !steamUrl;
   if (steamUrl) historySteam.href = steamUrl;
@@ -410,14 +410,12 @@ function render() {
     const imageBox = document.createElement('span');
     imageBox.className = 'image-box';
     const imageUrl = safeImage(item.imageUrl);
-    if (imageUrl) {
-      const image = document.createElement('img');
-      image.src = imageUrl;
-      image.alt = '';
-      image.loading = 'lazy';
-      image.onerror = () => image.remove();
-      imageBox.append(image);
-    }
+    const image = document.createElement('img');
+    image.src = imageUrl ?? FALLBACK_IMAGE_URL;
+    image.alt = '';
+    image.loading = 'lazy';
+    image.onerror = () => { image.onerror = null; image.src = FALLBACK_IMAGE_URL; };
+    imageBox.append(image);
     const main = document.createElement('button');
     main.type = 'button';
     main.className = 'item-main item-detail';
@@ -552,10 +550,8 @@ function renderWatchlist() {
     row.className = `watch-row${status === 'reached' ? ' watch-target-reached' : ''}`;
     const imageBox = document.createElement('span'); imageBox.className = 'watch-row-image';
     const imageUrl = item ? safeImage(item.imageUrl) : null;
-    if (imageUrl) {
-      const image = document.createElement('img'); image.src = imageUrl; image.alt = ''; image.loading = 'lazy';
-      image.onerror = () => image.remove(); imageBox.append(image);
-    }
+    const image = document.createElement('img'); image.src = imageUrl ?? FALLBACK_IMAGE_URL; image.alt = ''; image.loading = 'lazy';
+    image.onerror = () => { image.onerror = null; image.src = FALLBACK_IMAGE_URL; }; imageBox.append(image);
     row.append(imageBox);
     const content = document.createElement('div'); content.className = 'watch-row-content';
     const title = document.createElement('button'); title.type = 'button'; title.className = 'watch-row-title';
