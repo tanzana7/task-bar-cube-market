@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "source": "Frankfurter",
+  "apiUrl": "https://api.frankfurter.dev/v2/rate/USD/JPY",
+  "base": "USD",
+  "quote": "JPY",
+  "rate": 157.12,
+  "rateDate": "2026-10-25",
+  "fetchedAt": "2026-10-25T03:10:11.452Z"
+}
