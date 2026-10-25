@@ -28,6 +28,7 @@ function parseArgs(argv) {
     if (arg === '--publish') { options.publish = true; options.dryRun = false; continue; }
     if (arg === '--rights-confirmed') { options.rightsConfirmed = true; continue; }
     if (arg === '--factual-observations') { options.factualObservationPublication = true; continue; }
+    if (arg === '--include-steam-images') { options.includeSteamImages = true; continue; }
     if (arg === '--publish-factual-observations') {
       options.publish = true;
       options.factualObservationPublication = true;
@@ -46,6 +47,9 @@ function parseArgs(argv) {
   if (options.publish && options.dryRun) throw new Error('Choose either --dry-run or --publish');
   if (options.factualObservationPublication && options.rightsConfirmed) {
     throw new Error('--publish-factual-observations cannot be combined with --rights-confirmed');
+  }
+  if (options.includeSteamImages && !options.factualObservationPublication) {
+    throw new Error('--include-steam-images requires --publish-factual-observations');
   }
   if (options.publish && !options.rightsConfirmed && !options.factualObservationPublication) {
     throw new Error('--publish requires --rights-confirmed or the explicit --publish-factual-observations mode');
@@ -166,7 +170,8 @@ async function main() {
     const result = await importMarketFile({ inputPaths: options.inputs, outputPath: stagedOutput,
       observedAt: options['observed-at'] ?? null, provenance: options.provenance ?? null,
       publish: options.publish === true, rightsConfirmed: options.rightsConfirmed === true,
-      factualObservationPublication: options.factualObservationPublication === true });
+      factualObservationPublication: options.factualObservationPublication === true,
+      includeSteamImages: options.includeSteamImages === true });
     if (!result.changed) {
       console.info(`No data change; ${result.snapshot.products.length} TBC products are already current.`);
       return;

@@ -440,6 +440,7 @@ export function mergeMarketObservations(previous, incoming) {
   validateMarketObservations(incoming);
   const productMap = new Map(base.products.map(product => [product.marketHashName, structuredClone(product)]));
   let addedPoints = 0;
+  let updatedImages = 0;
   for (const next of incoming.products) {
     const current = productMap.get(next.marketHashName);
     if (!current) {
@@ -448,6 +449,12 @@ export function mergeMarketObservations(previous, incoming) {
       continue;
     }
     if (current.steamUrl !== next.steamUrl) throw new Error('Imported product identity conflicts with cached data');
+    // Explicitly selected image restoration may arrive with observations already in the
+    // public store. Treat the CDN URL as display metadata, not as price evidence.
+    if (next.imageUrl && current.imageUrl !== next.imageUrl) {
+      current.imageUrl = next.imageUrl;
+      updatedImages += 1;
+    }
     const previousLatest = Date.parse(current.observations.at(-1).observedAt);
     const incomingLatest = Math.max(...next.observations.map(point => Date.parse(point.observedAt)));
     const knownTimes = new Map(current.observations.map(point => [point.observedAt, point]));
@@ -464,7 +471,6 @@ export function mergeMarketObservations(previous, incoming) {
     current.observations.sort((a, b) => Date.parse(a.observedAt) - Date.parse(b.observedAt));
     if (incomingLatest > previousLatest) {
       current.name = next.name;
-      if (next.imageUrl) current.imageUrl = next.imageUrl;
     }
   }
   let trimmedPoints = 0;
@@ -477,7 +483,7 @@ export function mergeMarketObservations(previous, incoming) {
   }
   const merged = {
     ...base,
-    generatedAt: addedPoints > 0 ? incoming.generatedAt : base.generatedAt,
+    generatedAt: addedPoints > 0 || updatedImages > 0 ? incoming.generatedAt : base.generatedAt,
     products: [...productMap.values()].sort((a, b) => a.marketHashName.localeCompare(b.marketHashName)),
     imports: structuredClone(base.imports),
   };
@@ -502,12 +508,12 @@ export function mergeMarketObservations(previous, incoming) {
   const capturesChanged = JSON.stringify(merged.imports) !== JSON.stringify(base.imports);
   if (addedPoints === 0 && addedCaptures > 0 && capturesChanged) merged.generatedAt = incoming.generatedAt;
   validateMarketObservations(merged);
-  return { snapshot: merged, addedPoints, changed: addedPoints > 0 || capturesChanged || trimmedPoints > 0 };
+  return { snapshot: merged, addedPoints, changed: addedPoints > 0 || updatedImages > 0 || capturesChanged || trimmedPoints > 0 };
 }
 
 export async function importMarketFile({ inputPath, inputPaths = null, outputPath = PUBLIC_OBSERVATIONS_PATH,
   format = null, observedAt = null, provenance = null, publish = false, rightsConfirmed = false,
-  factualObservationPublication = false, now = new Date() }) {
+  factualObservationPublication = false, includeSteamImages = false, now = new Date() }) {
   const paths = inputPaths ?? (inputPath ? [inputPath] : []);
   if (paths.length === 0) throw new Error('--input is required');
   const documents = await readInputDocuments(paths);
@@ -519,15 +525,15 @@ export async function importMarketFile({ inputPath, inputPaths = null, outputPat
     if (rightsConfirmed || incoming.imports.some(capture => capture.sourceKind !== 'query-action')) {
       throw new Error('Factual observation publication accepts only unverified queryAction observations and cannot attest rights');
     }
-    // The operator requested publishing factual names, observed figures and Steam links.
-    // Steam/game images are omitted until image-use rights are independently confirmed.
-    for (const product of incoming.products) product.imageUrl = null;
+    // Image links are a separate explicit choice. Including an official CDN URL does not
+    // mean Valve or the game publisher has granted reuse rights.
+    if (!includeSteamImages) for (const product of incoming.products) product.imageUrl = null;
   }
   let previous = null;
   try { previous = JSON.parse(await readFile(outputPath, 'utf8')); }
   catch (error) { if (error.code !== 'ENOENT') throw new Error('Could not read previous public observations; refusing to overwrite', { cause: error }); }
   const result = mergeMarketObservations(previous, incoming);
-  if (factualObservationPublication) {
+  if (factualObservationPublication && !includeSteamImages) {
     let imagesRemoved = false;
     for (const product of result.snapshot.products) {
       if (product.imageUrl !== null) imagesRemoved = true;
@@ -551,6 +557,7 @@ function parseArgs(argv) {
     if (argv[i] === '--factual-observations') { options.factualObservationPublication = true; continue; }
     if (argv[i] === '--dry-run') { options.dryRun = true; continue; }
     if (argv[i] === '--rights-confirmed') { options.rightsConfirmed = true; continue; }
+    if (argv[i] === '--include-steam-images') { options.includeSteamImages = true; continue; }
     const match = /^--([^=]+)(?:=(.*))?$/.exec(argv[i]);
     if (!match) throw new Error(`Unknown argument: ${argv[i]}`);
     const key = match[1];
@@ -563,6 +570,9 @@ function parseArgs(argv) {
   if (options.publish && options.dryRun) throw new Error('Choose either --dry-run or --publish');
   if (options.factualObservationPublication && options.rightsConfirmed) {
     throw new Error('--factual-observations cannot be combined with --rights-confirmed');
+  }
+  if (options.includeSteamImages && !options.factualObservationPublication) {
+    throw new Error('--include-steam-images requires --factual-observations');
   }
   if (options.publish && !options.rightsConfirmed && !options.factualObservationPublication) {
     throw new Error('Publishing requires --rights-confirmed or --factual-observations');
@@ -581,6 +591,7 @@ async function main() {
     publish: options.publish === true,
     rightsConfirmed: options.rightsConfirmed === true,
     factualObservationPublication: options.factualObservationPublication === true,
+    includeSteamImages: options.includeSteamImages === true,
   });
   const snapshot = result.snapshot ?? result.preview;
   console.info(JSON.stringify({ mode: options.publish ? 'published' : 'dry-run', appid: TBC_APPID,

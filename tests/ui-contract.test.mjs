@@ -21,3 +21,17 @@ test('market UI exposes accessible filters, favorites and detail charts without 
   assert.match(html, /<details id="filter-disclosure" class="filter-disclosure" open>/);
   assert.match(main, /window\.matchMedia\('\(max-width: 620px\)'\)\.matches\) filterDisclosure\.open = false/);
 });
+
+test('market cards use a responsive image grid and type-specific artwork fallback', () => {
+  assert.match(css, /\.items\{display:grid;grid-template-columns:repeat\(5,minmax\(0,1fr\)\)/);
+  assert.match(css, /@media\(max-width:900px\)\{\.items\{grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/);
+  assert.match(css, /@media\(max-width:620px\)\{\.items\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
+  assert.match(css, /\.image-box\{[^}]*aspect-ratio:1/);
+  assert.match(main, /function createItemArtwork\(name: string, imageUrl: string \| null, className: string\)/);
+  assert.match(main, /image\.loading = 'lazy'/);
+  assert.match(main, /image\.decoding = 'async'/);
+  assert.match(main, /image\.onerror = \(\) => \{ image\.onerror = null; appendTypeGlyph\(box, type\); \}/);
+  assert.match(main, /className = 'favorite-button'/);
+  assert.match(main, /className = 'item-steam'/);
+  assert.match(html, /id="history-image" class="history-item-art"/);
+});

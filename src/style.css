@@ -117,3 +117,40 @@ body[data-preview="watchlist"] .ranking-section{display:none}
   .favorite-filter{grid-column:1}.ranking-list{grid-template-columns:1fr}
   .history-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+
+/* 商品アートが一覧の主役になるようカード単位で5/3/2列へ配置する。
+   画像権利が未確認の現在は、名前から確実に読める装備種別だけを独自図形で示す。 */
+.items{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;gap:14px;padding:18px}
+.item{position:relative;display:block;min-width:0;min-height:0;height:100%;overflow:hidden;border:1px solid #2b4058;border-radius:13px;background:#111d2e;transition:border-color .16s ease,transform .16s ease,box-shadow .16s ease}
+.item-main{display:grid;width:100%;height:100%;min-width:0;grid-template-rows:auto minmax(2.65em,auto) 20px auto auto;align-content:start;gap:9px;padding:12px 12px 48px;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer}
+.image-box{position:relative;display:grid;width:100%;aspect-ratio:1;place-items:center;overflow:hidden;border:1px solid #2d4259;border-radius:10px;background:radial-gradient(circle at 50% 35%,#263b53,#17283b 72%)}
+.image-box img{display:block;width:86%;height:86%;max-width:none;max-height:none;object-fit:contain}
+.item-main strong{display:-webkit-box;min-width:0;min-height:2.65em;overflow:hidden;overflow-wrap:anywhere;font-size:14px;line-height:1.34;font-weight:650;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+.item-info{display:flex;min-width:0;align-items:center;gap:6px;overflow:hidden}
+.item-type{max-width:100%;overflow:hidden;padding:3px 7px;border:1px solid #3d536b;border-radius:99px;color:#b8cde0;font-size:10px;line-height:1.2;text-overflow:ellipsis;white-space:nowrap}
+.item-price{display:block;min-width:0;overflow-wrap:anywhere;text-align:left;font-size:15px;line-height:1.35;white-space:normal;font-variant-numeric:tabular-nums}
+.item-price-note{display:inline-block;margin-left:6px;color:#e4bd69;font-size:10px;font-weight:500;white-space:nowrap}
+.item-main>small{min-width:0;overflow:hidden;color:#aabbd0;font-size:11px;text-overflow:ellipsis;white-space:nowrap}
+.favorite-button{position:absolute;z-index:2;top:22px;right:22px;display:grid;width:38px;height:38px;place-items:center;border:1px solid #52667d;border-radius:50%;background:#0b1422d9;color:#ffdb78;font-size:21px;line-height:1;cursor:pointer;backdrop-filter:blur(6px)}
+.item-steam{position:absolute;z-index:2;right:12px;bottom:12px;display:inline-flex;min-height:32px;align-items:center;padding:0 9px;border:1px solid #3b536e;border-radius:8px;background:#17283e;color:#c2e4ff;font-size:11px;text-decoration:none}
+.item-main:focus-visible,.favorite-button:focus-visible,.item-steam:focus-visible{outline:2px solid #8aceff;outline-offset:2px}
+.type-art-glyph{display:block;width:42%;height:42%;overflow:visible;fill:none;stroke:currentColor;stroke-width:1.45;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 5px 12px #0005)}
+.image-box[data-item-type],.watch-row-image[data-item-type],.history-item-art[data-item-type]{color:#a9c7df}
+[data-item-type="sword"]{color:#edb86e}.image-box[data-item-type="sword"]{background:radial-gradient(circle,#503d31,#1d2835 72%)}
+[data-item-type="boots"]{color:#8fc5f4}.image-box[data-item-type="boots"]{background:radial-gradient(circle,#29475a,#17283b 72%)}
+[data-item-type="ring"],[data-item-type="bracelet"]{color:#e4c977}.image-box[data-item-type="ring"],.image-box[data-item-type="bracelet"]{background:radial-gradient(circle,#49432e,#1c2939 72%)}
+[data-item-type="chestplate"],[data-item-type="chest"]{color:#9bd0bb}.image-box[data-item-type="chestplate"],.image-box[data-item-type="chest"]{background:radial-gradient(circle,#294a43,#17283b 72%)}
+[data-item-type="gloves"]{color:#c3a9f0}.image-box[data-item-type="gloves"]{background:radial-gradient(circle,#403655,#1b2939 72%)}
+[data-item-type="helmet"]{color:#f0a1a2}.image-box[data-item-type="helmet"]{background:radial-gradient(circle,#50363c,#1c2939 72%)}
+[data-item-type="necklace"]{color:#efb1cf}.image-box[data-item-type="necklace"]{background:radial-gradient(circle,#503347,#1c2939 72%)}
+[data-item-type="pants"]{color:#8ed5d3}.image-box[data-item-type="pants"]{background:radial-gradient(circle,#284b4d,#17283b 72%)}
+[data-item-type="chest"] .type-art-glyph{width:38%;height:38%}
+.history-item-art{display:grid;width:58px;height:58px;flex:none;place-items:center;overflow:hidden;border:1px solid #2e4158;border-radius:9px;background:#18283b}
+.history-item-art img{width:84%;height:84%;object-fit:contain}
+.watch-row-image .type-art-glyph{width:62%;height:62%}
+.history-item-art .type-art-glyph{width:64%;height:64%}
+@media(hover:hover){.item:hover{transform:translateY(-2px);border-color:#547597;box-shadow:0 12px 28px #030a1466}.item:hover .image-box{border-color:#52708d}}
+@media(max-width:900px){.items{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:14px}}
+@media(max-width:620px){.items{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding:10px}.item-main{gap:7px;padding:8px 8px 44px}.item-main strong{font-size:12px}.item-price{font-size:13px}.item-price-note{display:block;margin:2px 0 0}.item-type{font-size:9px}.favorite-button{top:16px;right:16px;width:34px;height:34px}.item-steam{right:8px;bottom:8px;min-height:30px;padding:0 7px;font-size:10px}}
+@media(max-width:360px){.items{gap:7px;padding:8px}.item-main{padding-inline:6px}.item-price{font-size:12px}.favorite-button{top:14px;right:14px;width:31px;height:31px}.item-steam{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.item{transition:none}}

@@ -7,8 +7,6 @@ import { evaluateWatchTarget, mergeFavoriteKeys, parseWatchTargetPrice, parseWat
 
 type Snapshot = MarketSnapshot;
 const isDemoPreview = document.body.dataset.preview === 'watchlist';
-const FALLBACK_IMAGE_URL = '/market-item-placeholder.svg';
-
 const search = document.querySelector<HTMLInputElement>('#search')!;
 const sort = document.querySelector<HTMLSelectElement>('#sort')!;
 const currencySelect = document.querySelector<HTMLSelectElement>('#currency')!;
@@ -19,7 +17,7 @@ const updatedNode = document.querySelector<HTMLSpanElement>('#updated-at')!;
 const noteNode = document.querySelector<HTMLParagraphElement>('#market-note')!;
 const historyDialog = document.querySelector<HTMLDialogElement>('#history-dialog')!;
 const historyTitle = document.querySelector<HTMLHeadingElement>('#history-title')!;
-const historyImage = document.querySelector<HTMLImageElement>('#history-image')!;
+const historyImage = document.querySelector<HTMLSpanElement>('#history-image')!;
 const historySummary = document.querySelector<HTMLParagraphElement>('#history-summary')!;
 const historyStatus = document.querySelector<HTMLParagraphElement>('#history-status')!;
 const historyChart = document.querySelector<HTMLDivElement>('#history-chart')!;
@@ -135,6 +133,66 @@ function safeSteamUrl(url: string): string | null {
   } catch {
     return null;
   }
+}
+
+type ItemType = 'sword' | 'boots' | 'ring' | 'bracelet' | 'chestplate' | 'gloves' | 'helmet' | 'necklace' | 'pants' | 'chest' | 'other';
+
+const ITEM_TYPE_PATHS: Record<ItemType, string[]> = {
+  sword: ['M19 3 9 17', 'M7 16 4 20l4-3', 'm9 17 3 3', 'm14 8 2 2'],
+  boots: ['M7 4v8l-3 3v4h15v-3l-6-2-2-4V4z', 'M4 16h15'],
+  ring: ['M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18z', 'M12 7a5 5 0 1 0 0 10a5 5 0 1 0 0-10z'],
+  bracelet: ['M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16z', 'M12 7a5 5 0 1 0 0 10a5 5 0 1 0 0-10z', 'M12 2v3'],
+  chestplate: ['M7 4 12 6l5-2 4 4-3 4v9H6v-9L3 8z', 'M12 6v15', 'M6 12h12'],
+  gloves: ['M7 12V6a1.5 1.5 0 0 1 3 0v4-6a1.5 1.5 0 0 1 3 0v6-5a1.5 1.5 0 0 1 3 0v6-3a1.5 1.5 0 0 1 3 0v7c0 4-2 6-6 6h-2c-3 0-5-2-5-5l-2-3a1.5 1.5 0 0 1 2-2z'],
+  helmet: ['M4 14a8 8 0 0 1 16 0v3H4z', 'M3 17h18', 'M12 6v4'],
+  necklace: ['M5 4c1 6 3 9 7 12 4-3 6-6 7-12', 'M9 18l3-3 3 3-3 4z'],
+  pants: ['M6 4h12l-1 16h-4l-1-8-1 8H7z', 'M7 8h10'],
+  chest: ['M4 6h16v13H4z', 'M4 10h16', 'M12 6v13', 'M10 13h4'],
+  other: ['M5 5h14v14H5z', 'M8 12h8', 'M12 8v8'],
+};
+
+function itemTypeFromName(name: string): ItemType {
+  const normalized = name.toLocaleLowerCase('en-US');
+  const suffix = /(?:^|\s)(sword|boots|ring|bracelet|chestplate|gloves|helmet|necklace|pants)\s*(?:\d+%?)?$/.exec(normalized)?.[1];
+  if (suffix) return suffix as ItemType;
+  if (/^chest\s+lv\.\d+$/i.test(name)) return 'chest';
+  return 'other';
+}
+
+function appendTypeGlyph(box: HTMLElement, type: ItemType) {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', '0 0 24 24');
+  svg.setAttribute('class', 'type-art-glyph');
+  svg.setAttribute('aria-hidden', 'true');
+  for (const pathData of ITEM_TYPE_PATHS[type]) {
+    const path = document.createElementNS(svg.namespaceURI, 'path');
+    path.setAttribute('d', pathData);
+    svg.append(path);
+  }
+  box.replaceChildren(svg);
+}
+
+function createItemArtwork(name: string, imageUrl: string | null, className: string): HTMLSpanElement {
+  const type = itemTypeFromName(name);
+  const box = document.createElement('span');
+  box.className = className;
+  box.dataset.itemType = type;
+  const validUrl = safeImage(imageUrl);
+  if (!validUrl) {
+    appendTypeGlyph(box, type);
+    return box;
+  }
+  const image = document.createElement('img');
+  image.src = validUrl;
+  image.alt = '';
+  image.width = 256;
+  image.height = 256;
+  image.loading = 'lazy';
+  image.decoding = 'async';
+  image.referrerPolicy = 'no-referrer';
+  image.onerror = () => { image.onerror = null; appendTypeGlyph(box, type); };
+  box.replaceChildren(image);
+  return box;
 }
 
 function formatObservedAt(value: string): string {
@@ -307,9 +365,9 @@ async function openHistory(item: ListedItem | MarketSnapshot['items'][number]) {
   historySummary.textContent = `${currentPrice}${referenceNotice} · ${listings}${captured}`;
   historyFavoriteButton.setAttribute('aria-pressed', String(favorites.has(item.marketHashName)));
   historyFavoriteButton.textContent = favorites.has(item.marketHashName) ? '★ ウォッチ中' : '☆ ウォッチ';
-  const imageUrl = safeImage(item.imageUrl);
-  historyImage.hidden = false;
-  historyImage.src = imageUrl ?? FALLBACK_IMAGE_URL;
+  const historyArtwork = createItemArtwork(item.name, item.imageUrl, 'history-item-art');
+  historyImage.dataset.itemType = historyArtwork.dataset.itemType;
+  historyImage.replaceChildren(...Array.from(historyArtwork.childNodes));
   const steamUrl = isDemoPreview ? 'https://steamcommunity.com/market/search?appid=5084200' : safeSteamUrl(item.steamUrl);
   historySteam.hidden = !steamUrl;
   if (steamUrl) historySteam.href = steamUrl;
@@ -407,15 +465,7 @@ function render() {
     if (!link) continue;
     const card = document.createElement('article');
     card.className = 'item';
-    const imageBox = document.createElement('span');
-    imageBox.className = 'image-box';
-    const imageUrl = safeImage(item.imageUrl);
-    const image = document.createElement('img');
-    image.src = imageUrl ?? FALLBACK_IMAGE_URL;
-    image.alt = '';
-    image.loading = 'lazy';
-    image.onerror = () => { image.onerror = null; image.src = FALLBACK_IMAGE_URL; };
-    imageBox.append(image);
+    const imageBox = createItemArtwork(item.name, item.imageUrl, 'image-box');
     const main = document.createElement('button');
     main.type = 'button';
     main.className = 'item-main item-detail';
@@ -426,22 +476,23 @@ function render() {
     name.textContent = item.name;
     const listings = document.createElement('small');
     listings.textContent = item.listings === null ? '出品数 未取得' : `出品 ${item.listings.toLocaleString('ja-JP')}件`;
-    main.append(name, listings);
+    const info = document.createElement('span');
+    info.className = 'item-info';
+    const type = itemTypeFromName(item.name);
+    if (type !== 'other') {
+      const typeLabel = document.createElement('small');
+      typeLabel.className = 'item-type';
+      typeLabel.textContent = type === 'chestplate' ? 'Chestplate' : type[0].toUpperCase() + type.slice(1);
+      info.append(typeLabel);
+    }
     const price = document.createElement('span');
-    price.className = 'price';
+    price.className = 'price item-price';
     price.textContent = priceView.expiredFx && !observation ? '参考円価格は更新待ち'
       : importedText.get(item.marketHashName) ?? item.priceText ?? '価格情報なし';
     if (observation) {
       const detail = document.createElement('small');
-      const capture = importedSnapshot?.imports.find(entry => entry.sourceKind === observation.sourceKind
-        && entry.observedAt === observation.observedAt && entry.provenance === observation.provenance);
-      // 古いページ記録を保持上限で落としても、商品単位の観測を全件スナップショットに見せない。
-      const coverage = observation.sourceKind === 'query-action' || (capture && !capture.complete) ? '部分観測 · ' : '';
-      const sourceNote = observation.sourceKind === 'query-action' ? '参考値・価格基準確認中'
-        : observation.sourceKind === 'steam-dom' ? '画面参考値・価格基準未確認'
-          : `観測・${observation.provenance}`;
-      const age = Date.now() - Date.parse(observation.observedAt) > 24 * 60 * 60 * 1000 ? ' · 古い観測' : '';
-      detail.textContent = `${sourceNote} · ${coverage}${formatObservedAt(observation.observedAt)}${age}`;
+      detail.className = 'item-price-note';
+      detail.textContent = '参考価格';
       card.dataset.marketObservation = 'imported';
       price.append(detail);
     }
@@ -465,7 +516,8 @@ function render() {
     favoriteButton.setAttribute('aria-label', favorites.has(item.marketHashName) ? `${item.name}をウォッチリストから解除` : `${item.name}をウォッチリストに追加`);
     favoriteButton.textContent = favorites.has(item.marketHashName) ? '★' : '☆';
     favoriteButton.addEventListener('click', () => setFavorite(item.marketHashName));
-    card.append(imageBox, main, price, favoriteButton, steamLink);
+    main.append(imageBox, name, info, price, listings);
+    card.append(main, favoriteButton, steamLink);
     fragment.append(card);
   }
   itemsNode.append(fragment);
@@ -548,10 +600,7 @@ function renderWatchlist() {
       currentFxRate?.rate ?? null) : 'missing';
     const row = document.createElement('article');
     row.className = `watch-row${status === 'reached' ? ' watch-target-reached' : ''}`;
-    const imageBox = document.createElement('span'); imageBox.className = 'watch-row-image';
-    const imageUrl = item ? safeImage(item.imageUrl) : null;
-    const image = document.createElement('img'); image.src = imageUrl ?? FALLBACK_IMAGE_URL; image.alt = ''; image.loading = 'lazy';
-    image.onerror = () => { image.onerror = null; image.src = FALLBACK_IMAGE_URL; }; imageBox.append(image);
+    const imageBox = createItemArtwork(name, item?.imageUrl ?? null, 'watch-row-image');
     row.append(imageBox);
     const content = document.createElement('div'); content.className = 'watch-row-content';
     const title = document.createElement('button'); title.type = 'button'; title.className = 'watch-row-title';

@@ -336,7 +336,7 @@ test('persisted queryAction observations can be published as isolated reference 
   assert.equal(latestObservedItems(parseMarketObservations(imported.snapshot)).length, 30);
 });
 
-test('operator-directed factual publication keeps rights unconfirmed and strips Steam images', async t => {
+test('factual publication keeps rights unconfirmed and includes images only by explicit opt-in', async t => {
   const directory = await mkdtemp(join(tmpdir(), 'tbcm-factual-publish-'));
   t.after(() => rm(directory, { recursive: true, force: true }));
   const storePath = join(directory, 'query-action-observations.json');
@@ -355,6 +355,14 @@ test('operator-directed factual publication keeps rights unconfirmed and strips 
     && product.observations[0].referencePriceText === '$0.03'));
   assert.ok(published.snapshot.imports.every(capture => capture.rightsConfirmed === false));
   assert.ok(published.snapshot.imports.every(capture => capture.complete === false));
+  assert.equal(validateMarketObservations(JSON.parse(await readFile(outputPath, 'utf8'))).products.length, 30);
+  const withImages = await importMarketFile({ inputPath: storePath, outputPath, now: fixedNow,
+    provenance: 'operator-directed factual observations; images omitted; rights unconfirmed',
+    publish: true, factualObservationPublication: true, includeSteamImages: true });
+  assert.equal(withImages.snapshot.products.length, 30);
+  assert.ok(withImages.snapshot.products.every(product => product.imageUrl?.startsWith('https://community.cloudflare.steamstatic.com/economy/image/')));
+  assert.ok(withImages.snapshot.imports.every(capture => capture.rightsConfirmed === false));
+  assert.ok(withImages.changed, 'image restoration changes the public data even when observation points are already present');
   assert.equal(validateMarketObservations(JSON.parse(await readFile(outputPath, 'utf8'))).products.length, 30);
   await assert.rejects(importMarketFile({ inputPath: storePath, outputPath: join(directory, 'rejected.json'), now: fixedNow,
     provenance: 'operator-directed factual observations', publish: true, factualObservationPublication: true,
