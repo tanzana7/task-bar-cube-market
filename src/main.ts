@@ -463,7 +463,7 @@ function renderOverview() {
     ...(usdSnapshot.fetchedAt ? [usdSnapshot.fetchedAt] : []),
     ...imported.map(item => item.observation?.observedAt).filter((value): value is string => typeof value === 'string'),
   ]);
-  overviewListingsNode.textContent = overview.totalListings === null ? '未取得'
+  overviewListingsNode.textContent = combined.length === 0 || overview.totalListings === null ? '未取得'
     : observedAtValues.size > 1 ? '商品別に表示' : overview.totalListings.toLocaleString('ja-JP');
   const lastObserved = [usdSnapshot.fetchedAt, ...imported.map(item => item.observation?.observedAt ?? null)]
     .filter((value): value is string => typeof value === 'string').sort((a, b) => Date.parse(b) - Date.parse(a))[0];
