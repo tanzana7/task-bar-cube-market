@@ -69,6 +69,20 @@ export async function runFeedCycle({ sourceUrl, inputPath, isolationRoot = null,
       || rightsReference.length > 180 || /[\r\n\0]/.test(rightsReference) || inputPath)) {
     throw new Error('Production feed needs explicit enablement, a recorded rights review, and a configured HTTPS feed');
   }
+  return runMarketInputCycle({ isolationRoot, rightsReference, enabled, provenance,
+    loadText: () => sourceUrl ? fetchFeed(sourceUrl, isolated) : readFile(inputPath, 'utf8') });
+}
+
+// Acquisition adapters share the same validation, merge, rollback and Pages publication path.
+// The callback runs under the output lock, so a second cycle cannot acquire another page first.
+export async function runMarketInputCycle({ loadText, isolationRoot = null,
+  rightsReference = null, enabled = false, provenance }) {
+  const isolated = isolationRoot !== null;
+  if (typeof loadText !== 'function') throw new Error('A market input loader is required');
+  if (!isolated && (!enabled || typeof rightsReference !== 'string' || !rightsReference.trim()
+      || rightsReference.length > 180 || /[\r\n\0]/.test(rightsReference))) {
+    throw new Error('Production input needs explicit enablement and a recorded rights review');
+  }
   const outputPath = isolated ? isolatedOutput(isolationRoot) : fileURLToPath(new URL('../public/market-observations.json', import.meta.url));
   const recordedProvenance = isolated ? provenance : `${provenance}; rights: ${rightsReference}`;
   const lockKey = createHash('sha256').update(outputPath.toLowerCase()).digest('hex');
@@ -80,7 +94,7 @@ export async function runFeedCycle({ sourceUrl, inputPath, isolationRoot = null,
   let stage = 'receive';
   try {
     temporary = await mkdtemp(join(tmpdir(), 'tbcm-feed-input-'));
-    const text = sourceUrl ? await fetchFeed(sourceUrl, isolated) : await readFile(inputPath, 'utf8');
+    const text = await loadText();
     if (Buffer.byteLength(text) > maxBytes) throw new Error('Feed exceeds 8 MiB');
     stage = 'validate';
     JSON.parse(text);

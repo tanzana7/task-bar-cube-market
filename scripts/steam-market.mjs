@@ -220,6 +220,9 @@ export function createSteamRequestController({ fetchImpl = fetch, pause = ms => 
         response = await fetchImpl(url, {
           ...init,
           headers: { Accept: 'application/json', ...init.headers },
+          // A redirect must not create an uncounted second HTTP request or carry credentials.
+          redirect: 'error',
+          credentials: 'omit',
           signal: AbortSignal.timeout(15000),
         });
       } catch (error) {

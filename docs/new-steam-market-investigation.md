@@ -1,5 +1,11 @@
 # 新Steam Market検索方式の調査
 
+## 2026-10-25: TBC CookieなしGET queryActionの実測成功
+
+AppID 5084200へ1要求を送りHTTP200を確認。request `price.eCurrency=1`、response全行`eCurrency=1`、start=0、grouping=1、total_count=121、30商品種類を既存パーサー/商品別ストアが受理した。応答498ms、観測日時2026-10-25T12:36:56.601Z。Cookie・認証情報・redirect・再試行・旧APIフォールバックなし。共有予算は3→4件へ永続化した。
+
+`market:source`でこの取得アダプターを既存フィードと共通の観測統合/公開処理に接続。subtotalは引き続き参考値で、fee各1の加減算や旧sell_priceとの同一性は未確認。本番定期アクセス・商品公開は未有効化。別ページ/継続更新の未実測事項、今回の実データによる公開E2E、運用手順は[実測・接続報告](tbc-query-action-live-validation.md)を参照。以下のTBH/DOM調査は各バージョン時点の記録である。
+
 ## v0.5.2: 隔離されたPages表示テスト
 
 `public/query-action-demo.html`は、保存fixtureを使う独立した動作確認ページである。`npm run build`の先頭で`scripts/build-query-action-demo.mjs`がfixtureを本番パーサーで再検証し、`public/query-action-demo.json`を生成する。画面側もAppID 3678970、Task Bar Hero、response currency ID 1、request通貨との対応未確認、価格basis未確認、全件でないことを検査する。HTTPアクセスはページから同じサイト内のJSONに対する1回のみで、Steam Marketへの通信はない。
@@ -8,7 +14,7 @@
 
 公開先: `https://task-bar-cube-market.pages.dev/query-action-demo.html`。fixtureデータは実際に保存されたTBH Steam応答の抜粋であり、合成商品ではない。ただしスナップショット時刻が不明であるため、ライブ市場データとして扱ってはならない。
 
-本番商品のqueryAction移行は未実装のまま保留する。価格基準・同一通信上の通貨指定・AppID 5084200の応答を確認できるまで、表示テストから本番商品キャッシュへ昇格する操作はない。queryAction batchの`.market`観測データとPages用fixtureデモは別の場所・別の流れである。
+このv0.5.2時点では本番商品のqueryAction移行を保留した。現在は上記のTBC実測と参考値用の共通公開経路を追加しているが、確定価格キャッシュへの昇格は引き続き行わない。TBH fixtureデモは本番TBC観測とは別の流れである。
 
 ## v0.5.1: request/response通貨・価格基準・部分観測の扱い
 

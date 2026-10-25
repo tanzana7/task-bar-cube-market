@@ -283,7 +283,9 @@ async function openHistory(item: ListedItem | MarketSnapshot['items'][number]) {
   const listings = visibleItem.listings === null ? '出品数 未取得' : `出品 ${visibleItem.listings.toLocaleString('ja-JP')}件`;
   const capturedAt = imported?.observedAt ?? usdSnapshot?.fetchedAt;
   const captured = capturedAt ? ` · ${formatObservedAt(capturedAt)}` : '';
-  historySummary.textContent = `${currentPrice} · ${listings}${captured}`;
+  // 詳細画面だけを開いても、未検証の表示価格を確定した最安値と誤認させない。
+  const referenceNotice = imported?.referencePriceText ? ' · 参考値・価格基準確認中' : '';
+  historySummary.textContent = `${currentPrice}${referenceNotice} · ${listings}${captured}`;
   historyFavoriteButton.setAttribute('aria-pressed', String(favorites.has(item.marketHashName)));
   historyFavoriteButton.textContent = favorites.has(item.marketHashName) ? '★ ウォッチ中' : '☆ ウォッチ';
   const imageUrl = safeImage(item.imageUrl);

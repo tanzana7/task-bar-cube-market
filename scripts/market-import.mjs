@@ -382,6 +382,10 @@ export function parseMarketImportBatch({ documents, observedAt = null, provenanc
 
 function parseQueryActionStoreImport({ store, provenance, rightsConfirmed, now }) {
   validateQueryActionObservationStore(store);
+  if (!(now instanceof Date) || !Number.isFinite(now.valueOf())
+      || store.products.some(product => product.observations.some(point => Date.parse(point.observedAt) > now.valueOf() + 5 * 60_000))) {
+    throw new Error('observed-at cannot be in the future');
+  }
   if (store.appid !== TBC_APPID) throw new Error('Import contains a non-TBC AppID');
   if (!safeProvenance(provenance)) throw new Error('provenance must be 1-240 characters without line breaks');
   if (typeof rightsConfirmed !== 'boolean') throw new Error('rightsConfirmed must be a boolean operator attestation');

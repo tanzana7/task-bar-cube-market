@@ -4,3 +4,4 @@ dist/
 /.market/tbc-dom-observation-*.json
 /.market/dom-preview/
 /.market/feed-preview/
+/.market/source-preview/
