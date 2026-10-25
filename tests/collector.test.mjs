@@ -4,7 +4,7 @@ import { readFile, writeFile, mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { APPID, collect, collectPair, normalizeResult, parsePage, parsePriceMinor, saveSnapshot, saveSnapshotPair, searchUrl, validateSnapshot } from '../scripts/steam-market.mjs';
+import { APPID, FX_RATE_URL, collect, collectPair, convertUsdToJpy, fetchFxRate, normalizeResult, parsePage, parsePriceMinor, saveSnapshot, saveSnapshotPair, searchUrl, validateSnapshot, validateSnapshotPair } from '../scripts/steam-market.mjs';
 
 const fixture = JSON.parse(await readFile(new URL('./fixtures/steam-pages.json', import.meta.url), 'utf8'));
 const response = body => ({ ok: true, status: 200, json: async () => body });
@@ -45,7 +45,7 @@ test('observed TBH fields normalize without entering the Cube cache', async () =
   assert.equal(item.steamUrl, 'https://steamcommunity.com/market/listings/3678970/Contaminated%20Reliquary%20(Beyond)');
   assert.ok(item.imageUrl.startsWith('https://community.cloudflare.steamstatic.com/economy/image/'));
   assert.throws(() => normalizeResult(page.results[0], 'USD'), /Unexpected Steam appid/);
-  assert.throws(() => normalizeResult(page.results[0], 'JPY', 3678970), /Currency could not be verified/);
+  assert.throws(() => normalizeResult(page.results[0], 'JPY', 3678970), /Steam returned USD/);
 });
 
 test('accepts documented currency symbols and spacing, with matching hundredths', () => {
@@ -99,7 +99,7 @@ test('rejects incomplete, mismatched and blocked pages', async () => {
 });
 
 test('rejects currency mismatch and missing identifiers', async () => {
-  await assert.rejects(collect('JPY', mockPages(fixture.USD), immediate), /Currency could not be verified/);
+  await assert.rejects(collect('JPY', mockPages(fixture.USD), immediate), /Steam returned USD/);
   await assert.rejects(collect('USD', mockPages({ 0: { success: true, total_count: 1, results: [{ name: 'No hash' }] } }), immediate), /identifier missing/);
 });
 
@@ -130,6 +130,73 @@ test('a failure in USD prevents either currency from being written', async () =>
     await assert.rejects(collectPair(fetchImpl, immediate), /access stopped/);
     assert.equal(await readFile(jpyPath, 'utf8'), prior);
     assert.equal(await readFile(usdPath, 'utf8'), prior);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('only a JPY currency mismatch uses a dated FX reference from verified USD prices', async () => {
+  const requests = [];
+  const fetchImpl = async url => {
+    const params = new URL(url).searchParams;
+    requests.push(`${params.get('currency')}:${params.get('start')}`);
+    return mockPages(fixture.USD)(url);
+  };
+  const rateFetch = async url => {
+    assert.equal(url, FX_RATE_URL);
+    return response({ date: '2026-10-25', base: 'USD', quote: 'JPY', rate: 157.12 });
+  };
+  const pair = await collectPair(fetchImpl, immediate, rateFetch, () => new Date('2026-10-25T09:00:00Z'));
+  assert.deepEqual(requests, ['1:0', '1:2', '8:0']);
+  assert.equal(pair.JPY.priceSource, 'fx');
+  assert.equal(pair.USD.priceSource, 'steam');
+  assert.equal(pair.JPY.fxRate.rateDate, '2026-10-25');
+  assert.equal(pair.JPY.items[0].priceText, '¥157');
+  assert.equal(pair.JPY.items[0].priceMinor, 15700);
+  assert.equal(pair.USD.items[0].priceText, '$1.00');
+  const missing = { ...pair.USD, items: [{ ...pair.USD.items[0], priceMinor: null, priceText: null }] };
+  const convertedMissing = convertUsdToJpy(missing, pair.JPY.fxRate);
+  assert.equal(convertedMissing.items[0].priceMinor, null);
+  assert.equal(convertedMissing.items[0].priceText, null);
+  validateSnapshotPair(pair);
+  assert.throws(() => validateSnapshotPair({ ...pair, JPY: { ...pair.JPY,
+    items: [{ ...pair.JPY.items[0], priceMinor: 99900 }, ...pair.JPY.items.slice(1)] } }), /Invalid market item|do not match/);
+});
+
+test('direct JPY takes priority and rate failures cannot produce a fallback', async () => {
+  const direct = await collectPair(async url => {
+    const params = new URL(url).searchParams;
+    return mockPages(params.get('currency') === '8' ? fixture.JPY : fixture.USD)(url);
+  }, immediate, async () => { throw new Error('rate must not be requested'); });
+  assert.equal(direct.JPY.priceSource, 'steam');
+  const mismatched = async url => mockPages(fixture.USD)(url);
+  await assert.rejects(collectPair(mismatched, immediate, async () => ({ ok: false, status: 503 })), /FX HTTP 503/);
+  await assert.rejects(fetchFxRate(async () => response({ date: '2026-10-01', base: 'USD', quote: 'JPY', rate: 157 }),
+    () => new Date('2026-10-25T09:00:00Z')), /stale/);
+  await assert.rejects(collectPair(async url => new URL(url).searchParams.get('currency') === '8'
+    ? { ok: false, status: 429 } : mockPages(fixture.USD)(url), immediate,
+  async () => { throw new Error('rate must not be requested'); }), /access stopped/);
+  await assert.rejects(collectPair(async url => {
+    const params = new URL(url).searchParams;
+    if (params.get('currency') === '1') return mockPages(fixture.USD)(url);
+    return response({ ...fixture.JPY[0], results: [{ ...fixture.JPY[0].results[0], sell_price_text: 'broken price' }] });
+  }, immediate, async () => { throw new Error('rate must not be requested'); }), /Currency could not be verified/);
+});
+
+test('an FX provider failure leaves both existing cache files untouched', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'tbcm-fx-'));
+  const paths = {
+    JPY: pathToFileURL(join(dir, 'market-jpy.json')),
+    USD: pathToFileURL(join(dir, 'market-usd.json')),
+  };
+  const previous = '{"old":"verified snapshot"}';
+  try {
+    await writeFile(paths.JPY, previous);
+    await writeFile(paths.USD, previous);
+    await assert.rejects(collectPair(mockPages(fixture.USD), immediate,
+      async () => ({ ok: false, status: 503 })), /FX HTTP 503/);
+    assert.equal(await readFile(paths.JPY, 'utf8'), previous);
+    assert.equal(await readFile(paths.USD, 'utf8'), previous);
   } finally {
     await rm(dir, { recursive: true, force: true });
   }

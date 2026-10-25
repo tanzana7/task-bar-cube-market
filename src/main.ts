@@ -7,6 +7,8 @@ type Snapshot = {
   status: 'ok' | 'unavailable';
   fetchedAt: string | null;
   currency: 'JPY' | 'USD';
+  priceSource?: 'steam' | 'fx';
+  fxRate?: { source: 'Frankfurter'; rate: number; rateDate: string; fetchedAt: string };
   items: MarketItem[];
 };
 
@@ -17,6 +19,7 @@ const itemsNode = document.querySelector<HTMLDivElement>('#items')!;
 const statusNode = document.querySelector<HTMLDivElement>('#status')!;
 const countNode = document.querySelector<HTMLSpanElement>('#result-count')!;
 const updatedNode = document.querySelector<HTMLSpanElement>('#updated-at')!;
+const noteNode = document.querySelector<HTMLParagraphElement>('#market-note')!;
 let snapshot: Snapshot | null = null;
 let loadSequence = 0;
 function storedValue(key: string): string | null {
@@ -34,7 +37,12 @@ function isSnapshot(value: unknown): value is Snapshot {
     && ['ok', 'unavailable'].includes(data.status ?? '')
     && (data.currency === 'JPY' || data.currency === 'USD')
     && Array.isArray(data.items)
-    && (data.fetchedAt === null || typeof data.fetchedAt === 'string');
+    && (data.fetchedAt === null || typeof data.fetchedAt === 'string')
+    && (data.priceSource === undefined || data.priceSource === 'steam'
+      || (data.priceSource === 'fx' && data.currency === 'JPY' && data.fxRate?.source === 'Frankfurter'
+        && typeof data.fxRate.rate === 'number' && Number.isFinite(data.fxRate.rate) && data.fxRate.rate > 0
+        && typeof data.fxRate.rateDate === 'string' && !Number.isNaN(Date.parse(data.fxRate.rateDate))
+        && typeof data.fxRate.fetchedAt === 'string' && !Number.isNaN(Date.parse(data.fxRate.fetchedAt))));
 }
 
 function safeImage(url: string | null): string | null {
@@ -62,6 +70,14 @@ function render() {
   const visible = filterAndSort(snapshot.items, search.value, sort.value as SortMode);
   countNode.textContent = `${visible.length}件のアイテム`;
   itemsNode.replaceChildren();
+  // Keep an old valid cache on disk, but do not present its expired conversion as a current JPY reference.
+  if (snapshot.priceSource === 'fx' && snapshot.fxRate
+      && Date.now() - Date.parse(snapshot.fxRate.rateDate) > 4 * 24 * 60 * 60 * 1000) {
+    statusNode.hidden = false;
+    statusNode.textContent = 'JPY参考価格は更新待ちです';
+    itemsNode.hidden = true;
+    return;
+  }
   if (snapshot.status === 'unavailable') {
     statusNode.hidden = false;
     statusNode.textContent = `${snapshot.currency}の価格情報は未取得です`;
@@ -106,6 +122,12 @@ function render() {
     const price = document.createElement('span');
     price.className = 'price';
     price.textContent = item.priceText ?? '価格情報なし';
+    if (item.priceText && snapshot.priceSource === 'fx') {
+      // Converted yen must remain visibly distinct from a Steam JPY listing.
+      const note = document.createElement('small');
+      note.textContent = '参考価格・為替換算';
+      price.append(note);
+    }
     const arrow = document.createElement('span');
     arrow.className = 'item-arrow';
     arrow.textContent = '↗';
@@ -130,10 +152,19 @@ async function load(currency: 'JPY' | 'USD') {
     if (!isSnapshot(value) || value.currency !== currency) throw new Error('Invalid snapshot');
     if (sequence !== loadSequence) return;
     snapshot = value;
+    noteNode.textContent = snapshot.priceSource === 'fx'
+      ? 'JPYはSteamのUSD最安価格を為替換算した参考価格です。購入時はSteamでご確認ください。'
+      : '価格は取得時点の最安出品価格です。購入時はSteamでご確認ください。';
     if (snapshot.fetchedAt) {
       const date = new Date(snapshot.fetchedAt);
       if (!Number.isNaN(date.valueOf())) {
         updatedNode.textContent = `取得 ${new Intl.DateTimeFormat('ja-JP', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Tokyo' }).format(date)}`;
+      }
+    }
+    if (snapshot.priceSource === 'fx' && snapshot.fxRate) {
+      const rateDate = new Date(snapshot.fxRate.fetchedAt);
+      if (!Number.isNaN(rateDate.valueOf())) {
+        updatedNode.textContent += ` · 為替 ${snapshot.fxRate.rate}円/USD（${snapshot.fxRate.rateDate}・Frankfurter、取得 ${new Intl.DateTimeFormat('ja-JP', { dateStyle: 'short', timeStyle: 'short', timeZone: 'Asia/Tokyo' }).format(rateDate)}）`;
       }
     }
     // Static snapshots can outlive a failed refresh; show the true capture time.

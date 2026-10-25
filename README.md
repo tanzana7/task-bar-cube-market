@@ -11,11 +11,11 @@ npm run test
 npm run build
 ```
 
-Viteの出力は`dist/`です。Cloudflare Pagesはビルドコマンド`npm run build`、出力ディレクトリ`dist`です。JPY / USDを切り替えられ、選択はブラウザに保存されます。実データの通貨を検証できるまで各JSONは未取得状態です。
+Viteの出力は`dist/`です。Cloudflare Pagesはビルドコマンド`npm run build`、出力ディレクトリ`dist`です。JPY / USDを切り替えられ、選択はブラウザに保存されます。Cubeの商品がまだ確認できないため、現在の両JSONは未取得状態です。
 
 ## データ更新
 
-`node scripts/steam-market.mjs --live`は許諾確認後の手動実行用です。環境変数`STEAM_MARKET_COLLECTION_ALLOWED=true`も必要です。`search/render/`からAppID 5084200のJPY / USDを取得し、全ページと通貨を検証してから`public/market-jpy.json`と`public/market-usd.json`を更新します。403、429、欠損、通貨不一致、通信エラーでは失敗して既存キャッシュを保持します。現時点ではSteamの自動収集と再配布の許諾が未確認です。
+`node scripts/steam-market.mjs --live`は許諾確認後の手動実行用です。環境変数`STEAM_MARKET_COLLECTION_ALLOWED=true`も必要です。`search/render/`からAppID 5084200のUSDとJPYを検証します。JPY指定が通貨不一致の場合だけ、確認済みUSD価格と新規取得したFrankfurterのUSD/JPYレートで「参考価格・為替換算」を作ります。これはSteamのJPY実価格ではありません。全ページと両通貨の整合性を検証してから`public/market-jpy.json`と`public/market-usd.json`をまとめて更新します。403、429、欠損、通信エラー、為替取得失敗では既存キャッシュを保持します。現時点ではSteamの自動収集と再配布の許諾が未確認です。
 
 本番ブラウザはSteamに直接アクセスせず、静的JSONだけを読みます。データが未取得なら架空の商品や価格は表示しません。
 
@@ -30,5 +30,6 @@ Viteの出力は`dist/`です。Cloudflare Pagesはビルドコマンド`npm run
 - [Steamデータ調査](docs/steam-data-investigation.md)
 - [更新運用](docs/refresh-operations.md)
 - [TBH実レスポンス検証](docs/tbh-live-validation.md)
+- [JPY/USD取得方式の調査](docs/currency-investigation.md)
 
 TBH検証は`node scripts/verify-tbh.mjs`で保存済みの最小fixtureを使用します。明示的な`--live`を付けた場合だけ、TBH AppID 3678970の先頭10件を読み取ります。本番JSONには書き込みません。

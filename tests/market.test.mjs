@@ -16,6 +16,9 @@ test('price sorts both directions with stable name ties and missing last', () =>
   assert.deepEqual(filterAndSort(items, '', 'price-desc').map(x => x.name), ['A', 'Z', 'C', 'B']);
 });
 
-test('different currency symbols are not compared numerically', () => {
-  assert.deepEqual(filterAndSort([item('Z', 1, '¥1'), item('A', 1000, '$10')], '', 'price-asc').map(x => x.name), ['A', 'Z']);
+test('price ordering is applied within each currency snapshot', () => {
+  const jpy = [item('Z', 100, '¥1'), item('A', 200, '¥2')];
+  const usd = [item('A', 100, '$1.00'), item('Z', 200, '$2.00')];
+  assert.deepEqual(filterAndSort(jpy, '', 'price-asc').map(x => x.name), ['Z', 'A']);
+  assert.deepEqual(filterAndSort(usd, '', 'price-asc').map(x => x.name), ['A', 'Z']);
 });

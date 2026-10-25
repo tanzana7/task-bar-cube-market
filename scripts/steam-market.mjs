@@ -8,6 +8,9 @@ export const CURRENCIES = Object.freeze({
   USD: { code: 1, country: 'US', file: 'market-usd.json' },
 });
 const MARKET_ENDPOINT = 'https://steamcommunity.com/market/search/render/';
+export const FX_RATE_URL = 'https://api.frankfurter.dev/v2/rate/USD/JPY';
+
+export class CurrencyMismatchError extends Error {}
 
 export function searchUrl(start, currency = 'JPY') {
   if (!Number.isSafeInteger(start) || start < 0 || !CURRENCIES[currency]) throw new Error('Invalid search request');
@@ -33,8 +36,8 @@ function safeSteamImage(value) {
 
 export function parsePriceMinor(text, currency) {
   if (typeof text !== 'string') return null;
-  // Steamworks documents these currencies in hundredths. The undocumented market
-  // endpoint must still prove the same relationship before a price is cached.
+  // USD hundredths were observed in TBH search results. JPY search units remain unverified;
+  // the parser only accepts them when Steam's text and integer match this exact relation.
   const normalized = text.trim().replace(/[\u00a0\u202f\u3000]/g, ' ');
   const pattern = currency === 'JPY'
     ? /^(?:JP¥|[¥￥]) *(0|[1-9]\d*|[1-9]\d{0,2}(?:,\d{3})+)(?: +JPY)?$/
@@ -66,6 +69,10 @@ export function normalizeResult(result, currency = 'JPY', appid = APPID) {
   const priceAmount = Number.isSafeInteger(result.sell_price) && result.sell_price >= 0 ? result.sell_price : null;
   const displayedMinor = priceText === null ? null : parsePriceMinor(priceText, currency);
   if (priceText !== null && displayedMinor === null) {
+    // Only a fully verified USD response to a JPY request can trigger FX fallback.
+    if (currency === 'JPY' && priceAmount !== null && parsePriceMinor(priceText, 'USD') === priceAmount) {
+      throw new CurrencyMismatchError('Steam returned USD for a JPY request');
+    }
     throw new Error(`Currency could not be verified for ${currency}`);
   }
   if (displayedMinor !== null && priceAmount !== null && displayedMinor !== priceAmount) {
@@ -125,7 +132,16 @@ export async function collect(currency, fetchImpl = fetch, pause = ms => new Pro
   if (!CURRENCIES[currency]) throw new Error('Unsupported currency');
   const first = await fetchPage(0, currency, fetchImpl);
   const total = first.total_count;
-  const all = [...first.results];
+  const unique = new Map();
+  const addResults = results => {
+    for (const raw of results) {
+      // Validate each page before requesting another; a mismatched currency must not trigger a full crawl.
+      const item = normalizeResult(raw, currency);
+      if (unique.has(item.marketHashName)) throw new Error('Steam result pages contain duplicate items');
+      unique.set(item.marketHashName, item);
+    }
+  };
+  addResults(first.results);
   if (total > 0) {
     // The first result count is authoritative when Steam ignores count=100.
     const step = first.results.length;
@@ -134,22 +150,15 @@ export async function collect(currency, fetchImpl = fetch, pause = ms => new Pro
       await pause(2000);
       const page = await fetchPage(start, currency, fetchImpl, total);
       if (page.results.length !== Math.min(step, total - start)) throw new Error('Steam page missing items');
-      all.push(...page.results);
+      addResults(page.results);
     }
-    if (all.length !== total) throw new Error('Steam result set was incomplete');
-  }
-  const unique = new Map();
-  for (const raw of all) {
-    const item = normalizeResult(raw, currency);
-    // A repeated listing can hide an item skipped by a changing result order.
-    // Discard the whole collection instead of publishing an incomplete snapshot.
-    if (unique.has(item.marketHashName)) throw new Error('Steam result pages contain duplicate items');
-    unique.set(item.marketHashName, item);
+    if (unique.size !== total) throw new Error('Steam result set was incomplete');
   }
   return {
     schemaVersion: 2,
     appid: APPID,
     currency,
+    priceSource: 'steam',
     // With zero listings there is no price string with which to verify endpoint currency behavior.
     status: unique.size ? 'ok' : 'unavailable',
     fetchedAt: new Date().toISOString(),
@@ -157,19 +166,64 @@ export async function collect(currency, fetchImpl = fetch, pause = ms => new Pro
   };
 }
 
-export async function collectPair(fetchImpl = fetch, pause = ms => new Promise(resolve => setTimeout(resolve, ms))) {
-  // Complete and validate both currencies before any cache write.
-  const jpy = await collect('JPY', fetchImpl, pause);
-  const usd = await collect('USD', fetchImpl, pause);
-  validateSnapshot(jpy, 'JPY');
+export async function fetchFxRate(fetchImpl = fetch, now = () => new Date()) {
+  let response;
+  try {
+    response = await fetchImpl(FX_RATE_URL, { headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(15000) });
+  } catch (error) {
+    throw new Error('FX network request failed', { cause: error });
+  }
+  if (!response.ok) throw new Error(`FX HTTP ${response.status}`);
+  const body = await response.json();
+  const fetchedAt = now().toISOString();
+  const published = typeof body.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(body.date)
+    ? Date.parse(`${body.date}T00:00:00Z`) : NaN;
+  // Daily rates may span a weekend; reject a stale or future observation instead of silently reusing it.
+  if (body.base !== 'USD' || body.quote !== 'JPY' || !Number.isFinite(body.rate) || body.rate <= 0 || body.rate > 10000
+      || !Number.isFinite(published) || new Date(published).toISOString().slice(0, 10) !== body.date
+      || Date.parse(fetchedAt) - published > 4 * 86400000 || published - Date.parse(fetchedAt) > 86400000) {
+    throw new Error('FX rate is invalid or stale');
+  }
+  return { source: 'Frankfurter', sourceUrl: FX_RATE_URL, base: 'USD', quote: 'JPY', rate: body.rate,
+    rateDate: body.date, fetchedAt };
+}
+
+export function convertUsdToJpy(usd, fxRate) {
   validateSnapshot(usd, 'USD');
-  return { JPY: jpy, USD: usd };
+  const items = usd.items.map(item => {
+    if (item.priceMinor === null) return { ...item, priceMinor: null, priceText: null };
+    const yen = Math.round(item.priceMinor * fxRate.rate / 100);
+    if (!Number.isSafeInteger(yen) || !Number.isSafeInteger(yen * 100)) throw new Error('Converted price is out of range');
+    return { ...item, priceMinor: yen * 100, priceText: `¥${yen.toLocaleString('en-US')}` };
+  });
+  return { ...usd, currency: 'JPY', priceSource: 'fx', fxRate, items };
+}
+
+export async function collectPair(fetchImpl = fetch, pause = ms => new Promise(resolve => setTimeout(resolve, ms)), rateFetchImpl = fetch, now = () => new Date()) {
+  // Complete both sides before any cache write. Only an explicit currency mismatch permits FX fallback.
+  const usd = await collect('USD', fetchImpl, pause);
+  let jpy;
+  try {
+    jpy = await collect('JPY', fetchImpl, pause);
+  } catch (error) {
+    if (!(error instanceof CurrencyMismatchError)) throw error;
+    console.warn('Steam JPY currency mismatch; using labeled FX reference prices');
+    jpy = convertUsdToJpy(usd, await fetchFxRate(rateFetchImpl, now));
+  }
+  return validateSnapshotPair({ JPY: jpy, USD: usd });
 }
 
 export function validateSnapshot(snapshot, currency) {
   if (!snapshot || snapshot.schemaVersion !== 2 || snapshot.appid !== APPID || snapshot.currency !== currency
       || !['ok', 'unavailable'].includes(snapshot.status) || !Array.isArray(snapshot.items)
       || (snapshot.status === 'ok' && snapshot.items.length === 0)) throw new Error('Invalid market snapshot');
+  if (snapshot.priceSource !== undefined && !['steam', 'fx'].includes(snapshot.priceSource)) throw new Error('Invalid price source');
+  if (snapshot.priceSource === 'fx' && (currency !== 'JPY' || !snapshot.fxRate
+      || snapshot.fxRate.source !== 'Frankfurter' || snapshot.fxRate.sourceUrl !== FX_RATE_URL
+      || snapshot.fxRate.base !== 'USD' || snapshot.fxRate.quote !== 'JPY'
+      || !Number.isFinite(snapshot.fxRate.rate) || snapshot.fxRate.rate <= 0 || snapshot.fxRate.rate > 10000
+      || typeof snapshot.fxRate.rateDate !== 'string' || Number.isNaN(Date.parse(snapshot.fxRate.rateDate))
+      || Number.isNaN(Date.parse(snapshot.fxRate.fetchedAt)))) throw new Error('Invalid FX metadata');
   for (const item of snapshot.items) {
     if (typeof item.marketHashName !== 'string' || typeof item.name !== 'string'
         || (item.priceText === null) !== (item.priceMinor === null)
@@ -181,14 +235,29 @@ export function validateSnapshot(snapshot, currency) {
   return snapshot;
 }
 
+export function validateSnapshotPair(pair) {
+  validateSnapshot(pair?.JPY, 'JPY');
+  validateSnapshot(pair?.USD, 'USD');
+  if (pair.JPY.priceSource === 'fx') {
+    const expected = convertUsdToJpy(pair.USD, pair.JPY.fxRate);
+    if (pair.JPY.fetchedAt !== pair.USD.fetchedAt || pair.JPY.items.length !== expected.items.length
+        || pair.JPY.items.some((item, index) => item.marketHashName !== expected.items[index].marketHashName
+          || item.name !== expected.items[index].name || item.imageUrl !== expected.items[index].imageUrl
+          || item.listings !== expected.items[index].listings || item.steamUrl !== expected.items[index].steamUrl
+          || item.priceMinor !== expected.items[index].priceMinor || item.priceText !== expected.items[index].priceText)) {
+      throw new Error('Converted JPY prices do not match USD snapshot and FX rate');
+    }
+  }
+  return pair;
+}
+
 export async function validateCachedPair(paths = {
   JPY: new URL('../public/market-jpy.json', import.meta.url),
   USD: new URL('../public/market-usd.json', import.meta.url),
 }) {
-  for (const currency of ['JPY', 'USD']) {
-    const snapshot = JSON.parse(await readFile(paths[currency], 'utf8'));
-    validateSnapshot(snapshot, currency);
-  }
+  const pair = {};
+  for (const currency of ['JPY', 'USD']) pair[currency] = JSON.parse(await readFile(paths[currency], 'utf8'));
+  validateSnapshotPair(pair);
 }
 
 export async function saveSnapshot(snapshot, currency, cachePath = new URL(`../public/${CURRENCIES[currency].file}`, import.meta.url)) {
@@ -211,6 +280,7 @@ export async function saveSnapshotPair(pair, paths = {
   JPY: new URL('../public/market-jpy.json', import.meta.url),
   USD: new URL('../public/market-usd.json', import.meta.url),
 }) {
+  validateSnapshotPair(pair);
   const originals = {};
   const temporary = {};
   for (const currency of ['JPY', 'USD']) {
