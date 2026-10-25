@@ -69,6 +69,34 @@
 .filter-disclosure{border-bottom:1px solid #26364a}
 .filter-disclosure>summary{min-height:42px;display:flex;align-items:center;padding:0 20px;color:#aabbd0;font-size:12px;cursor:pointer;user-select:none}
 .filter-disclosure>summary:focus-visible{outline:2px solid #8aceff;outline-offset:-2px}
+.header-actions{display:flex;align-items:center;gap:18px}
+.watchlist-open{min-height:40px;padding:0 12px;border:1px solid #3b536e;border-radius:9px;background:#14243a;color:#eaf1fa;font:inherit;font-size:13px;cursor:pointer}
+.watchlist-open:hover{background:#1b3049}.watchlist-open:focus-visible,.watch-target-form button:focus-visible,.watch-remove:focus-visible,.watchlist-controls input:focus-visible,.watchlist-controls select:focus-visible,.watch-target-form input:focus-visible,.watch-target-form select:focus-visible{outline:2px solid #8aceff;outline-offset:2px}
+.watchlist-open span{display:inline-grid;place-items:center;min-width:22px;height:22px;margin-left:5px;border-radius:99px;background:#263c56;font-variant-numeric:tabular-nums}
+.watch-alert{margin:0;padding:12px 20px;background:#45361b;color:#ffe4a3;border-bottom:1px solid #725c2f;font-size:13px}
+.watchlist-dialog{width:min(920px,calc(100vw - 28px))}
+.watchlist-notice{margin:0;color:#aabbd0;font-size:12px}
+.watchlist-controls{display:grid;grid-template-columns:minmax(0,1fr) 180px;gap:12px}
+.watchlist-controls label,.watch-target-form label{display:grid;gap:6px;color:#aabbd0;font-size:12px}
+.watchlist-controls input,.watchlist-controls select,.watch-target-form input,.watch-target-form select{width:100%;min-width:0;height:40px;padding:0 10px;border:1px solid #3b536e;border-radius:8px;background:#0b1728;color:#eaf1fa;font:inherit}
+.watchlist-items{display:grid;gap:10px}
+.watch-row{display:grid;grid-template-columns:52px minmax(0,1fr) minmax(300px,1.1fr) auto;align-items:center;gap:14px;padding:14px;border:1px solid #2b4058;border-radius:11px;background:#111d2e}
+.watch-row.watch-target-reached{border-color:#d6ad55;background:#2b271d;box-shadow:inset 3px 0 #f4c96b}
+.watch-row-image{width:52px;height:52px;display:grid;place-items:center;border:1px solid #2e4158;border-radius:9px;background:#18283b;overflow:hidden}
+.watch-row-image img{width:46px;height:46px;object-fit:contain}
+.watch-row-content{min-width:0;display:grid;gap:5px}
+.watch-row-title{width:fit-content;max-width:100%;padding:0;border:0;background:none;color:#eaf1fa;font:inherit;font-weight:650;text-align:left;overflow-wrap:anywhere;cursor:pointer}
+.watch-row-title:disabled{cursor:default}
+.watch-row-content p{margin:0;color:#aabbd0;font-size:12px;overflow-wrap:anywhere}
+.watch-target-state.is-reached{color:#ffe4a3;font-weight:700}
+.watch-target-form{display:grid;grid-template-columns:1fr 90px 110px auto;align-items:end;gap:8px}
+.watch-target-form button,.watch-remove{min-height:40px;padding:0 11px;border:1px solid #3b536e;border-radius:8px;background:#17283e;color:#eaf1fa;font:inherit;font-size:12px;white-space:nowrap;cursor:pointer}
+.watch-row-actions{display:grid;justify-items:end;gap:8px}
+.watch-form-error{grid-column:1/-1;min-height:16px;color:#ffaaaa}
+body[data-preview="watchlist"] .preview-banner{margin:18px 0 0;padding:12px 16px;border:1px solid #8a6930;border-radius:10px;background:#332b1b;color:#ffe4a3;font-size:13px}
+body[data-preview="watchlist"] .ranking-section{display:none}
+@media(max-width:760px){.watch-row{grid-template-columns:52px minmax(0,1fr);align-items:start}.watch-row-image{grid-column:1;grid-row:1}.watch-row-content{grid-column:2;grid-row:1}.watch-target-form{grid-column:1/-1}.watch-row-actions{grid-column:1/-1;display:flex;justify-content:flex-end}}
+@media(max-width:620px){.header-actions{gap:8px}.watchlist-open{min-height:38px;padding:0 8px;font-size:11px}.header-link{font-size:10px}.watchlist-controls{grid-template-columns:1fr}.watchlist-dialog .history-dialog-content{gap:14px}.watch-row{grid-template-columns:46px minmax(0,1fr);padding:12px}.watch-row-image{width:46px;height:46px}.watch-row-image img{width:40px;height:40px}.watch-target-form{grid-template-columns:1fr 1fr}.watch-target-form label:nth-child(3){grid-column:1/-1}.watch-target-form button{grid-column:1/-1}.watch-row-actions{grid-column:1/-1;grid-row:auto}}
 @media(max-width:620px){
   .item{grid-template-columns:48px minmax(0,1fr) 32px auto;gap:8px;padding:11px 7px}
   .item-main{grid-column:2;grid-row:1}

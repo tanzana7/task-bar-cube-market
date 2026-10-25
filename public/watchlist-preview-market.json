@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 2,
+  "appid": 5084200,
+  "status": "ok",
+  "fetchedAt": "2026-10-25T00:00:00.000Z",
+  "currency": "USD",
+  "items": [
+    {
+      "name": "DEMO · Cube Fragment",
+      "marketHashName": "DEMO - Cube Fragment",
+      "imageUrl": null,
+      "priceMinor": 3,
+      "priceText": "$0.03",
+      "listings": 12,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/DEMO%20-%20Cube%20Fragment"
+    },
+    {
+      "name": "DEMO · Polished Cube",
+      "marketHashName": "DEMO - Polished Cube",
+      "imageUrl": null,
+      "priceMinor": 128,
+      "priceText": "$1.28",
+      "listings": 3,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/DEMO%20-%20Polished%20Cube"
+    },
+    {
+      "name": "DEMO · Traveler's Supply Box",
+      "marketHashName": "DEMO - Traveler's Supply Box",
+      "imageUrl": null,
+      "priceMinor": 299,
+      "priceText": "$2.99",
+      "listings": 27,
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/DEMO%20-%20Traveler's%20Supply%20Box"
+    }
+  ]
+}

@@ -1,10 +1,12 @@
 import './style.css';
 import { formatFxRateLabel, parseFreshFxRate, prepareMarketPriceView, type FxRateRecord, type MarketSnapshot } from './market';
-import { latestObservedItems, parseMarketObservations, selectMarketDisplayItems, type ListedItem, type MarketObservations, type ObservationPoint } from './market-observations';
+import { latestObservedItems, parseMarketObservations, parseUsdReferenceMinor, selectMarketDisplayItems, type ListedItem, type MarketObservations, type ObservationPoint } from './market-observations';
 import { filterHistoryPoints, formatHistoryPrice, makeChartPoints, parseHistoryIndex, parseProductHistory, type HistoryCurrency, type HistoryIndex, type HistoryRange, type ProductHistory } from './history';
 import { calculateTechnicalIndicators, currencyView, filterMarketItems, parseFavorites, parsePriceFilterInput, parseRankingSnapshot, priceStatistics, summarizeMarket, toggleFavorite, type MarketSort, type RankingSnapshot } from './market-features';
+import { evaluateWatchTarget, mergeFavoriteKeys, parseWatchTargetPrice, parseWatchTargets, serializeWatchTargets, setWatchTarget, WATCH_TARGETS_STORAGE_KEY, type WatchDirection, type WatchTarget } from './watchlist';
 
 type Snapshot = MarketSnapshot;
+const isDemoPreview = document.body.dataset.preview === 'watchlist';
 
 const search = document.querySelector<HTMLInputElement>('#search')!;
 const sort = document.querySelector<HTMLSelectElement>('#sort')!;
@@ -42,6 +44,15 @@ const rankingListNode = document.querySelector<HTMLDivElement>('#ranking-list')!
 const historyStatsNode = document.querySelector<HTMLDivElement>('#history-stats')!;
 const listingChart = document.querySelector<HTMLDivElement>('#listing-chart')!;
 const historyFavoriteButton = document.querySelector<HTMLButtonElement>('#history-favorite')!;
+const watchlistOpenButton = document.querySelector<HTMLButtonElement>('#watchlist-open')!;
+const watchlistCountNode = document.querySelector<HTMLSpanElement>('#watchlist-count')!;
+const watchAlertNode = document.querySelector<HTMLParagraphElement>('#watch-alert')!;
+const watchlistDialog = document.querySelector<HTMLDialogElement>('#watchlist-dialog')!;
+const watchlistCloseButton = document.querySelector<HTMLButtonElement>('#watchlist-close')!;
+const watchlistSearchInput = document.querySelector<HTMLInputElement>('#watchlist-search')!;
+const watchlistSortSelect = document.querySelector<HTMLSelectElement>('#watchlist-sort')!;
+const watchlistItemsNode = document.querySelector<HTMLDivElement>('#watchlist-items')!;
+const watchlistStatusNode = document.querySelector<HTMLParagraphElement>('#watchlist-status')!;
 const indicatorSma = document.querySelector<HTMLInputElement>('#indicator-sma')!;
 const indicatorBands = document.querySelector<HTMLInputElement>('#indicator-bands')!;
 const indicatorRsi = document.querySelector<HTMLInputElement>('#indicator-rsi')!;
@@ -53,7 +64,13 @@ let historyIndex: HistoryIndex | null = null;
 let rankingSnapshot: RankingSnapshot | null = null;
 let importedSnapshot: MarketObservations | null = null;
 let importedObservations = new Map<string, ObservationPoint>();
-let favorites = parseFavorites(storedValue('tbcm-5084200-watchlist'));
+const WATCHLIST_KEY = isDemoPreview ? 'tbcm-preview-watchlist' : 'tbcm-5084200-watchlist';
+const WATCH_TARGETS_KEY = isDemoPreview ? 'tbcm-preview-watch-targets' : WATCH_TARGETS_STORAGE_KEY;
+let favorites = mergeFavoriteKeys(parseFavorites(storedValue(WATCHLIST_KEY)), isDemoPreview ? [] : [
+  storedValue('tbcm-5084200-favorites'), storedValue('tbcm-favorites'),
+]);
+let watchTargets = parseWatchTargets(storedValue(WATCH_TARGETS_KEY));
+let displayItemsByKey = new Map<string, ListedItem>();
 let activeHistoryItem: MarketSnapshot['items'][number] | null = null;
 let selectedHistory: ProductHistory | null = null;
 let historyFxFallbackNotice: string | null = null;
@@ -65,6 +82,7 @@ function storedValue(key: string): string | null {
 function saveValue(key: string, value: string) {
   try { localStorage.setItem(key, value); } catch (error) { console.warn('Preference could not be saved', error); }
 }
+if (JSON.stringify([...favorites]) !== storedValue(WATCHLIST_KEY)) saveValue(WATCHLIST_KEY, JSON.stringify([...favorites]));
 
 async function readOptionalJson(path: string): Promise<unknown | null> {
   try {
@@ -292,7 +310,7 @@ async function openHistory(item: ListedItem | MarketSnapshot['items'][number]) {
   historyImage.hidden = !imageUrl;
   if (imageUrl) historyImage.src = imageUrl;
   else historyImage.removeAttribute('src');
-  const steamUrl = safeSteamUrl(item.steamUrl);
+  const steamUrl = isDemoPreview ? 'https://steamcommunity.com/market/search?appid=5084200' : safeSteamUrl(item.steamUrl);
   historySteam.hidden = !steamUrl;
   if (steamUrl) historySteam.href = steamUrl;
   historyStatus.textContent = '読み込み中';
@@ -350,6 +368,9 @@ function render() {
     latestObservedItems(importedSnapshot), visibleCurrency, currentFxRate?.rate ?? null);
   importedObservations = new Map([...selection.imported].flatMap(([key, item]) => item.observation ? [[key, item.observation] as const] : []));
   const allItems = selection.items;
+  displayItemsByKey = new Map(allItems.map(item => [item.marketHashName, item]));
+  updateWatchlistSummary();
+  if (watchlistDialog.open) renderWatchlist();
   const importedText = new Map([...selection.imported].map(([key, item]) => [key, item.importedPriceText ?? '価格情報なし']));
   const visible = filterMarketItems(allItems, {
     query: search.value,
@@ -382,7 +403,7 @@ function render() {
   itemsNode.hidden = false;
   const fragment = document.createDocumentFragment();
   for (const item of visible) {
-    const link = safeSteamUrl(item.steamUrl);
+    const link = isDemoPreview ? 'https://steamcommunity.com/market/search?appid=5084200' : safeSteamUrl(item.steamUrl);
     if (!link) continue;
     const card = document.createElement('article');
     card.className = 'item';
@@ -437,13 +458,13 @@ function render() {
     steamLink.href = link;
     steamLink.target = '_blank';
     steamLink.rel = 'noopener noreferrer';
-    steamLink.setAttribute('aria-label', `${item.name}をSteam Marketで開く`);
-    steamLink.textContent = 'Steam ↗';
+    steamLink.setAttribute('aria-label', isDemoPreview ? 'Steam Marketを開く' : `${item.name}をSteam Marketで開く`);
+    steamLink.textContent = isDemoPreview ? 'Steam検索 ↗' : 'Steam ↗';
     const favoriteButton = document.createElement('button');
     favoriteButton.type = 'button';
     favoriteButton.className = 'favorite-button';
     favoriteButton.setAttribute('aria-pressed', String(favorites.has(item.marketHashName)));
-    favoriteButton.setAttribute('aria-label', favorites.has(item.marketHashName) ? `${item.name}をお気に入りから解除` : `${item.name}をお気に入りに追加`);
+    favoriteButton.setAttribute('aria-label', favorites.has(item.marketHashName) ? `${item.name}をウォッチリストから解除` : `${item.name}をウォッチリストに追加`);
     favoriteButton.textContent = favorites.has(item.marketHashName) ? '★' : '☆';
     favoriteButton.addEventListener('click', () => setFavorite(item.marketHashName));
     card.append(imageBox, main, price, favoriteButton, steamLink);
@@ -452,9 +473,162 @@ function render() {
   itemsNode.append(fragment);
 }
 
+function rawWatchPrice(marketHashName: string): { priceMinor: number; observedAt: string; listings: number | null } | null {
+  const imported = importedObservations.get(marketHashName);
+  if (imported) {
+    const priceMinor = imported.priceMinor ?? parseUsdReferenceMinor(imported.referencePriceText);
+    return priceMinor === null ? null : { priceMinor, observedAt: imported.observedAt, listings: imported.listings };
+  }
+  const item = usdSnapshot?.items.find(candidate => candidate.marketHashName === marketHashName);
+  return item?.priceMinor === null || item?.priceMinor === undefined || !usdSnapshot?.fetchedAt
+    ? null : { priceMinor: item.priceMinor, observedAt: usdSnapshot.fetchedAt, listings: item.listings };
+}
+
+function formattedTarget(target: WatchTarget): string {
+  const amount = target.priceMinor / 100;
+  return target.currency === 'USD'
+    ? `$${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+    : `¥${amount.toLocaleString('ja-JP', { maximumFractionDigits: 0 })}`;
+}
+
+function updateWatchlistSummary() {
+  watchlistCountNode.textContent = favorites.size.toLocaleString('ja-JP');
+  const reached: string[] = [];
+  for (const [marketHashName, target] of watchTargets) {
+    if (!favorites.has(marketHashName)) continue;
+    const current = rawWatchPrice(marketHashName);
+    const status = evaluateWatchTarget(target, current ? { currency: 'USD', priceMinor: current.priceMinor, observedAt: current.observedAt } : null,
+      currentFxRate?.rate ?? null);
+    if (status === 'reached') reached.push(marketHashName);
+  }
+  watchAlertNode.hidden = reached.length === 0;
+  watchAlertNode.textContent = reached.length
+    ? `目標価格に到達した商品が${reached.length.toLocaleString('ja-JP')}件あります。読み込み済みの観測値で判定しています。`
+    : '';
+}
+
+function renderWatchlist() {
+  updateWatchlistSummary();
+  watchlistItemsNode.replaceChildren();
+  const query = watchlistSearchInput.value.trim().toLocaleLowerCase();
+  const entries = [...favorites].map(marketHashName => {
+    const item = displayItemsByKey.get(marketHashName) ?? null;
+    return { marketHashName, item, name: item?.name ?? marketHashName };
+  }).filter(entry => entry.name.toLocaleLowerCase().includes(query));
+  const direction = watchlistSortSelect.value;
+  const collator = new Intl.Collator('ja', { sensitivity: 'base' });
+  const displayPrice = (entry: typeof entries[number]) => {
+    const item = entry.item;
+    if (!item) return null;
+    if (item.comparisonPriceMinor !== undefined) return item.comparisonCurrency === currencySelect.value ? item.comparisonPriceMinor : null;
+    return item.priceMinor;
+  };
+  entries.sort((left, right) => {
+    if (direction === 'name') return collator.compare(left.name, right.name);
+    if (direction === 'listings-desc') {
+      const a = left.item?.listings ?? null; const b = right.item?.listings ?? null;
+      if (a === null) return b === null ? collator.compare(left.name, right.name) : 1;
+      if (b === null) return -1;
+      return b - a || collator.compare(left.name, right.name);
+    }
+    const a = displayPrice(left); const b = displayPrice(right);
+    if (a === null) return b === null ? collator.compare(left.name, right.name) : 1;
+    if (b === null) return -1;
+    return (direction === 'price-desc' ? b - a : a - b) || collator.compare(left.name, right.name);
+  });
+  watchlistStatusNode.textContent = favorites.size
+    ? `${entries.length.toLocaleString('ja-JP')}件表示 · 観測の有効期間24時間`
+    : '商品一覧の☆から登録できます。';
+  if (!entries.length) return;
+  const fragment = document.createDocumentFragment();
+  for (const entry of entries) {
+    const { marketHashName, item, name } = entry;
+    const target = watchTargets.get(marketHashName) ?? null;
+    const current = rawWatchPrice(marketHashName);
+    const status = target ? evaluateWatchTarget(target,
+      current ? { currency: 'USD', priceMinor: current.priceMinor, observedAt: current.observedAt } : null,
+      currentFxRate?.rate ?? null) : 'missing';
+    const row = document.createElement('article');
+    row.className = `watch-row${status === 'reached' ? ' watch-target-reached' : ''}`;
+    const imageBox = document.createElement('span'); imageBox.className = 'watch-row-image';
+    const imageUrl = item ? safeImage(item.imageUrl) : null;
+    if (imageUrl) {
+      const image = document.createElement('img'); image.src = imageUrl; image.alt = ''; image.loading = 'lazy';
+      image.onerror = () => image.remove(); imageBox.append(image);
+    }
+    row.append(imageBox);
+    const content = document.createElement('div'); content.className = 'watch-row-content';
+    const title = document.createElement('button'); title.type = 'button'; title.className = 'watch-row-title';
+    title.textContent = name;
+    title.disabled = !item;
+    title.addEventListener('click', () => { if (item) void openHistory(item); });
+    const currentLabel = document.createElement('p');
+    const shownPrice = item?.importedPriceText ?? item?.priceText ?? '価格情報なし';
+    const listings = item?.listings ?? current?.listings ?? null;
+    const observedAt = current?.observedAt ?? item?.observation?.observedAt ?? usdSnapshot?.fetchedAt ?? null;
+    currentLabel.textContent = `${shownPrice} · ${listings === null ? '出品数未取得' : `出品 ${listings.toLocaleString('ja-JP')}件`}${observedAt ? ` · ${formatObservedAt(observedAt)}` : ''}`;
+    const state = document.createElement('p'); state.className = `watch-target-state${status === 'reached' ? ' is-reached' : ''}`;
+    state.textContent = !target ? '目標価格未設定' : status === 'reached'
+      ? `目標到達 · ${formattedTarget(target)}` : status === 'not-reached'
+        ? `未到達 · ${target.direction === 'buy-at-or-below' ? '以下' : '以上'} ${formattedTarget(target)}`
+        : status === 'stale' ? '古い観測のため判定なし'
+          : status === 'fx-unavailable' ? '為替未取得のため判定なし' : '価格未取得のため判定なし';
+    content.append(title, currentLabel, state);
+    const form = document.createElement('form'); form.className = 'watch-target-form';
+    const conditionLabel = document.createElement('label'); conditionLabel.textContent = '条件';
+    const condition = document.createElement('select'); condition.name = 'direction';
+    condition.add(new Option('購入 · 以下', 'buy-at-or-below'));
+    condition.add(new Option('売却 · 以上', 'sell-at-or-above'));
+    condition.value = target?.direction ?? 'buy-at-or-below'; conditionLabel.append(condition);
+    const currencyLabel = document.createElement('label'); currencyLabel.textContent = '通貨';
+    const targetCurrency = document.createElement('select'); targetCurrency.name = 'currency';
+    targetCurrency.add(new Option('USD', 'USD')); targetCurrency.add(new Option('JPY', 'JPY'));
+    targetCurrency.value = target?.currency ?? currencySelect.value; currencyLabel.append(targetCurrency);
+    const priceLabel = document.createElement('label'); priceLabel.textContent = '目標価格';
+    const priceInput = document.createElement('input'); priceInput.name = 'price'; priceInput.type = 'number'; priceInput.min = '0';
+    priceInput.step = targetCurrency.value === 'USD' ? '0.01' : '1'; priceInput.inputMode = 'decimal';
+    priceInput.value = target ? target.currency === 'USD' ? (target.priceMinor / 100).toFixed(2) : String(target.priceMinor / 100) : '';
+    priceInput.placeholder = targetCurrency.value === 'USD' ? '0.00' : '0'; priceLabel.append(priceInput);
+    targetCurrency.addEventListener('change', () => { priceInput.step = targetCurrency.value === 'USD' ? '0.01' : '1'; priceInput.placeholder = targetCurrency.value === 'USD' ? '0.00' : '0'; });
+    const saveTarget = document.createElement('button'); saveTarget.type = 'submit'; saveTarget.textContent = '目標を保存';
+    form.append(conditionLabel, currencyLabel, priceLabel, saveTarget);
+    const formError = document.createElement('small'); formError.className = 'watch-form-error'; formError.setAttribute('role', 'status');
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      const parsed = parseWatchTargetPrice(priceInput.value, targetCurrency.value as 'USD' | 'JPY');
+      if (parsed.error || parsed.priceMinor === null) { formError.textContent = parsed.error ?? '目標価格を入力してください。'; return; }
+      try {
+        watchTargets = setWatchTarget(watchTargets, marketHashName, { currency: targetCurrency.value as 'USD' | 'JPY',
+          direction: condition.value as WatchDirection, priceMinor: parsed.priceMinor });
+        saveValue(WATCH_TARGETS_KEY, serializeWatchTargets(watchTargets));
+        renderWatchlist();
+      } catch (error) { console.warn('Watch target could not be saved', error); formError.textContent = '目標を保存できませんでした。'; }
+    });
+    form.append(formError);
+    const actions = document.createElement('div'); actions.className = 'watch-row-actions';
+    const steamLink = document.createElement('a'); steamLink.className = 'item-steam';
+    const candidateUrl = isDemoPreview ? 'https://steamcommunity.com/market/search?appid=5084200'
+      : item?.steamUrl ?? `https://steamcommunity.com/market/listings/5084200/${encodeURIComponent(marketHashName)}`;
+    const safeLink = safeSteamUrl(candidateUrl);
+    if (isDemoPreview) { steamLink.href = candidateUrl; steamLink.target = '_blank'; steamLink.rel = 'noopener noreferrer'; steamLink.textContent = 'Steam検索 ↗'; }
+    else if (safeLink) { steamLink.href = safeLink; steamLink.target = '_blank'; steamLink.rel = 'noopener noreferrer'; steamLink.textContent = 'Steam ↗'; }
+    const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'watch-remove';
+    remove.textContent = '解除'; remove.setAttribute('aria-label', `${name}をウォッチリストから解除`);
+    remove.addEventListener('click', () => setFavorite(marketHashName));
+    actions.append(steamLink, remove);
+    row.append(content, form, actions); fragment.append(row);
+  }
+  watchlistItemsNode.append(fragment);
+}
+
 function setFavorite(marketHashName: string) {
+  const wasFavorite = favorites.has(marketHashName);
   favorites = toggleFavorite(favorites, marketHashName);
-  saveValue('tbcm-5084200-watchlist', JSON.stringify([...favorites]));
+  saveValue(WATCHLIST_KEY, JSON.stringify([...favorites]));
+  if (wasFavorite) {
+    watchTargets = setWatchTarget(watchTargets, marketHashName, null);
+    saveValue(WATCH_TARGETS_KEY, serializeWatchTargets(watchTargets));
+  }
   render();
   if (activeHistoryItem?.marketHashName === marketHashName) {
     historyFavoriteButton.setAttribute('aria-pressed', String(favorites.has(marketHashName)));
@@ -526,11 +700,11 @@ async function load(currency: 'JPY' | 'USD') {
   updatedNode.textContent = '更新日時 —';
   try {
     const [response, fxValue, historyIndexValue, rankingValue, observationsValue] = await Promise.all([
-      fetch('/market-usd.json', { cache: 'no-cache' }),
+      fetch(isDemoPreview ? '/watchlist-preview-market.json' : '/market-usd.json', { cache: 'no-cache' }),
       readOptionalJson('/fx-rate.json'),
-      readOptionalJson('/history/index.json'),
-      readOptionalJson('/market-rankings.json'),
-      readOptionalJson('/market-observations.json'),
+      isDemoPreview ? Promise.resolve(null) : readOptionalJson('/history/index.json'),
+      isDemoPreview ? Promise.resolve(null) : readOptionalJson('/market-rankings.json'),
+      isDemoPreview ? Promise.resolve(null) : readOptionalJson('/market-observations.json'),
     ]);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const value: unknown = await response.json();
@@ -540,7 +714,9 @@ async function load(currency: 'JPY' | 'USD') {
     historyIndex = parseHistoryIndex(historyIndexValue);
     rankingSnapshot = parseRankingSnapshot(rankingValue);
     importedSnapshot = parseMarketObservations(observationsValue);
-    usdSnapshot = value;
+    // Preview timestamps are generated only on this isolated route so goal
+    // interactions stay testable; they never enter market JSON or price history.
+    usdSnapshot = isDemoPreview ? { ...value, fetchedAt: new Date().toISOString() } : value;
     snapshot = currencyView(value, currency, currentFxRate?.rate ?? null);
     renderOverview();
     renderRankings();
@@ -551,7 +727,9 @@ async function load(currency: 'JPY' | 'USD') {
       : snapshot.priceSource === 'fx'
         ? 'JPYはSteamのUSD最安価格を為替換算した参考価格です。購入時はSteamでご確認ください。'
       : '価格は取得時点の最安出品価格です。購入時はSteamでご確認ください。';
-    noteNode.textContent = latestCapture?.sourceKind === 'query-action'
+    noteNode.textContent = isDemoPreview
+      ? 'デモ用の架空データです。実際のSteam商品・相場・観測値ではありません。'
+      : latestCapture?.sourceKind === 'query-action'
       ? '取込データは商品ごとの部分観測です。queryActionのUSD表示額は参考値で、価格基準確認中です。購入前にSteamでご確認ください。'
       : latestCapture?.sourceKind === 'steam-dom'
         ? `${importedSnapshot && importedSnapshot.products.length !== latestCapture.pageSize ? `保持${importedSnapshot.products.length}件・直近` : ''}${latestCapture.pageSize}/${latestCapture.totalCount}件を部分観測。価格順・価格帯は選択通貨の表示参考価格で比較します。JPYは有効な為替レートがある場合のみ換算します。価格基準は未確認です。`
@@ -598,6 +776,10 @@ currencySelect.addEventListener('change', () => {
   void load(currency);
 });
 historyClose.addEventListener('click', () => historyDialog.close());
+watchlistOpenButton.addEventListener('click', () => { renderWatchlist(); watchlistDialog.showModal(); });
+watchlistCloseButton.addEventListener('click', () => watchlistDialog.close());
+watchlistSearchInput.addEventListener('input', renderWatchlist);
+watchlistSortSelect.addEventListener('change', renderWatchlist);
 historyRange.addEventListener('change', renderHistoryChart);
 historyCurrency.addEventListener('change', renderHistoryChart);
 rankingPeriodSelect.addEventListener('change', renderRankings);

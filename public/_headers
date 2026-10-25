@@ -1,3 +1,9 @@
 /query-action-demo*
   X-Robots-Tag: noindex, nofollow, noarchive
   Cache-Control: public, max-age=300
+/watchlist-preview*
+  X-Robots-Tag: noindex, nofollow, noarchive
+  Cache-Control: no-cache
+/watchlist-preview-market.json
+  X-Robots-Tag: noindex, nofollow, noarchive
+  Cache-Control: no-cache

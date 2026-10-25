@@ -15,7 +15,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 </head>
 <body>
-  <header class="site-header"><div class="shell header-row"><a class="brand" href="/" aria-label="Task Bar Cube Market ホーム"><span class="brand-mark" aria-hidden="true">▣</span><span>Task Bar Cube <strong>Market</strong></span></a><a class="header-link" href="https://steamcommunity.com/market/search?appid=5084200" target="_blank" rel="noopener noreferrer">Steam Market ↗</a></div></header>
+  <header class="site-header"><div class="shell header-row"><a class="brand" href="/" aria-label="Task Bar Cube Market ホーム"><span class="brand-mark" aria-hidden="true">▣</span><span>Task Bar Cube <strong>Market</strong></span></a><div class="header-actions"><button id="watchlist-open" class="watchlist-open" type="button">★ ウォッチリスト <span id="watchlist-count">0</span></button><a class="header-link" href="https://steamcommunity.com/market/search?appid=5084200" target="_blank" rel="noopener noreferrer">Steam Market ↗</a></div></div></header>
   <main class="shell">
     <div class="intro"><p class="eyebrow">UNOFFICIAL MARKET BROWSER</p><h1>欲しいアイテムの相場を、すぐに。</h1><p class="intro-copy">Task Bar CubeのSteam出品を検索・比較。</p></div>
     <section class="overview" aria-label="市場概要">
@@ -25,6 +25,7 @@
       <article><span>参考為替</span><strong id="overview-fx">—</strong></article>
     </section>
     <section class="market" aria-label="アイテム一覧">
+      <p id="watch-alert" class="watch-alert" role="status" hidden></p>
       <div class="controls"><label class="search"><span class="search-icon" aria-hidden="true">⌕</span><span class="sr-only">アイテム名で検索</span><input id="search" type="search" placeholder="アイテム名で検索" autocomplete="off" /></label><label class="sort"><span class="sr-only">通貨</span><select id="currency"><option value="JPY">JPY</option><option value="USD">USD</option></select></label><label class="sort"><span class="sr-only">並び替え</span><select id="sort"><option value="price-asc">価格が安い順</option><option value="price-desc">価格が高い順</option><option value="name">名前順</option><option value="listings-desc">出品数が多い順</option><option value="listings-asc">出品数が少ない順</option></select></label></div>
       <details id="filter-disclosure" class="filter-disclosure" open>
         <summary>絞り込み</summary>
@@ -48,7 +49,7 @@
       <div id="ranking-list" class="ranking-list"></div>
     </section>
   </main>
-  <footer class="site-footer"><div class="shell footer-row"><span>Task Bar Cube Market · 非公式ファンサイト</span><span>Valveおよびゲーム開発元とは無関係です。 <a href="/privacy.html">プライバシー</a></span></div></footer>
+  <footer class="site-footer"><div class="shell footer-row"><span>Task Bar Cube Market · 非公式ファンサイト</span><span><a href="/watchlist-preview.html">操作プレビュー</a> · Valveおよびゲーム開発元とは無関係です。 <a href="/privacy.html">プライバシー</a></span></div></footer>
   <dialog id="history-dialog" class="history-dialog" aria-labelledby="history-title">
     <div class="history-dialog-content">
       <div class="history-heading"><img id="history-image" alt="" hidden /><div><h2 id="history-title"></h2><p id="history-summary"></p><p id="history-classification" hidden></p></div><button id="history-close" class="icon-button" type="button" aria-label="閉じる">×</button></div>
@@ -65,6 +66,15 @@
       <section><h3>出品数の推移</h3><div id="listing-chart" class="history-chart"></div></section>
       <details class="unavailable-market-data"><summary>板情報・成約履歴</summary><p>未取得</p></details>
       <a id="history-steam" class="history-steam" target="_blank" rel="noopener noreferrer">Steam Market ↗</a>
+    </div>
+  </dialog>
+  <dialog id="watchlist-dialog" class="history-dialog watchlist-dialog" aria-labelledby="watchlist-title">
+    <div class="history-dialog-content">
+      <div class="history-heading"><div><h2 id="watchlist-title">ウォッチリスト</h2><p>登録商品をこのページで読み込んだ観測値と比較</p></div><button id="watchlist-close" class="icon-button" type="button" aria-label="閉じる">×</button></div>
+      <p class="watchlist-notice">ページを開いている間に読み込んだデータで判定します。バックグラウンド監視は行いません。</p>
+      <div class="watchlist-controls"><label>商品名で検索<input id="watchlist-search" type="search" autocomplete="off" /></label><label>並び替え<select id="watchlist-sort"><option value="name">名前順</option><option value="price-asc">価格が安い順</option><option value="price-desc">価格が高い順</option><option value="listings-desc">出品数が多い順</option></select></label></div>
+      <p id="watchlist-status" class="history-status" role="status"></p>
+      <div id="watchlist-items" class="watchlist-items"></div>
     </div>
   </dialog>
   <script type="module" src="/src/main.ts"></script>

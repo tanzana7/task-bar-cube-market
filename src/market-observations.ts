@@ -46,7 +46,7 @@ export type ListedItem = MarketItem & {
   comparisonKind?: 'reference';
 };
 
-function parseUsdReferenceMinor(text: string | null): number | null {
+export function parseUsdReferenceMinor(text: string | null): number | null {
   if (!text) return null;
   const match = /^\$\s*((?:\d{1,3}(?:,\d{3})+|\d+))\.(\d{2})～?$/.exec(text);
   if (!match) return null;
