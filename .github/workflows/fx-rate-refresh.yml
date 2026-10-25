@@ -30,13 +30,13 @@ jobs:
       - run: npm run fx:validate
       - name: Commit changed exchange rate
         run: |
-          if git diff --quiet -- public/fx-rate.json; then
+          git add public/fx-rate.json
+          if git diff --cached --quiet -- public/fx-rate.json; then
             echo "No new published rate; retaining the existing observation"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public/fx-rate.json
           git commit -m "Update verified USD to JPY rate"
           git fetch origin main
           git rebase origin/main
