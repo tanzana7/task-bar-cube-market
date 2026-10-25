@@ -40,6 +40,9 @@ jobs:
       contents: write
     env:
       STEAM_MARKET_COLLECTION_ALLOWED: ${{ vars.STEAM_MARKET_COLLECTION_ALLOWED }}
+      STEAM_MIN_INTERVAL_MS: ${{ vars.STEAM_MIN_INTERVAL_MS || '15000' }}
+      STEAM_MAX_REQUESTS_PER_RUN: ${{ vars.STEAM_MAX_REQUESTS_PER_RUN || '6' }}
+      STEAM_MAX_REQUESTS_PER_DAY: ${{ vars.STEAM_MAX_REQUESTS_PER_DAY || '24' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -52,12 +55,19 @@ jobs:
       - name: Require documented permission
         run: test "$STEAM_MARKET_COLLECTION_ALLOWED" = true
       - run: npm ci
-      - run: node scripts/steam-market.mjs --live
-      - run: node scripts/steam-market.mjs --validate-cache
-      - name: Commit only verified changes
+      - name: Collect USD market snapshot
+        id: collect
+        continue-on-error: true
+        run: node scripts/steam-market.mjs --live
+      - name: Validate market and history caches
+        id: validate
+        if: steps.collect.outcome == 'success'
+        run: node scripts/steam-market.mjs --validate-cache
+      - name: Commit only verified market changes
+        if: always() && steps.collect.outcome == 'success' && steps.validate.outcome == 'success'
         run: |
-          git add public/market-usd.json public/history public/market-rankings.json
-          if git diff --cached --quiet -- public/market-usd.json public/history public/market-rankings.json; then
+          git add .market/steam-collection-state.json public/market-usd.json public/history public/market-rankings.json
+          if git diff --cached --quiet -- .market/steam-collection-state.json public/market-usd.json public/history public/market-rankings.json; then
             echo "No snapshot changes"
             exit 0
           fi
@@ -67,3 +77,20 @@ jobs:
           git fetch origin main
           git rebase origin/main
           git push origin HEAD:main
+      - name: Persist request budget and stop state after failure
+        if: always() && (steps.collect.outcome == 'failure' || steps.validate.outcome == 'failure')
+        run: |
+          git add .market/steam-collection-state.json
+          if git diff --cached --quiet -- .market/steam-collection-state.json; then
+            echo "No request state changes to persist"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "[CF-Pages-Skip] Persist Steam request stop state"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
+      - name: Fail when collection or validation failed
+        if: always() && (steps.collect.outcome == 'failure' || steps.validate.outcome == 'failure')
+        run: exit 1

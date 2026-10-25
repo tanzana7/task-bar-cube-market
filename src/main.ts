@@ -1,7 +1,7 @@
 import './style.css';
 import { formatFxRateLabel, parseFreshFxRate, prepareMarketPriceView, type FxRateRecord, type MarketSnapshot } from './market';
 import { filterHistoryPoints, formatHistoryPrice, makeChartPoints, parseHistoryIndex, parseProductHistory, type HistoryCurrency, type HistoryIndex, type HistoryRange, type ProductHistory } from './history';
-import { calculateTechnicalIndicators, currencyView, filterMarketItems, parseFavorites, parseRankingSnapshot, priceStatistics, summarizeMarket, toggleFavorite, type MarketSort, type RankingSnapshot } from './market-features';
+import { calculateTechnicalIndicators, currencyView, filterMarketItems, parseFavorites, parsePriceFilterInput, parseRankingSnapshot, priceStatistics, summarizeMarket, toggleFavorite, type MarketSort, type RankingSnapshot } from './market-features';
 
 type Snapshot = MarketSnapshot;
 
@@ -24,6 +24,7 @@ const historyCurrency = document.querySelector<HTMLSelectElement>('#history-curr
 const historySteam = document.querySelector<HTMLAnchorElement>('#history-steam')!;
 const historyClose = document.querySelector<HTMLButtonElement>('#history-close')!;
 const filterForm = document.querySelector<HTMLFormElement>('#filters')!;
+const filterErrorNode = document.querySelector<HTMLParagraphElement>('#filter-error')!;
 const minimumPriceInput = document.querySelector<HTMLInputElement>('#minimum-price')!;
 const maximumPriceInput = document.querySelector<HTMLInputElement>('#maximum-price')!;
 const minimumListingsInput = document.querySelector<HTMLInputElement>('#minimum-listings')!;
@@ -51,6 +52,7 @@ let rankingSnapshot: RankingSnapshot | null = null;
 let favorites = parseFavorites(storedValue('tbcm-5084200-watchlist'));
 let activeHistoryItem: MarketSnapshot['items'][number] | null = null;
 let selectedHistory: ProductHistory | null = null;
+let historyFxFallbackNotice: string | null = null;
 let historyLoadSequence = 0;
 let loadSequence = 0;
 function storedValue(key: string): string | null {
@@ -58,14 +60,6 @@ function storedValue(key: string): string | null {
 }
 function saveValue(key: string, value: string) {
   try { localStorage.setItem(key, value); } catch (error) { console.warn('Preference could not be saved', error); }
-}
-
-function numericFilter(input: HTMLInputElement, multiplier = 1, integer = false): number | null {
-  if (!input.value || !input.validity.valid) return null;
-  const value = Number(input.value);
-  if (!Number.isFinite(value) || value < 0 || (integer && !Number.isSafeInteger(value))) return null;
-  const scaled = value * multiplier;
-  return Number.isSafeInteger(scaled) ? scaled : null;
 }
 
 async function readOptionalJson(path: string): Promise<unknown | null> {
@@ -211,19 +205,25 @@ function renderHistoryChart() {
     return;
   }
   const currency = historyCurrency.value as HistoryCurrency;
+  const range = historyRange.value as HistoryRange;
+  const usdPoints = filterHistoryPoints(selectedHistory.points, range);
+  // Listings are independent of FX. Keep them visible when only the JPY price
+  // projection is unavailable; the underlying price observations remain USD.
+  const listingPoints = usdPoints.map(point => ({ ...point, value: point.listings, label: `${point.listings.toLocaleString('ja-JP')}件` }));
+  makeChart(listingChart, listingPoints, value => Math.round(value).toLocaleString('ja-JP'), '出品数の推移');
   const converted = makeChartPoints(selectedHistory.points, currency, currentFxRate);
   if (!converted) {
-    historyStatus.textContent = '為替レートが未取得または期限切れのため、JPYグラフを表示できません。USDを選択してください。';
+    historyStatsNode.replaceChildren();
+    historyStatus.textContent = '為替レートが未取得または期限切れのため、JPY価格グラフは表示できません。USD価格履歴と出品数の推移はUSDを選択すると確認できます。';
     return;
   }
-  const points = filterHistoryPoints(converted, historyRange.value as HistoryRange);
+  const points = filterHistoryPoints(converted, range);
   if (points.length === 0) {
     historyStatus.textContent = 'この期間の価格履歴はありません。';
     return;
   }
-  const usdPoints = filterHistoryPoints(selectedHistory.points, historyRange.value as HistoryRange);
   const indicators = calculateTechnicalIndicators(selectedHistory.points);
-  const selectedIndicators = filterHistoryPoints(selectedHistory.points.map((point, index) => ({ ...point, ...indicators[index] })), historyRange.value as HistoryRange);
+  const selectedIndicators = filterHistoryPoints(selectedHistory.points.map((point, index) => ({ ...point, ...indicators[index] })), range);
   const major = (cents: number) => currency === 'USD' ? cents / 100 : Math.round(cents * currentFxRate!.rate / 100);
   const overlays: Array<{ values: Array<number | null>; className: string }> = [];
   if (indicatorSma.checked) overlays.push({ values: selectedIndicators.map(point => point.sma20 === null ? null : major(point.sma20)), className: 'chart-indicator chart-sma' });
@@ -232,9 +232,7 @@ function renderHistoryChart() {
     overlays.push({ values: selectedIndicators.map(point => point.lowerBand === null ? null : major(point.lowerBand)), className: 'chart-indicator chart-band' });
   }
   makeChart(historyChart, points, value => formatHistoryPrice(value, currency), `${currency}価格推移`, overlays);
-  const listingPoints = points.map(point => ({ ...point, value: point.listings, label: `${point.listings.toLocaleString('ja-JP')}件` }));
-  makeChart(listingChart, listingPoints, value => Math.round(value).toLocaleString('ja-JP'), '出品数の推移');
-  const stats = priceStatistics(usdPoints, historyRange.value as HistoryRange);
+  const stats = priceStatistics(usdPoints, range);
   if (stats) {
     const yenStats = currency === 'JPY';
     const display = (cents: number) => formatHistoryPrice(yenStats ? major(cents) : cents / 100, currency);
@@ -257,14 +255,16 @@ function renderHistoryChart() {
   const intervals = points.slice(1).map((point, index) => Date.parse(point.observedAt) - Date.parse(points[index].observedAt)).sort((a, b) => a - b);
   const typical = intervals.length ? intervals[Math.floor(intervals.length / 2)] : 0;
   const longGaps = intervals.filter(interval => interval > typical * 3).length;
-  historyStatus.textContent = `観測点 ${points.length.toLocaleString('ja-JP')}件 · 点間の価格は未取得${longGaps ? ` · 長い観測間隔 ${longGaps}か所` : ''}`;
+  historyStatus.textContent = `${historyFxFallbackNotice ? `${historyFxFallbackNotice} · ` : ''}観測点 ${points.length.toLocaleString('ja-JP')}件 · 点間の価格は未取得${longGaps ? ` · 長い観測間隔 ${longGaps}か所` : ''}`;
 }
 
 async function openHistory(item: MarketSnapshot['items'][number]) {
   const request = ++historyLoadSequence;
   activeHistoryItem = item;
   selectedHistory = null;
-  historyCurrency.value = currencySelect.value;
+  const useUsdHistoryFallback = currencySelect.value === 'JPY' && currentFxRate === null;
+  historyCurrency.value = useUsdHistoryFallback ? 'USD' : currencySelect.value;
+  historyFxFallbackNotice = useUsdHistoryFallback ? '為替レート未取得のため、価格履歴をUSDで表示しています' : null;
   historyTitle.textContent = item.name;
   const visibleItem = snapshot?.items.find(candidate => candidate.marketHashName === item.marketHashName) ?? item;
   const currentPrice = visibleItem.priceText ?? (currencySelect.value === 'JPY' ? '参考円価格は更新待ち' : '価格情報なし');
@@ -307,11 +307,29 @@ async function openHistory(item: MarketSnapshot['items'][number]) {
 function render() {
   if (!snapshot) return;
   const priceView = prepareMarketPriceView(snapshot.items, snapshot.currency, snapshot.priceSource, currentFxRate?.rateDate);
+  const minimumPrice = parsePriceFilterInput(minimumPriceInput.value, currencySelect.value as 'USD' | 'JPY');
+  const maximumPrice = parsePriceFilterInput(maximumPriceInput.value, currencySelect.value as 'USD' | 'JPY');
+  const errors = [minimumPrice.error, maximumPrice.error].filter((message): message is string => message !== null);
+  if (minimumPrice.value !== null && maximumPrice.value !== null && minimumPrice.value > maximumPrice.value) errors.push('最低価格は最高価格以下にしてください。');
+  const minimumListings = minimumListingsInput.value.trim()
+    ? (/^(0|[1-9]\d*)$/.test(minimumListingsInput.value.trim()) && Number.isSafeInteger(Number(minimumListingsInput.value))
+      ? Number(minimumListingsInput.value) : null)
+    : null;
+  if (minimumListingsInput.value.trim() && minimumListings === null) errors.push('最低出品数は0以上の整数で入力してください。');
+  filterErrorNode.hidden = errors.length === 0;
+  filterErrorNode.textContent = [...new Set(errors)].join(' ');
+  if (errors.length > 0) {
+    countNode.textContent = '条件を確認';
+    itemsNode.replaceChildren();
+    itemsNode.hidden = true;
+    statusNode.hidden = true;
+    return;
+  }
   const visible = filterMarketItems(priceView.items, {
     query: search.value,
-    minimumPrice: numericFilter(minimumPriceInput, 100),
-    maximumPrice: numericFilter(maximumPriceInput, 100),
-    minimumListings: numericFilter(minimumListingsInput, 1, true),
+    minimumPrice: minimumPrice.value,
+    maximumPrice: maximumPrice.value,
+    minimumListings,
     favoritesOnly: favoritesOnlyInput.checked,
     favorites,
   }, sort.value as MarketSort);

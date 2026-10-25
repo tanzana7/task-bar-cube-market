@@ -25,6 +25,24 @@ export type RankingItem = { marketHashName: string; fromCents: number; toCents: 
 export type RankingSnapshot = { schemaVersion: 1; appid: 5084200; generatedAt: string | null; periods: Record<RankingPeriod, { toleranceHours: number; up: RankingItem[]; down: RankingItem[] }> };
 export type TechnicalPoint = { sma20: number | null; upperBand: number | null; lowerBand: number | null; rsi14: number | null };
 
+export type PriceFilterParse = { value: number | null; error: string | null };
+
+export function parsePriceFilterInput(input: string, currency: 'USD' | 'JPY'): PriceFilterParse {
+  const value = input.trim();
+  if (!value) return { value: null, error: null };
+  const match = currency === 'USD'
+    ? /^(0|[1-9]\d*)(?:\.(\d{1,2}))?$/.exec(value)
+    : /^(0|[1-9]\d*)$/.exec(value);
+  if (!match) {
+    return { value: null, error: currency === 'USD' ? '価格は0以上、小数第2位まで入力してください。' : 'JPY価格は0以上の整数で入力してください。' };
+  }
+  const major = Number(match[1]);
+  const fraction = currency === 'USD' ? Number((match[2] ?? '').padEnd(2, '0') || '0') : 0;
+  const minor = major * 100 + fraction;
+  if (!Number.isSafeInteger(minor)) return { value: null, error: '価格が大きすぎます。' };
+  return { value: minor, error: null };
+}
+
 export function filterMarketItems(items: MarketItem[], filters: MarketFilters, sort: MarketSort): MarketItem[] {
   const needle = filters.query.trim().toLocaleLowerCase();
   const matches = items.filter(item => {

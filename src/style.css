@@ -40,6 +40,7 @@
 .overview span,.history-stats span{color:#91a6bd;font-size:11px}
 .overview strong,.history-stats strong{font-size:14px;overflow-wrap:anywhere}
 .filter-panel{display:grid;grid-template-columns:repeat(3,minmax(120px,1fr)) auto auto;align-items:end;gap:12px;padding:14px 20px;border-bottom:1px solid #26364a}
+.filter-error{margin:0;padding:8px 20px;color:#ff9e9e;font-size:.9rem}
 .filter-panel label:not(.favorite-filter){display:grid;gap:6px;color:#aabbd0;font-size:11px}
 .filter-panel input[type=number]{height:38px;min-width:0;padding:0 10px;border:1px solid #3b536e;border-radius:8px;background:#0b1728;color:#eaf1fa;font:inherit}
 .favorite-filter{display:flex;align-items:center;gap:7px;height:38px;color:#d5e5f4;font-size:12px;white-space:nowrap}

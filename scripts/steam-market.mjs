@@ -3,6 +3,9 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 export const APPID = 5084200;
+export const TBH_APPID = 3678970;
+export const DEFAULT_REQUEST_POLICY = Object.freeze({ minIntervalMs: 15000, maxRequestsPerRun: 6, maxRequestsPerDay: 24 });
+export const DEFAULT_COLLECTION_STATE_PATH = new URL('../.market/steam-collection-state.json', import.meta.url);
 export const CURRENCIES = Object.freeze({
   JPY: { code: 8, country: 'JP', file: 'market-jpy.json' },
   USD: { code: 1, country: 'US', file: 'market-usd.json' },
@@ -100,6 +103,8 @@ export function parsePage(body, expectedStart, expectedTotal = null) {
       || (body.start !== undefined && body.start !== expectedStart)
       || (body.pagesize !== undefined && (!Number.isSafeInteger(body.pagesize) || body.pagesize < 1))
       || (body.pagesize !== undefined && body.results.length > body.pagesize)
+      || (body.pagesize !== undefined && body.total_count > expectedStart
+        && body.results.length < Math.min(body.pagesize, body.total_count - expectedStart))
       || (expectedTotal !== null && body.total_count !== expectedTotal)) {
     throw new Error('Steam search response shape changed');
   }
@@ -107,14 +112,132 @@ export function parsePage(body, expectedStart, expectedTotal = null) {
   return body;
 }
 
-export async function fetchPage(start, currency, fetchImpl = fetch, expectedTotal = null) {
-  let response;
+function strictPositiveInteger(value, fallback, name) {
+  if (value === undefined || value === '') return fallback;
+  if (!/^[1-9]\d*$/.test(String(value)) || !Number.isSafeInteger(Number(value))) throw new Error(`Invalid ${name} setting`);
+  return Number(value);
+}
+
+export function requestPolicyFromEnv(env = process.env) {
+  const minIntervalMs = strictPositiveInteger(env.STEAM_MIN_INTERVAL_MS, DEFAULT_REQUEST_POLICY.minIntervalMs, 'minimum request interval');
+  if (minIntervalMs < DEFAULT_REQUEST_POLICY.minIntervalMs) throw new Error('Steam request interval cannot be lower than 15000ms');
+  return {
+    minIntervalMs,
+    maxRequestsPerRun: strictPositiveInteger(env.STEAM_MAX_REQUESTS_PER_RUN, DEFAULT_REQUEST_POLICY.maxRequestsPerRun, 'per-run request limit'),
+    maxRequestsPerDay: strictPositiveInteger(env.STEAM_MAX_REQUESTS_PER_DAY, DEFAULT_REQUEST_POLICY.maxRequestsPerDay, 'daily request budget'),
+  };
+}
+
+function utcDate(value) { return value.toISOString().slice(0, 10); }
+
+function validateCollectionState(value) {
+  if (!value || value.schemaVersion !== 1 || typeof value.utcDate !== 'string'
+      || !/^\d{4}-\d{2}-\d{2}$/.test(value.utcDate)
+      || !Number.isSafeInteger(value.requestsToday) || value.requestsToday < 0
+      || !(value.lastRequestAt === null || (typeof value.lastRequestAt === 'string' && Number.isFinite(Date.parse(value.lastRequestAt))))
+      || !(value.stop === null || (typeof value.stop === 'object' && [403, 429, 'non-json'].includes(value.stop.status)
+        && typeof value.stop.at === 'string' && Number.isFinite(Date.parse(value.stop.at))))) {
+    throw new Error('Steam request budget state is invalid; refusing live collection');
+  }
+  return value;
+}
+
+async function loadCollectionState(path, now) {
+  if (!path) return { schemaVersion: 1, utcDate: utcDate(now), requestsToday: 0, lastRequestAt: null, stop: null };
   try {
-    response = await fetchImpl(searchUrl(start, currency), {
-      headers: { Accept: 'application/json' },
-      signal: AbortSignal.timeout(15000),
-    });
+    return validateCollectionState(JSON.parse(await readFile(path, 'utf8')));
   } catch (error) {
+    if (error.code === 'ENOENT') return { schemaVersion: 1, utcDate: utcDate(now), requestsToday: 0, lastRequestAt: null, stop: null };
+    throw error;
+  }
+}
+
+async function saveCollectionState(path, state) {
+  if (!path) return;
+  const target = path instanceof URL ? path : pathToFileURL(resolve(path));
+  if (target.protocol !== 'file:') throw new Error('Steam request state must be a local file');
+  await mkdir(dirname(fileURLToPath(target)), { recursive: true });
+  const temporary = new URL(`${target.href}.tmp`);
+  await writeFile(temporary, `${JSON.stringify(validateCollectionState(state), null, 2)}\n`, 'utf8');
+  await rename(temporary, target);
+}
+
+export function createSteamRequestController({ fetchImpl = fetch, pause = ms => new Promise(resolve => setTimeout(resolve, ms)),
+  policy = DEFAULT_REQUEST_POLICY, statePath = null, now = () => new Date() } = {}) {
+  let requestsMade = 0;
+  let lastStartMs = null;
+  let queue = Promise.resolve();
+
+  async function request(url) {
+    let unlock;
+    const previous = queue;
+    queue = new Promise(resolve => { unlock = resolve; });
+    await previous;
+    try {
+      if (requestsMade >= policy.maxRequestsPerRun) throw new Error('Steam per-run request limit reached');
+      let current = now();
+      let state = await loadCollectionState(statePath, current);
+      if (state.stop) throw new Error(`Steam collection remains stopped after HTTP ${state.stop.status}; clear the stop state manually after review`);
+      const day = utcDate(current);
+      const requestsToday = state.utcDate === day ? state.requestsToday : 0;
+      if (requestsToday >= policy.maxRequestsPerDay) throw new Error('Steam daily request budget reached');
+      const priorStart = lastStartMs ?? (state.lastRequestAt ? Date.parse(state.lastRequestAt) : null);
+      if (priorStart !== null) {
+        const delay = policy.minIntervalMs - (current.valueOf() - priorStart);
+        if (delay > 0) await pause(delay);
+      }
+      current = now();
+      state = { ...state, utcDate: day, requestsToday: requestsToday + 1, lastRequestAt: current.toISOString() };
+      requestsMade += 1;
+      lastStartMs = current.valueOf();
+      await saveCollectionState(statePath, state); // Count attempts before transmission, including failures.
+      const startedAt = current.valueOf();
+      let response;
+      try {
+        response = await fetchImpl(url, { headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(15000) });
+      } catch (error) {
+        throw new Error('Steam network request failed', { cause: error });
+      }
+      const durationMs = Math.max(0, now().valueOf() - startedAt);
+      if (response.status === 403 || response.status === 429) {
+        state.stop = { status: response.status, at: now().toISOString(), retryAfter: response.headers?.get?.('Retry-After') ?? null };
+        await saveCollectionState(statePath, state);
+      }
+      return { response, durationMs };
+    } finally {
+      unlock();
+    }
+  }
+
+  async function stop(reason = 'non-json') {
+    if (![403, 429, 'non-json'].includes(reason)) throw new Error('Invalid stop reason');
+    const current = now();
+    const state = await loadCollectionState(statePath, current);
+    state.stop = { status: reason, at: current.toISOString(), retryAfter: null };
+    await saveCollectionState(statePath, state);
+  }
+
+  return { request, stop, get requestsMade() { return requestsMade; }, maxRequestsPerRun: policy.maxRequestsPerRun };
+}
+
+export async function clearSteamCollectionStop(statePath = DEFAULT_COLLECTION_STATE_PATH, now = new Date()) {
+  const state = await loadCollectionState(statePath, now);
+  state.stop = null;
+  await saveCollectionState(statePath, state);
+  return state;
+}
+
+export async function fetchPage(start, currency, fetchImpl = fetch, expectedTotal = null, requestController = null) {
+  let response;
+  let durationMs = null;
+  try {
+    if (requestController) ({ response, durationMs } = await requestController.request(searchUrl(start, currency)));
+    else response = await fetchImpl(searchUrl(start, currency), {
+        headers: { Accept: 'application/json' },
+        signal: AbortSignal.timeout(15000),
+      });
+  } catch (error) {
+    if (error.message?.includes('Steam')) throw error;
     throw new Error('Steam network request failed', { cause: error });
   }
   if (response.status === 403 || response.status === 429) throw new Error(`Steam access stopped: HTTP ${response.status}`);
@@ -123,14 +246,17 @@ export async function fetchPage(start, currency, fetchImpl = fetch, expectedTota
   try {
     body = await response.json();
   } catch (error) {
+    if (requestController) await requestController.stop('non-json');
     throw new Error('Steam returned non-JSON response', { cause: error });
   }
-  return parsePage(body, start, expectedTotal);
+  return { ...parsePage(body, start, expectedTotal), requestDurationMs: durationMs };
 }
 
-export async function collect(currency, fetchImpl = fetch, pause = ms => new Promise(resolve => setTimeout(resolve, ms))) {
+export async function collect(currency, fetchImpl = fetch, pause = ms => new Promise(resolve => setTimeout(resolve, ms)), options = {}) {
   if (!CURRENCIES[currency]) throw new Error('Unsupported currency');
-  const first = await fetchPage(0, currency, fetchImpl);
+  const policy = options.policy ?? DEFAULT_REQUEST_POLICY;
+  const controller = options.requestController ?? createSteamRequestController({ fetchImpl, pause, policy, statePath: options.statePath ?? null, now: options.now });
+  const first = await fetchPage(0, currency, fetchImpl, null, controller);
   const total = first.total_count;
   const unique = new Map();
   const addResults = results => {
@@ -143,12 +269,15 @@ export async function collect(currency, fetchImpl = fetch, pause = ms => new Pro
   };
   addResults(first.results);
   if (total > 0) {
-    // The first result count is authoritative when Steam ignores count=100.
+    // Advance by observed rows; Steam may ignore count=100 and report another page size.
     const step = first.results.length;
     if (step > total) throw new Error('Steam returned more items than total_count');
+    const estimatedRequests = Math.ceil(total / step);
+    if (estimatedRequests > controller.maxRequestsPerRun) {
+      throw new Error(`Steam market requires about ${estimatedRequests} requests at the returned page size; per-run limit is ${controller.maxRequestsPerRun}`);
+    }
     for (let start = step; start < total; start += step) {
-      await pause(2000);
-      const page = await fetchPage(start, currency, fetchImpl, total);
+      const page = await fetchPage(start, currency, fetchImpl, total, controller);
       if (page.results.length !== Math.min(step, total - start)) throw new Error('Steam page missing items');
       addResults(page.results);
     }
@@ -313,12 +442,15 @@ export async function saveUsdSnapshot(snapshot, cachePath = new URL('../public/m
 export async function refreshUsdSnapshot(fetchImpl = fetch, pause = ms => new Promise(resolve => setTimeout(resolve, ms)), {
   cachePath = new URL('../public/market-usd.json', import.meta.url),
   historyOptions = {},
+  requestPolicy = DEFAULT_REQUEST_POLICY,
+  statePath = null,
 } = {}) {
-  const snapshot = await collect('USD', fetchImpl, pause);
+  const requestController = createSteamRequestController({ fetchImpl, pause, policy: requestPolicy, statePath });
+  const snapshot = await collect('USD', fetchImpl, pause, { requestController, policy: requestPolicy });
   const { prepareHistoryUpdate } = await import('./price-history.mjs');
   const history = await prepareHistoryUpdate(snapshot, historyOptions);
   await saveUsdSnapshot(snapshot, cachePath, history.files);
-  return { snapshot, history };
+  return { snapshot, history, requestCount: requestController.requestsMade };
 }
 
 export async function saveSnapshot(snapshot, currency, cachePath = new URL(`../public/${CURRENCIES[currency].file}`, import.meta.url)) {
@@ -410,6 +542,11 @@ export async function saveFilesAtomically(files) {
 }
 
 async function main() {
+  if (process.argv.includes('--clear-stop')) {
+    const state = await clearSteamCollectionStop();
+    console.info(JSON.stringify({ status: 'cleared', utcDate: state.utcDate, requestsToday: state.requestsToday }));
+    return;
+  }
   if (process.argv.includes('--validate-cache')) {
     await validateUsdCache();
     const { validateHistoryCache } = await import('./price-history.mjs');
@@ -422,11 +559,13 @@ async function main() {
     throw new Error('Live Steam collection requires --live and STEAM_MARKET_COLLECTION_ALLOWED=true');
   }
   // USD is the only market source of truth. FX outages or unsupported JPY listings must not block it.
-  const { snapshot: usd, history } = await refreshUsdSnapshot(fetch, ms => new Promise(resolve => setTimeout(resolve, ms)));
+  const policy = requestPolicyFromEnv();
+  const { snapshot: usd, history, requestCount } = await refreshUsdSnapshot(fetch,
+    ms => new Promise(resolve => setTimeout(resolve, ms)), { requestPolicy: policy, statePath: DEFAULT_COLLECTION_STATE_PATH });
   await validateUsdCache();
   const { validateHistoryCache } = await import('./price-history.mjs');
   const validatedHistory = await validateHistoryCache();
-  console.info(`USD Steam snapshot saved: ${usd.items.length} items; history products ${validatedHistory.products.length}`);
+  console.info(`USD Steam snapshot saved: ${usd.items.length} items; history products ${validatedHistory.products.length}; Steam requests ${requestCount}`);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {

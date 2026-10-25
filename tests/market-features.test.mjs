@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { calculateTechnicalIndicators, currencyView, filterMarketItems, makeRankingSnapshot, parseFavorites, parseRankingSnapshot, priceStatistics, summarizeMarket, toggleFavorite } from '../src/market-features.ts';
+import { calculateTechnicalIndicators, currencyView, filterMarketItems, makeRankingSnapshot, parseFavorites, parsePriceFilterInput, parseRankingSnapshot, priceStatistics, summarizeMarket, toggleFavorite } from '../src/market-features.ts';
 
 const marketItem = (marketHashName, name, priceMinor, listings) => ({ marketHashName, name, imageUrl: null, priceMinor,
   priceText: priceMinor === null ? null : `$${(priceMinor / 100).toFixed(2)}`, listings,
@@ -14,6 +14,30 @@ test('filters by text, price, listings and favorite while keeping unknowns avail
   assert.deepEqual(filterMarketItems(items, { ...base, query: 'ta', minimumPrice: 200, maximumPrice: 300, minimumListings: 5, favoritesOnly: true }, 'listings-desc').map(item => item.name), ['Beta']);
   assert.deepEqual(filterMarketItems(items, { ...base, minimumListings: 4 }, 'name').map(item => item.name), ['Beta']);
   assert.deepEqual(filterMarketItems(items, base, 'listings-asc').map(item => item.name), ['Alpha', 'Beta', 'Unknown']);
+});
+
+test('parses price filters exactly in currency minor units and reports invalid values', () => {
+  for (const [input, cents] of [['0.03', 3], ['0.29', 29], ['1.99', 199], ['100.00', 10000]]) {
+    assert.deepEqual(parsePriceFilterInput(input, 'USD'), { value: cents, error: null });
+  }
+  assert.deepEqual(parsePriceFilterInput('157', 'JPY'), { value: 15700, error: null });
+  assert.equal(parsePriceFilterInput('0.291', 'USD').value, null);
+  assert.match(parsePriceFilterInput('0.291', 'USD').error, /小数第2位/);
+  assert.match(parsePriceFilterInput('157.1', 'JPY').error, /整数/);
+  assert.match(parsePriceFilterInput('1e2', 'USD').error, /価格は/);
+  assert.equal(parsePriceFilterInput('', 'USD').error, null);
+});
+
+test('price ranges follow the currently selected USD or converted JPY units', () => {
+  const usd = { schemaVersion: 2, appid: 5084200, currency: 'USD', status: 'ok', fetchedAt: '2026-10-25T00:00:00.000Z',
+    items: [marketItem('cheap', 'Cheap', 29, 1), marketItem('next', 'Next', 30, 2)] };
+  const filters = { query: '', minimumPrice: parsePriceFilterInput('0.29', 'USD').value, maximumPrice: null,
+    minimumListings: null, favoritesOnly: false, favorites: new Set() };
+  assert.deepEqual(filterMarketItems(usd.items, filters, 'price-asc').map(item => item.marketHashName), ['cheap', 'next']);
+  const jpy = currencyView(usd, 'JPY', 150);
+  const jpyMinimum = parsePriceFilterInput('44', 'JPY').value;
+  assert.deepEqual(filterMarketItems(jpy.items, { ...filters, minimumPrice: jpyMinimum }, 'price-asc').map(item => item.marketHashName), ['cheap', 'next']);
+  assert.deepEqual(filterMarketItems(jpy.items, { ...filters, minimumPrice: parsePriceFilterInput('45', 'JPY').value }, 'price-asc').map(item => item.marketHashName), ['next']);
 });
 
 test('watchlist is keyed by market name and handles malformed storage without throwing', () => {

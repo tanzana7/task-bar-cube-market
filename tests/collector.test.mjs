@@ -4,7 +4,7 @@ import { readFile, writeFile, mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { APPID, FX_RATE_URL, collect, collectPair, convertUsdToJpy, fetchFxRate, normalizeResult, parsePage, parsePriceMinor, refreshUsdSnapshot, saveSnapshot, saveSnapshotPair, searchUrl, validateSnapshot, validateSnapshotPair } from '../scripts/steam-market.mjs';
+import { APPID, DEFAULT_REQUEST_POLICY, FX_RATE_URL, collect, collectPair, convertUsdToJpy, createSteamRequestController, fetchFxRate, normalizeResult, parsePage, parsePriceMinor, refreshUsdSnapshot, saveSnapshot, saveSnapshotPair, searchUrl, validateSnapshot, validateSnapshotPair } from '../scripts/steam-market.mjs';
 
 const fixture = JSON.parse(await readFile(new URL('./fixtures/steam-pages.json', import.meta.url), 'utf8'));
 const response = body => ({ ok: true, status: 200, json: async () => body });
@@ -72,14 +72,68 @@ test('accepts documented currency symbols and spacing, with matching hundredths'
 });
 
 test('handles missing start and pagesize while checking every page', async () => {
-  const jpy = await collect('JPY', mockPages(fixture.JPY), immediate);
-  const usd = await collect('USD', mockPages(fixture.USD), immediate);
+  const testPolicy = { ...DEFAULT_REQUEST_POLICY, minIntervalMs: 0 };
+  const jpy = await collect('JPY', mockPages(fixture.JPY), immediate, { policy: testPolicy });
+  const usd = await collect('USD', mockPages(fixture.USD), immediate, { policy: testPolicy });
   assert.equal(jpy.items.length, 3);
   assert.equal(usd.items.length, 3);
   assert.equal(jpy.items[0].priceText, '¥100');
   assert.equal(usd.items[0].priceText, '$1.00');
   validateSnapshot(jpy, 'JPY');
   validateSnapshot(usd, 'USD');
+});
+
+test('request budget serializes requests, counts attempts and stops at the per-run cap', async () => {
+  let calls = 0;
+  const waits = [];
+  const controller = createSteamRequestController({
+    fetchImpl: async () => { calls += 1; return response({ ok: true }); },
+    pause: async milliseconds => { waits.push(milliseconds); },
+    policy: { ...DEFAULT_REQUEST_POLICY, maxRequestsPerRun: 1 },
+    now: () => new Date('2026-10-25T00:00:00.000Z'),
+  });
+  await controller.request('https://steamcommunity.com/market/search/render/?count=100');
+  await assert.rejects(controller.request('https://steamcommunity.com/market/search/render/?count=100'), /per-run request limit/);
+  assert.equal(calls, 1);
+  assert.equal(controller.requestsMade, 1);
+  assert.deepEqual(waits, []);
+});
+
+test('persistent request budget stops future runs after 429 without retrying', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'tbcm-request-stop-'));
+  const statePath = pathToFileURL(join(dir, 'state.json'));
+  let calls = 0;
+  const policy = { ...DEFAULT_REQUEST_POLICY, minIntervalMs: 0 };
+  try {
+    const controller = createSteamRequestController({
+      fetchImpl: async () => { calls += 1; return { ok: false, status: 429, headers: { get: name => name === 'Retry-After' ? '120' : null } }; },
+      pause: immediate, policy, statePath, now: () => new Date('2026-10-25T00:00:00.000Z'),
+    });
+    await assert.rejects((async () => {
+      const { response: blocked } = await controller.request('https://steamcommunity.com/market/search/render/');
+      if (blocked.status === 429) throw new Error('Steam access stopped: HTTP 429');
+    })(), /HTTP 429/);
+    const state = JSON.parse(await readFile(statePath, 'utf8'));
+    assert.equal(state.requestsToday, 1);
+    assert.equal(state.stop.status, 429);
+    assert.equal(state.stop.retryAfter, '120');
+    const secondRun = createSteamRequestController({ fetchImpl: async () => { calls += 1; return response({}); },
+      pause: immediate, policy, statePath, now: () => new Date('2026-10-25T00:01:00.000Z') });
+    await assert.rejects(secondRun.request('https://steamcommunity.com/market/search/render/'), /remains stopped/);
+    assert.equal(calls, 1);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('a small actual page size is used for request estimation and stops before a crawl', async () => {
+  let calls = 0;
+  await assert.rejects(collect('USD', async () => {
+    calls += 1;
+    return response({ ...fixture.USD[0], total_count: 1094 });
+  }, immediate, { policy: { ...DEFAULT_REQUEST_POLICY, minIntervalMs: 0, maxRequestsPerRun: 6 } }), /about 547 requests/);
+  assert.equal(calls, 1);
+  assert.throws(() => parsePage({ success: true, total_count: 1094, pagesize: 10, results: fixture.USD[0].results }, 0), /shape changed/);
 });
 
 test('USD-only refresh writes verified market, history and rankings without FX or JPY requests', async () => {
@@ -120,7 +174,7 @@ test('USD-only refresh writes verified market, history and rankings without FX o
 test('rejects incomplete, mismatched and blocked pages', async () => {
   assert.throws(() => parsePage({ success: false, total_count: 0, results: [] }, 0));
   assert.throws(() => parsePage({ success: true, total_count: 1, results: [] }, 0));
-  await assert.rejects(collect('JPY', mockPages({ 0: fixture.JPY[0], 2: { ...fixture.JPY[2], results: [] } }), immediate), /incomplete/);
+  await assert.rejects(collect('JPY', mockPages({ 0: fixture.JPY[0], 2: { ...fixture.JPY[2], results: [] } }), immediate), /incomplete|shape changed/);
   await assert.rejects(collect('JPY', mockPages({ 0: fixture.JPY[0], 2: { ...fixture.JPY[2], total_count: 4 } }), immediate), /shape changed/);
   await assert.rejects(collect('JPY', async () => ({ ok: false, status: 429 }), immediate), /access stopped/);
   await assert.rejects(collect('JPY', async () => { throw new Error('offline'); }, immediate), /network request failed/);
