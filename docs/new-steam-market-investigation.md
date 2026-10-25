@@ -1,5 +1,55 @@
 # 新Steam Market検索方式の調査
 
+## v0.5追記：DevTools queryAction応答のfixture検証
+
+### 取得契約の根拠と制約
+
+ユーザー提供のChrome DevTools調査では、`GET https://steamcommunity.com/market/actions?q=Search&qp=...`、`x-valve-request-type: queryAction`でHTTP 200、`application/json; charset=utf-8`になったとのこと。従前のrouteAction/POST案より強い一次の実測根拠として、独立アダプターに実装した。今回の作業ではSteamへ接続していない。リポジトリに添付されたのはレスポンスJSONのみで、対応するNetwork request record、日時、request idは含まれないため、リクエストとレスポンスの同一通信対応はローカルでは再確認できない。
+
+リクエストは`q=Search`とJSON配列の`qp`をURLエンコードし、AppID・currency id・sort・direction・startを含める。HTTPメソッドはGET、ヘッダーは`Accept: application/json`と`x-valve-request-type: queryAction`。Cookie、sessionid、routeAction識別子、POST bodyは使用しない。URL builderはDevToolsで観測されたrequest値`eCurrency=8`を既定にして、同じ形の試験依頼を再現する。一方、レスポンスパーサーは商品rowの`eCurrency=1`をUSDとして独立に検証する。これは両記録を同一通信と断定する実装ではなく、通貨フィールドを相互に補完・上書きしないための分離である。通常の本番収集コードへの切替は行わず、試験アダプターとして分離した。
+
+### 実測fixtureの検査
+
+元ファイル`C:/Users/user/Downloads/tbh_query_action_real_start30_usd.json`を改変せず`tests/fixtures/tbh-query-action-real-start30-usd.json`に複製した。これはユーザーが実レスポンスと示したDevTools JSONで、合成fixtureではない。内容の要点は次の通り。
+
+| 項目 | 添付レスポンスで確認できた内容 |
+| --- | --- |
+| wrapper/fields | rootに`data`; `data`内に`start`, `total_count`, `grouping`, `facets`, `results` |
+| ページ位置/件数 | `start=30`, `total_count=1092`, `grouping=1`, `results.length=30` |
+| 商品識別子 | `strHash` 30種類、`asset_description.market_hash_name` 30種類、それぞれ重複なし |
+| 商品所有者 | 全`asset_description.appid=3678970` |
+| 通貨と価格 | 全rowの`eCurrency=1`、全`strMinSellSubtotal="$0.03"`; USD表示からsubtotal値3 centsを抽出 |
+| 出品数/画像 | `cSellOrders`は全件非負整数、全件`asset_description.icon_url`あり |
+
+商品名の履歴キーは既存形式との互換性を維持して`market_hash_name`にする。`strHash`もAPI上のgroup識別子として別に検証・保持する。画像はSteamの既存economy image hostから作り、商品URLはAppIDとmarket hash nameから生成する。`icon_url`は許可文字のみ受け付ける。
+
+### `eCurrency`不一致と価格基準
+
+ユーザーのDevTools request記録には`price.eCurrency=8`、レスポンスfixtureの各rowには`eCurrency=1`とある。応答fixture自体にはrequest情報が含まれないため、少なくとも現状確認できるのは「この二つの記録で通貨値が異なる」ことまでである。サーバーが通貨指定を無視した、別通信の応答が対応づけられた、または別条件があった、のいずれかを確定できない。アダプターはこのrequest IDとresponse currencyを別々に保持し、rowがUSDコード1でない場合は拒否する。通貨不一致を自動補正しない。
+
+価格値は`strMinSellSubtotal`という名前の表示文字列から厳格なUSD形式だけを解析し、専用フィールド`minSellSubtotalMinor`に保存する。添付データには`priceMinor`と同等だと証明できる整数の価格フィールドがなく、`unSteamFee=1`、`unPublisherFee=1`の意味もこのfixtureだけでは解釈できない。`strMinSellSubtotal`と旧`search/render`の`sell_price`が売り手手取り/購入者支払額のどちらを基準にし、Steam fee・publisher feeを含むか確認できていない。よってこの値はUSD cents表示を数値化した**subtotal**としてのみ保持し、既存の`priceMinor`やUSD価格履歴・ランキング・価格ソートへ混ぜない。本番価格の移行には費用基準の照合が必要。
+
+### ページ送りと部分収集
+
+この応答で観測したのは`start=30`で30商品種類が返った1ページだけ。`start=0`/`60`、別ページでの件数、総数変動、currency値の対応は実測していない。アダプターはページサイズを固定値で決めず、応答の`results.length`に基づいて次offsetを計算し、`data.start`が要求offsetと一致しない場合や`total_count`がページ間で変化した場合、重複ID、空の途中ページ、AppID/通貨不一致を拒否する。最大ページ数は既定の1実行6回以下に制限できる。部分結果はメモリー上で返すだけで、キャッシュや履歴には書き込まない。
+
+仮に1092種類が常に30件ずつ返れば算術上`ceil(1092/30)=37`リクエストで、旧APIの過去実測10商品種類/ページ（約110リクエスト）の約3分の1。ただしこれは単一の`start=30`実測からの推定で、全ページが30件という確認ではない。sort=priceのページ境界は価格変動で移動し、人気度・出品数sortも売買で変化する。offset pagingで全件を漏れなく取れる保証はなく、reported countと一致しても原子的な同時点スナップショットとは呼ばない。開始offset、商品単位`observedAt`、既取得キー、進捗を永続化する分割収集は今回実装していない。
+
+### 実装と本番判断
+
+新規[`scripts/query-action-market.mjs`](../scripts/query-action-market.mjs)はURL/headers生成、grouped応答専用パーサー、厳格なUSD subtotal parser、画像/Steam URL生成、重複検出、上限6ページのメモリー限定ページ送り、shared request controller経由のGET adapterを持つ。fixtureテストで正常30件、異常通貨/AppID/価格/start/total/画像/重複/欠損、ページ送り、応答失敗を検証する。旧APIの価格パーサーは再利用しない。
+
+以下の未確認事項が残るため、新方式を本番切替せず、既存USD旧API、JPY換算、履歴、ランキング、ウォッチリスト、UIと429制御を維持する。
+
+- queryAction GETがCookieなしで成功するか（今回のfixture単独では確認できない）
+- `eCurrency:8` requestと`eCurrency:1` responseの対応関係
+- `strMinSellSubtotal`の手数料基準と旧`priceMinor`との互換性
+- `start=0/60`、ページサイズ変動、total_count変動時の実挙動
+- 30件の並び順の完全な安定性、将来も同じレスポンスschemaか
+- 利用条件/自動取得・公開再配布の許可条件
+
+**判断：** 実測fixtureで構造を扱える試験用queryAction adapterは完成したが、実価格履歴と価格基準が同じだと確認できないため、`public/market-usd.json`・履歴・ランキングへは接続しない。本番切替は不可。Steamの定期収集も有効化しない。
+
 ## v0.4.4追記：ブラウザー通信の捕捉状況と取得設計評価（2026-10-25）
 
 ### 実ブラウザー通信の調査結果
