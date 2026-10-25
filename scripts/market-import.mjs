@@ -1,5 +1,5 @@
-import { readFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { readdir, readFile, stat } from 'node:fs/promises';
+import { basename, extname, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { parsePriceMinor, normalizeResult, saveFilesAtomically } from './steam-market.mjs';
 import { parseQueryActionPage } from './query-action-market.mjs';
@@ -18,6 +18,71 @@ function validTimestamp(value) {
 function safeProvenance(value) {
   return typeof value === 'string' && value.trim().length > 0 && value.length <= 240
     && !/[\r\n\0]/.test(value);
+}
+
+function canonicalTimestamp(value) {
+  const time = typeof value === 'string' ? Date.parse(value) : NaN;
+  return Number.isFinite(time) ? new Date(time).toISOString() : value;
+}
+
+export function detectMarketImportFormat(payload) {
+  if (payload?.data?.grouping === 1 && Array.isArray(payload.data.results)) return 'query-action';
+  if (payload?.success === true && Array.isArray(payload.results) && Number.isSafeInteger(payload.total_count)) return 'search-render';
+  throw new Error('Could not identify Steam search/render or queryAction response format');
+}
+
+function responseDocuments(value, inherited = {}) {
+  if (Array.isArray(value)) return value.flatMap(entry => responseDocuments(entry, inherited));
+  if (!value || typeof value !== 'object') throw new Error('Import JSON must contain an object response');
+  if (value.log && Array.isArray(value.log.entries)) {
+    return value.log.entries.flatMap(entry => {
+      const url = entry?.request?.url;
+      const relevantUrl = typeof url === 'string' && /^https:\/\/steamcommunity\.com\/market\/(?:search\/render\/|actions)(?:\?|$)/.test(url);
+      const body = entry?.response?.content?.text;
+      if (!relevantUrl || typeof body !== 'string') return [];
+      try {
+        const decoded = entry.response.content.encoding === 'base64'
+          ? Buffer.from(body, 'base64').toString('utf8') : body;
+        return responseDocuments(JSON.parse(decoded), { observedAt: canonicalTimestamp(entry.startedDateTime), provenance: 'Steam DevTools HAR response' });
+      } catch (error) {
+        throw new Error('Could not parse a Steam Market JSON response in HAR', { cause: error });
+      }
+    });
+  }
+  if (Array.isArray(value.responses)) {
+    return value.responses.flatMap(entry => responseDocuments(entry, {
+      observedAt: value.observedAt ?? value.capturedAt ?? inherited.observedAt,
+      provenance: value.provenance ?? inherited.provenance,
+    }));
+  }
+  const response = value.response ?? value.payload ?? value;
+  return [{
+    payload: response,
+    observedAt: value.observedAt ?? value.capturedAt ?? inherited.observedAt ?? null,
+    provenance: value.provenance ?? inherited.provenance ?? null,
+    format: value.format ?? inherited.format ?? null,
+  }];
+}
+
+async function readInputDocuments(inputPaths) {
+  const documents = [];
+  for (const inputPath of inputPaths) {
+    const fileInfo = await stat(inputPath);
+    const files = fileInfo.isDirectory()
+      ? (await readdir(inputPath, { withFileTypes: true }))
+        .filter(entry => entry.isFile() && extname(entry.name).toLowerCase() === '.json')
+        .map(entry => resolve(inputPath, entry.name)).sort()
+      : [inputPath];
+    if (fileInfo.isDirectory() && files.length === 0) throw new Error(`No JSON files found in ${inputPath}`);
+    for (const file of files) {
+      const value = JSON.parse(await readFile(file, 'utf8'));
+      const parsed = responseDocuments(value);
+      if (parsed.length === 0) throw new Error(`No Steam Market responses found in ${basename(file)}`);
+      documents.push(...parsed);
+    }
+  }
+  if (documents.length === 0) throw new Error('No input responses were found');
+  return documents;
 }
 
 function parseSearchRender(payload, observedAt) {
@@ -128,6 +193,7 @@ export function validateMarketObservations(value) {
   for (const capture of value.imports) {
     if (!capture || !['query-action', 'search-render'].includes(capture.sourceKind) || !safeProvenance(capture.provenance)
         || !validTimestamp(capture.observedAt) || !Number.isSafeInteger(capture.start) || capture.start < 0
+        || (capture.rightsConfirmed !== undefined && typeof capture.rightsConfirmed !== 'boolean')
         || !Number.isSafeInteger(capture.totalCount) || capture.totalCount < capture.start
         || !Number.isSafeInteger(capture.pageSize) || capture.pageSize < 0
         || capture.pageSize > capture.totalCount - capture.start
@@ -138,13 +204,16 @@ export function validateMarketObservations(value) {
   return value;
 }
 
-export function parseMarketImport({ payload, format, observedAt, provenance, now = new Date() }) {
+export function parseMarketImport({ payload, format = null, observedAt, provenance = null, rightsConfirmed = false, now = new Date() }) {
+  format ??= detectMarketImportFormat(payload);
+  if (format !== detectMarketImportFormat(payload)) throw new Error('The requested format does not match the response');
   if (!validTimestamp(observedAt)) throw new Error('observed-at must be a valid UTC ISO timestamp');
   if (!(now instanceof Date) || !Number.isFinite(now.valueOf()) || Date.parse(observedAt) > now.valueOf() + 5 * 60_000) {
     throw new Error('observed-at cannot be in the future');
   }
+  if (provenance === null) provenance = `${SOURCE_LABELS[format]}; supplied as operator input`;
   if (!safeProvenance(provenance)) throw new Error('provenance must be 1-240 characters without line breaks');
-  if (!Object.hasOwn(SOURCE_LABELS, format)) throw new Error('format must be search-render or query-action');
+  if (typeof rightsConfirmed !== 'boolean') throw new Error('rightsConfirmed must be a boolean operator attestation');
   const capture = format === 'search-render' ? parseSearchRender(payload, observedAt) : parseQueryAction(payload, observedAt);
   const products = capture.products.map(product => ({
     ...product,
@@ -156,10 +225,29 @@ export function parseMarketImport({ payload, format, observedAt, provenance, now
     currency: 'USD',
     generatedAt: now.toISOString(),
     products,
-    imports: [{ sourceKind: format, sourceLabel: SOURCE_LABELS[format], provenance, observedAt,
+    imports: [{ sourceKind: format, sourceLabel: SOURCE_LABELS[format], provenance, observedAt, rightsConfirmed,
       start: capture.start, totalCount: capture.totalCount, pageSize: capture.pageSize, complete: capture.complete }],
   };
   return validateMarketObservations(snapshot);
+}
+
+export function parseMarketImportBatch({ documents, observedAt = null, provenance = null, rightsConfirmed = false, now = new Date() }) {
+  if (!Array.isArray(documents) || documents.length === 0) throw new Error('At least one Steam Market response is required');
+  let combined = null;
+  for (const document of documents) {
+    const pageObservedAt = document.observedAt ?? observedAt;
+    if (!pageObservedAt) throw new Error('A reliable observation time is missing; provide --observed-at or use a HAR/wrapped JSON timestamp');
+    const incoming = parseMarketImport({
+      payload: document.payload,
+      format: document.format ?? null,
+      observedAt: pageObservedAt,
+      provenance: document.provenance ?? provenance,
+      rightsConfirmed: document.rightsConfirmed === true || rightsConfirmed === true,
+      now,
+    });
+    combined = mergeMarketObservations(combined, incoming).snapshot;
+  }
+  return validateMarketObservations(combined);
 }
 
 export function mergeMarketObservations(previous, incoming) {
@@ -176,7 +264,9 @@ export function mergeMarketObservations(previous, incoming) {
       addedPoints += next.observations.length;
       continue;
     }
-    if (current.name !== next.name || current.steamUrl !== next.steamUrl) throw new Error('Imported product identity conflicts with cached data');
+    if (current.steamUrl !== next.steamUrl) throw new Error('Imported product identity conflicts with cached data');
+    const previousLatest = Date.parse(current.observations.at(-1).observedAt);
+    const incomingLatest = Math.max(...next.observations.map(point => Date.parse(point.observedAt)));
     const knownTimes = new Map(current.observations.map(point => [point.observedAt, point]));
     for (const point of next.observations) {
       const existing = knownTimes.get(point.observedAt);
@@ -189,7 +279,10 @@ export function mergeMarketObservations(previous, incoming) {
       addedPoints += 1;
     }
     current.observations.sort((a, b) => Date.parse(a.observedAt) - Date.parse(b.observedAt));
-    if (next.imageUrl) current.imageUrl = next.imageUrl;
+    if (incomingLatest > previousLatest) {
+      current.name = next.name;
+      if (next.imageUrl) current.imageUrl = next.imageUrl;
+    }
   }
   const merged = {
     ...base,
@@ -198,52 +291,74 @@ export function mergeMarketObservations(previous, incoming) {
     imports: [...base.imports],
   };
   const incomingCapture = incoming.imports[0];
-  const sameCapture = base.imports.some(capture => capture.sourceKind === incomingCapture.sourceKind
-    && capture.observedAt === incomingCapture.observedAt && capture.provenance === incomingCapture.provenance);
-  if (!sameCapture) merged.imports.push(incomingCapture);
-  merged.imports.sort((a, b) => Date.parse(a.observedAt) - Date.parse(b.observedAt));
-  if (addedPoints === 0 && !sameCapture) merged.generatedAt = incoming.generatedAt;
+  let addedCaptures = 0;
+  for (const capture of incoming.imports) {
+    const sameCapture = base.imports.some(existing => existing.sourceKind === capture.sourceKind
+      && existing.observedAt === capture.observedAt && existing.provenance === capture.provenance
+      && existing.start === capture.start && existing.totalCount === capture.totalCount
+      && existing.pageSize === capture.pageSize && existing.complete === capture.complete);
+    if (!sameCapture) {
+      merged.imports.push(capture);
+      addedCaptures += 1;
+    }
+  }
+  merged.imports.sort((a, b) => Date.parse(a.observedAt) - Date.parse(b.observedAt) || a.start - b.start);
+  if (addedPoints === 0 && addedCaptures > 0) merged.generatedAt = incoming.generatedAt;
   validateMarketObservations(merged);
-  return { snapshot: merged, addedPoints, changed: addedPoints > 0 || !sameCapture };
+  return { snapshot: merged, addedPoints, changed: addedPoints > 0 || addedCaptures > 0 };
 }
 
-export async function importMarketFile({ inputPath, outputPath = PUBLIC_OBSERVATIONS_PATH, format, observedAt, provenance, publish = false, now = new Date() }) {
-  if (!inputPath) throw new Error('--input is required');
-  const payload = JSON.parse(await readFile(inputPath, 'utf8'));
-  const incoming = parseMarketImport({ payload, format, observedAt, provenance, now });
-  if (!publish) return { changed: false, preview: incoming, addedPoints: incoming.products.length };
+export async function importMarketFile({ inputPath, inputPaths = null, outputPath = PUBLIC_OBSERVATIONS_PATH,
+  format = null, observedAt = null, provenance = null, publish = false, rightsConfirmed = false, now = new Date() }) {
+  const paths = inputPaths ?? (inputPath ? [inputPath] : []);
+  if (paths.length === 0) throw new Error('--input is required');
+  const documents = await readInputDocuments(paths);
+  if (format !== null) {
+    for (const document of documents) if (!document.format) document.format = format;
+  }
+  const incoming = parseMarketImportBatch({ documents, observedAt, provenance, rightsConfirmed, now });
   let previous = null;
   try { previous = JSON.parse(await readFile(outputPath, 'utf8')); }
   catch (error) { if (error.code !== 'ENOENT') throw new Error('Could not read previous public observations; refusing to overwrite', { cause: error }); }
   const result = mergeMarketObservations(previous, incoming);
+  if (!publish) return { ...result, preview: result.snapshot };
+  if (rightsConfirmed !== true) {
+    throw new Error('Publishing requires --rights-confirmed; this records your attestation but does not grant Valve permission');
+  }
   if (result.changed) await saveFilesAtomically([{ path: outputPath, content: `${JSON.stringify(result.snapshot, null, 2)}\n` }]);
   return result;
 }
 
 function parseArgs(argv) {
-  const options = {};
+  const options = { inputs: [] };
   for (let i = 0; i < argv.length; i += 1) {
     if (argv[i] === '--publish') { options.publish = true; continue; }
+    if (argv[i] === '--dry-run') { options.dryRun = true; continue; }
+    if (argv[i] === '--rights-confirmed') { options.rightsConfirmed = true; continue; }
     const match = /^--([^=]+)(?:=(.*))?$/.exec(argv[i]);
     if (!match) throw new Error(`Unknown argument: ${argv[i]}`);
     const key = match[1];
     const value = match[2] ?? argv[++i];
-    if (!value) throw new Error(`Missing value for --${key}`);
+    if (value === undefined || value === '') throw new Error(`Missing value for --${key}`);
     if (!['input', 'format', 'observed-at', 'provenance'].includes(key)) throw new Error(`Unknown option --${key}`);
-    options[key] = value;
+    if (key === 'input') options.inputs.push(resolve(value));
+    else options[key] = value;
   }
+  if (options.publish && options.dryRun) throw new Error('Choose either --dry-run or --publish');
+  if (options.publish && !options.rightsConfirmed) throw new Error('Publishing requires --rights-confirmed');
   return options;
 }
 
 async function main() {
   const options = parseArgs(process.argv.slice(2));
   const result = await importMarketFile({
-    inputPath: options.input && resolve(options.input),
+    inputPaths: options.inputs,
     outputPath: PUBLIC_OBSERVATIONS_PATH,
-    format: options.format,
+    format: options.format ?? null,
     observedAt: options['observed-at'],
     provenance: options.provenance,
     publish: options.publish === true,
+    rightsConfirmed: options.rightsConfirmed === true,
   });
   const snapshot = result.snapshot ?? result.preview;
   console.info(JSON.stringify({ mode: result.snapshot ? 'published' : 'preview', appid: TBC_APPID,

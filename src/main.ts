@@ -1,6 +1,6 @@
 import './style.css';
 import { formatFxRateLabel, parseFreshFxRate, prepareMarketPriceView, type FxRateRecord, type MarketSnapshot } from './market';
-import { latestObservedItems, parseMarketObservations, type MarketObservations, type ObservationPoint } from './market-observations';
+import { latestObservedItems, parseMarketObservations, selectMarketDisplayItems, type MarketObservations, type ObservationPoint } from './market-observations';
 import { filterHistoryPoints, formatHistoryPrice, makeChartPoints, parseHistoryIndex, parseProductHistory, type HistoryCurrency, type HistoryIndex, type HistoryRange, type ProductHistory } from './history';
 import { calculateTechnicalIndicators, currencyView, filterMarketItems, parseFavorites, parsePriceFilterInput, parseRankingSnapshot, priceStatistics, summarizeMarket, toggleFavorite, type MarketSort, type RankingSnapshot } from './market-features';
 
@@ -270,7 +270,7 @@ async function openHistory(item: MarketSnapshot['items'][number]) {
   historyFxFallbackNotice = useUsdHistoryFallback ? '為替レート未取得のため、価格履歴をUSDで表示しています' : null;
   historyTitle.textContent = item.name;
   const imported = importedObservations.get(item.marketHashName);
-  const visibleItem = snapshot?.items.find(candidate => candidate.marketHashName === item.marketHashName) ?? item;
+  const visibleItem = imported ? item : snapshot?.items.find(candidate => candidate.marketHashName === item.marketHashName) ?? item;
   const currentPrice = imported
     ? imported.sourceKind === 'query-action'
       ? `${imported.referencePriceText} USD（参考値・価格基準確認中）`
@@ -339,18 +339,12 @@ function render() {
     statusNode.hidden = true;
     return;
   }
-  const canonicalNames = new Set(usdSnapshot?.items.map(item => item.marketHashName) ?? []);
   const visibleCurrency = currencySelect.value as 'USD' | 'JPY';
-  const importedItems = latestObservedItems(importedSnapshot).filter(item => !canonicalNames.has(item.marketHashName)).map(item => ({
-    ...item,
-    // Imported snapshots are standalone observations, never members of the verified history model.
-    // queryAction's subtotal stays non-sortable; legacy USD rows become non-sortable in JPY mode.
-    priceMinor: visibleCurrency === 'USD' && item.observation?.sourceKind === 'search-render' ? item.priceMinor : null,
-    priceText: visibleCurrency === 'USD' && item.observation?.sourceKind === 'search-render' ? item.priceText : null,
-  }));
-  importedObservations = new Map(importedItems.flatMap(item => item.observation ? [[item.marketHashName, item.observation] as const] : []));
-  const allItems = [...priceView.items, ...importedItems];
-  const importedText = new Map(importedItems.map(item => [item.marketHashName, item.importedPriceText ?? '価格情報なし']));
+  const selection = selectMarketDisplayItems(priceView.items, usdSnapshot?.fetchedAt ?? null,
+    latestObservedItems(importedSnapshot), visibleCurrency);
+  importedObservations = new Map([...selection.imported].flatMap(([key, item]) => item.observation ? [[key, item.observation] as const] : []));
+  const allItems = selection.items;
+  const importedText = new Map([...selection.imported].map(([key, item]) => [key, item.importedPriceText ?? '価格情報なし']));
   const visible = filterMarketItems(allItems, {
     query: search.value,
     minimumPrice: minimumPrice.value,
@@ -455,8 +449,10 @@ function setFavorite(marketHashName: string) {
 
 function renderOverview() {
   if (!usdSnapshot) return;
-  const imported = latestObservedItems(importedSnapshot).filter(item => !usdSnapshot!.items.some(canonical => canonical.marketHashName === item.marketHashName));
-  const combined = [...usdSnapshot.items, ...imported];
+  const selection = selectMarketDisplayItems(usdSnapshot.items, usdSnapshot.fetchedAt,
+    latestObservedItems(importedSnapshot), 'USD');
+  const combined = selection.items;
+  const imported = [...selection.imported.values()];
   const overview = summarizeMarket(combined);
   overviewItemsNode.textContent = combined.length ? overview.itemTypes.toLocaleString('ja-JP') : '未取得';
   const observedAtValues = new Set([

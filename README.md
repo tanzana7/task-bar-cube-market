@@ -19,16 +19,24 @@ Viteの出力は`dist/`です。Cloudflare Pagesはビルドコマンド`npm run
 
 本番ブラウザはSteamに直接アクセスせず、静的JSONだけを読みます。データが未取得なら架空の商品や価格は表示しません。
 
-## 正規データの手動取込
+## 正規データの取込と公開
 
 Steamからの自動取得・再配布の許可は未確認です。Steamの利用規約ではサービスとのやり取りを自動化するスクリプト等を制限しているため、`STEAM_MARKET_COLLECTION_ALLOWED=true`だけをValveの許可とみなさないでください。許可された運用、または適正に取得・提供されたTBC AppID `5084200` のJSONがある場合のみ、次の取込経路を使用します。CLIはSteamへ通信しません。
 
 ```sh
-npm run market:import -- --input path/to/steam-response.json --format search-render --observed-at 2026-10-25T09:00:00.000Z --provenance "operator-provided Steam response"
-npm run market:import -- --input path/to/steam-response.json --format search-render --observed-at 2026-10-25T09:00:00.000Z --provenance "operator-provided Steam response" --publish
+# 形式を自動判定して検証だけ行う
+npm run market:import -- --input path/to/steam-response.json --observed-at 2026-10-25T09:00:00.000Z --provenance "operator-provided Steam response"
+
+# ディレクトリ内のJSONページをまとめて検証
+npm run market:import -- --input path/to/steam-pages --observed-at 2026-10-25T09:00:00.000Z --provenance "operator-provided Steam responses"
+
+# 検証からコミット・Push・Pages反映確認まで
+npm run market:publish -- --input path/to/steam-response.json --observed-at 2026-10-25T09:00:00.000Z --provenance "operator-provided Steam response" --publish --rights-confirmed
 ```
 
-省略した場合は検証だけを行い、ファイルを書き換えません。`--publish`は`public/market-observations.json`だけを更新し、既存の確定価格JSON・履歴・ランキングには接続しません。AppID、USD価格文字列と数値、出品数、商品キー、画像URL、商品URL、UTC観測日時、重複、前回JSONを検証します。`query-action`形式は`strMinSellSubtotal`の手数料基準が未確認のため、USD参考値として別表示し、価格ソート・価格履歴には使いません。ページの取得範囲は部分観測として記録します。破損キャッシュは上書きしません。インポート後は差分を確認し、GitHubへPushするとCloudflare PagesのGit連携で公開されます。
+HAR形式ならSteam Marketの`search/render`または`actions`応答を自動抽出し、HARのリクエスト開始時刻を観測時刻として使います。生のJSONに信頼できる取得時刻がない場合は`--observed-at`を指定してください。ファイル時刻や処理時刻を商品観測時刻に流用しません。`--rights-confirmed`は操作者が利用・公開権限を確認したという記録であり、Valveの許可を付与するものではありません。
+
+`market:publish`は既定でdry-runです。公開モードではmainがorigin/mainと一致し、作業ツリーがcleanであることを確認してから、検証済みの`public/market-observations.json`だけをビルド・コミット・Pushし、Cloudflare Pagesへ届いたJSONを確認します。同一入力の再実行は変更なしとしてPushしません。入力AppIDは5084200固定で、TBH fixtureは拒否されます。`queryAction`の`strMinSellSubtotal`は価格基準確認中の参考値として隔離し、検証済み価格履歴・ランキングには接続しません。既存商品は観測日時が新しいデータを表示し、未観測商品を0価格・0出品にしません。
 
 `tests/fixtures/tbh-query-action-real-start30-usd.json`はAppIDが3678970のため本番取込では拒否されます。取込テストはfixtureを一時ディレクトリでのみ解析し、本番商品一覧には書き込みません。
 

@@ -55,8 +55,18 @@ GitHub Actionsの市場更新に30分scheduleはありません。今回のTBH�
 
 ## TBC公開JSONの正規取込
 
-`npm run market:import -- --input <file> --format search-render|query-action --observed-at <UTC ISO timestamp> --provenance <source description>`は入力を検証してプレビューし、書き込みません。取込の公開を行うときだけ`--publish`を追加します。対象AppIDは固定で5084200です。取込はSteamへの通信を行いません。
+CLIはSteamへ通信しません。生のSteam JSON、DevTools HAR、または複数ページJSONを自動判定し、ディレクトリ指定では直下の`.json`を名前順に処理します。形式・AppID 5084200・商品キー重複・価格と表示文字列・出品数・画像URL・Steam URL・観測日時を検証します。HARのSteam MarketレスポンスはHARの`startedDateTime`を使います。生JSONに日時がない場合、操作者が信頼できる実観測時刻を指定する必要があり、現在時刻やファイル時刻は補いません。
 
-成功すると`public/market-observations.json`に商品キー別の観測履歴を追記します。正規`market-usd.json`、既存価格履歴、ランキングとは独立しています。正規市場に同じ商品が存在する場合は正規スナップショットを優先します。queryAction由来のsubtotalは`priceMinor=null`のまま「参考値・価格基準確認中」と表示します。各商品に実際の`observedAt`、件数、出典を保存し、ページ範囲を超える収集を全市場とは表示しません。
+```sh
+# まずdry-run（ファイル変更なし）
+npm run market:import -- --input <file-or-directory> [--observed-at <UTC ISO timestamp>] [--provenance <source>]
 
-取込後の公開は同一ブランチへPushし、既存Cloudflare Pages Git連携に任せます。異なる時刻の再取込は新しい観測として保存されます。入力範囲が1ページまたは一部ページなら`complete=false`で記録し、未観測商品を0価格・0出品として補完しません。TBH fixtureはAppID検証で拒否されます。
+# 検証からコミット・Push・Pages反映確認まで
+npm run market:publish -- --input <file-or-directory> [--observed-at <UTC ISO timestamp>] --provenance <source> --publish --rights-confirmed
+```
+
+`market:publish`は実行前にTBCの入力を一時JSONへ検証・統合し、既存キャッシュも検証します。公開モードはcleanな`main`が`origin/main`と一致する場合だけ、market/fx検証とビルドに成功してから公開JSONを更新します。JSON差分がなければコミット・Push・Pagesビルドを省略します。差分がある場合は対象ファイルだけをコミット・Pushし、公開JSONに新しい観測が届くまでCloudflare Pagesを確認します。失敗時はビルド前に既存JSONを保護します。Push成功後のデプロイ失敗はジョブ失敗として報告され、コミットを成功扱いにしません。
+
+`--rights-confirmed`は操作者の確認記録で、Valveの許可を意味しません。許諾未確認の方法で取得・再配布したデータは公開しないでください。対象AppIDは固定で5084200、TBH fixtureは拒否されます。新規商品・新しい観測点だけを統合し、同一観測の再投入は冪等です。商品ごとの最新観測日時が正規市場スナップショットより新しい時だけ、一覧表示を取込観測へ切り替えます。価格基準未確認のqueryAction subtotalは数値価格や価格履歴に昇格しません。部分取得はページ単位で記録し、取得範囲外の商品を削除したり0価格・0出品にしたりしません。
+
+発売直後は、適正に取得・提供されたTBCのSteam Market JSON（`search/render`またはqueryAction）を1ファイル、HAR、またはページJSON一式として渡してください。生JSONに観測日時がなければ実際の取得時刻を添えてください。まずdry-runで件数・AppID・観測日時・出典を確認し、利用・公開権限を確認した後に`market:publish`を実行します。現在はTBC実商品データ未入手のため、本番商品一覧は0件のままです。TBH fixtureや合成データを本番に投入しません。

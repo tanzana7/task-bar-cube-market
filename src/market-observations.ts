@@ -28,8 +28,13 @@ export type MarketObservations = {
   currency: 'USD';
   generatedAt: string;
   products: ObservedProduct[];
-  imports: Array<{ sourceKind: 'search-render' | 'query-action'; provenance: string; observedAt: string;
+  imports: Array<{ sourceKind: 'search-render' | 'query-action'; provenance: string; observedAt: string; rightsConfirmed?: boolean;
     start: number; totalCount: number; pageSize: number; complete: boolean }>;
+};
+
+export type MarketDisplaySelection = {
+  items: ListedItem[];
+  imported: Map<string, ListedItem>;
 };
 
 export type ListedItem = MarketItem & {
@@ -93,6 +98,7 @@ export function parseMarketObservations(value: unknown): MarketObservations | nu
     const captureMs = Date.parse(capture?.observedAt);
     if (!capture || !['query-action', 'search-render'].includes(capture.sourceKind)
         || !isIsoTimestamp(capture.observedAt) || typeof capture.provenance !== 'string' || !capture.provenance.trim()
+        || (capture.rightsConfirmed !== undefined && typeof capture.rightsConfirmed !== 'boolean')
         || !Number.isSafeInteger(capture.start) || capture.start < 0 || !Number.isSafeInteger(capture.totalCount)
         || capture.totalCount < capture.start || !Number.isSafeInteger(capture.pageSize) || capture.pageSize < 0
         || capture.pageSize > capture.totalCount - capture.start
@@ -121,4 +127,41 @@ export function latestObservedItems(data: MarketObservations | null): ListedItem
         : observation.priceText ? `${observation.priceText} USD · 取込値` : '価格情報なし',
     };
   });
+}
+
+export function selectMarketDisplayItems(
+  canonicalItems: MarketItem[],
+  canonicalObservedAt: string | null,
+  importedItems: ListedItem[],
+  currency: 'USD' | 'JPY',
+): MarketDisplaySelection {
+  const canonicalTime = canonicalObservedAt ? Date.parse(canonicalObservedAt) : NaN;
+  const importedByKey = new Map(importedItems.map(item => [item.marketHashName, item]));
+  const selectedImports = new Map<string, ListedItem>();
+  const items: ListedItem[] = canonicalItems.map(item => {
+    const imported = importedByKey.get(item.marketHashName);
+    const importedTime = imported?.observation ? Date.parse(imported.observation.observedAt) : NaN;
+    if (!imported || (Number.isFinite(canonicalTime) && importedTime <= canonicalTime)) return item;
+    const selected = {
+      ...imported,
+      // USD imports are retained as raw USD values. JPY mode never compares USD minor units
+      // against yen, and queryAction subtotal observations remain non-numeric in either view.
+      priceMinor: currency === 'USD' && imported.observation?.sourceKind === 'search-render' ? imported.priceMinor : null,
+      priceText: currency === 'USD' && imported.observation?.sourceKind === 'search-render' ? imported.priceText : null,
+    };
+    selectedImports.set(item.marketHashName, selected);
+    return selected;
+  });
+  const canonicalKeys = new Set(canonicalItems.map(item => item.marketHashName));
+  for (const item of importedItems) {
+    if (canonicalKeys.has(item.marketHashName)) continue;
+    const selected = {
+      ...item,
+      priceMinor: currency === 'USD' && item.observation?.sourceKind === 'search-render' ? item.priceMinor : null,
+      priceText: currency === 'USD' && item.observation?.sourceKind === 'search-render' ? item.priceText : null,
+    };
+    items.push(selected);
+    selectedImports.set(item.marketHashName, selected);
+  }
+  return { items, imported: selectedImports };
 }
