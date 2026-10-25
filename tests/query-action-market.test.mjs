@@ -161,6 +161,30 @@ test('queryAction observations persist per product and resume at the recorded of
   });
 });
 
+test('an explicitly empty market is recorded as an unverified empty observation, not treated as malformed or filled with zeroes', async () => {
+  await withTempPaths(async ({ storePath }) => {
+    const empty = await collectAndPersistQueryActionBatch({ appid: 3678970, requestCurrencyId: 1, storePath,
+      fetchPage: async start => ({ data: { start, total_count: 0, grouping: 1, results: [] } }) });
+    assert.equal(empty.progress.status, 'count-reached-unverified');
+    assert.equal(empty.progress.reportedTotalCount, 0);
+    assert.equal(empty.progress.catalogComplete, false);
+    assert.equal(empty.products.length, 0);
+  });
+});
+
+test('an observation store from a different AppID is refused and left untouched', async () => {
+  await withTempPaths(async ({ storePath }) => {
+    const otherApp = JSON.stringify({ schemaVersion: 1, appid: 5084200, source: 'Steam Community Market queryAction',
+      currency: 'USD', priceBasis: 'min-sell-subtotal-unverified-fees', products: [], completedRuns: [], progress: {
+        status: 'idle', runId: null, startedAt: null, requestCurrencyId: null, reportedTotalCount: null,
+        nextStart: 0, pagesFetched: 0, seenMarketHashNames: [], orderingRisk: true, catalogComplete: false,
+      } });
+    await writeFile(storePath, otherApp);
+    await assert.rejects(loadQueryActionObservationStore(storePath, 3678970), /refusing to overwrite/);
+    assert.equal(await readFile(storePath, 'utf8'), otherApp);
+  });
+});
+
 test('changing totals and page overlap persist valid observations but require a restart', async () => {
   await withTempPaths(async ({ storePath }) => {
     await collectAndPersistQueryActionBatch({ appid: 3678970, requestCurrencyId: 1, maxPages: 1, storePath,

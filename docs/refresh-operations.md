@@ -45,6 +45,8 @@ TBH限定のローカル試験は`npm run market:probe -- --target=tbh`。実通
 
 AppID別の途中観測は`.market/query-action-observations-<appid>.json`に商品単位で保存されます。1ページの成功後すぐ保存し、次回は`partial`のoffsetから続行します。HTTP失敗は保存済み観測を残します。total_count変化または商品重複は`restart-required`となるため、結果を確認してからローカルの明示`--restart`で新しいrunを開始します。件数到達も完全スナップショットを意味せず、状態は`count-reached-unverified`、`catalogComplete=false`のままです。データは`public/`配下ではなく公開サイトから配信されず、既存USD履歴にも接続されません。
 
+Pages上のfixture表示テストは[queryAction表示テスト](https://task-bar-cube-market.pages.dev/query-action-demo.html)。保存済みTBHレスポンスfixtureのみを使用し、画面・JSONともTask Bar Hero AppID 3678970と「テスト表示・価格基準検証中」を明示します。取得日時・request通貨対応・価格の手数料基準は未確認です。検索と表示額/出品数の並び替え、画像、Steamリンクだけを独立に試せます。このページはrobots metaと`X-Robots-Tag`でnoindexとなり、トップページ・sitemap・TBC商品/履歴/ランキングには含めません。`npm run build`がfixtureとJSONを再検証・生成します。
+
 GitHub Actionsにはmanual-onlyの`query-action` modeがあります。運用許可変数が設定されていてもユーザーがworkflow_dispatchで選ぶまで実行されません。成功・失敗とも予算と観測ストアだけを`[CF-Pages-Skip]`コミットで保存し、Steam定期実行はありません。新APIは価格手数料基準、通貨不一致の由来、AppID 5084200の実応答、ページ順変動への完全性が未確認のため本番サイト・価格履歴へ採用しないでください。詳細は[new Steam Market investigation](new-steam-market-investigation.md)を参照。
 
 GitHub Actionsの市場更新に30分scheduleはありません。今回のTBH市場で`count=100`に対して実応答ページサイズ10を観測し、全件に約110 requestsと見積もられました。現状の6件/実行制限と完全スナップショット要件では収集を完了できず、途中データは公開しません。複数実行に分割する場合は商品別`observedAt`を持ち、異なる時刻を同時点の完全市場として扱わない別設計が必要です。

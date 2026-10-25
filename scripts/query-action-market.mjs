@@ -231,7 +231,9 @@ export function createEmptyQueryActionObservationStore(appid) {
 
 export async function loadQueryActionObservationStore(path, appid) {
   try {
-    return validateObservationStore(JSON.parse(await readFile(path, 'utf8')));
+    const store = validateObservationStore(JSON.parse(await readFile(path, 'utf8')));
+    if (store.appid !== appid) throw new Error('queryAction observation store AppID does not match its requested target');
+    return store;
   } catch (error) {
     if (error.code === 'ENOENT') return createEmptyQueryActionObservationStore(appid);
     throw new Error('Could not validate queryAction observation store; refusing to overwrite it', { cause: error });
@@ -375,11 +377,13 @@ export async function collectAndPersistQueryActionBatch({ fetchPage, appid = TBH
     const payload = await fetchPage(progress.nextStart);
     const page = parseQueryActionPage(payload, { expectedStart: progress.nextStart,
       expectedAppId: appid, requestCurrencyId });
-    if (page.responseCurrencyId !== CURRENCIES.USD.code || page.requestResponseCurrencyMatch !== true) {
+    if (page.pageSize > 0 && (page.responseCurrencyId !== CURRENCIES.USD.code || page.requestResponseCurrencyMatch !== true)) {
       throw new QueryActionCurrencyMismatchError(requestCurrencyId,
         page.responseCurrencyId === null ? [] : [page.responseCurrencyId]);
     }
-    if (page.pageSize === 0) throw new Error('Empty queryAction pages cannot verify a market observation');
+    if (page.pageSize === 0 && (page.totalCount !== 0 || page.start !== 0)) {
+      throw new Error('Empty queryAction pages cannot verify a non-empty market');
+    }
 
     const observedAt = now().toISOString();
     const totalChanged = progress.reportedTotalCount !== null && page.totalCount !== progress.reportedTotalCount;

@@ -1,5 +1,15 @@
 # 新Steam Market検索方式の調査
 
+## v0.5.2: 隔離されたPages表示テスト
+
+`public/query-action-demo.html`は、保存fixtureを使う独立した動作確認ページである。`npm run build`の先頭で`scripts/build-query-action-demo.mjs`がfixtureを本番パーサーで再検証し、`public/query-action-demo.json`を生成する。画面側もAppID 3678970、Task Bar Hero、response currency ID 1、request通貨との対応未確認、価格basis未確認、全件でないことを検査する。HTTPアクセスはページから同じサイト内のJSONに対する1回のみで、Steam Marketへの通信はない。
+
+ページでは検索・名前順/表示額順/出品数順、画像・商品名・出品数、Steam商品ページリンクを確認できる。価格はfixtureの`strMinSellSubtotal`文字列をUSDとして表示するが、購入総額や現在値とは説明しない。fixture取得時刻と対応するリクエストcurrencyを記録していないため両方null/未確認と表示する。デモはTBC本番JSON、既存価格履歴、ランキング、ウォッチリストには接続せず、canonical・sitemapにも追加しない。HTMLのrobots metaと`public/_headers`の`X-Robots-Tag`でインデックスを拒否する。
+
+公開先: `https://task-bar-cube-market.pages.dev/query-action-demo.html`。fixtureデータは実際に保存されたTBH Steam応答の抜粋であり、合成商品ではない。ただしスナップショット時刻が不明であるため、ライブ市場データとして扱ってはならない。
+
+本番商品のqueryAction移行は未実装のまま保留する。価格基準・同一通信上の通貨指定・AppID 5084200の応答を確認できるまで、表示テストから本番商品キャッシュへ昇格する操作はない。queryAction batchの`.market`観測データとPages用fixtureデモは別の場所・別の流れである。
+
 ## v0.5.1: request/response通貨・価格基準・部分観測の扱い
 
 ### 通貨と実測fixture
@@ -9,6 +19,8 @@
 queryActionアダプターは、送信する通貨IDと返された各行の`eCurrency`を別々に記録し、ページ内の通貨混在・USD以外・要求応答の不一致を拒否する。失敗診断にはAppID由来のscope、要求通貨、受信通貨を保存する。AppID 5084200はproduction scopeとなり、不正レスポンスで共有停止状態になる。TBH試験の400/404等はprobe scopeの診断にとどまるが、403/429はcontrollerによりどのscopeでも共通停止する。Cookie・sessionidを送らず、記録もしない。
 
 このfixtureで確認できるレスポンスは`$0.03`の表示文字列と`eCurrency=1`の組み合わせだけである。別のrequest通貨で成功した証拠、JPY金額、価格単位の一般化は未確認。テストfixtureを通貨指定変更の実通信成功根拠としては扱わない。
+
+[Steam Community Market FAQ](https://help.steampowered.com/en/faqs/view/61F0-72B7-9A18-C70B)は、正しい通貨を見るにはサインインが必要で、買い手にはSteam Walletのnative currencyで価格が表示されると説明する。これは個人のブラウザー表示に関する公式説明であり、queryActionの`price.eCurrency`がレスポンスに適用される条件や、未ログインGETでの変換仕様は説明していない。今回のfixtureは、保存されたChromeリクエストと同じ通信であることを証明できないので、通貨不一致の原因は依然として未確認。
 
 ### 手数料と価格基準
 

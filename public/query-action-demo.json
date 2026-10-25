@@ -1,0 +1,258 @@
+{
+  "schemaVersion": 1,
+  "demo": true,
+  "appid": 3678970,
+  "gameName": "Task Bar Hero",
+  "source": "Stored Steam Community Market queryAction response fixture",
+  "fixtureResponseCurrencyId": 1,
+  "requestCurrencyId": null,
+  "requestResponseAssociation": "unverified; request record and response fixture are not proven to be the same exchange",
+  "priceBasis": "strMinSellSubtotal; fee inclusion and equivalence to legacy sell_price are unverified",
+  "capturedAt": null,
+  "start": 30,
+  "totalCount": 1092,
+  "returnedProductTypes": 30,
+  "completeCatalog": false,
+  "products": [
+    {
+      "marketHashName": "Ethereal Ring (Legendary) A",
+      "name": "Ethereal Ring (Legendary) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsJhES9dKS088yUanzqKcH8JzrIll",
+      "displayedSubtotal": "$0.03",
+      "listings": 7817,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Ethereal%20Ring%20(Legendary)%20A"
+    },
+    {
+      "marketHashName": "Limitless Axe (Legendary) A",
+      "name": "Limitless Axe (Legendary) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsItVQM8mSE08yEO-kLyV1Jo8p5c",
+      "displayedSubtotal": "$0.03",
+      "listings": 566,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Limitless%20Axe%20(Legendary)%20A"
+    },
+    {
+      "marketHashName": "Obsidian Bracer (Immortal) A",
+      "name": "Obsidian Bracer (Immortal) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsIhfRNNQLyI6ykeg0OXcCPhXfiUZCNU",
+      "displayedSubtotal": "$0.03",
+      "listings": 8243,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Obsidian%20Bracer%20(Immortal)%20A"
+    },
+    {
+      "marketHashName": "Leather Gloves (Legendary) A",
+      "name": "Leather Gloves (Legendary) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsI1BSsZQLiI5y0eg0OPcCPhXg2wWg_Y",
+      "displayedSubtotal": "$0.03",
+      "listings": 4813,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Leather%20Gloves%20(Legendary)%20A"
+    },
+    {
+      "marketHashName": "Rune Boots (Legendary) A",
+      "name": "Rune Boots (Legendary) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsIhCSsRGIkg_yUeg2fyCFvEq2VjeoA",
+      "displayedSubtotal": "$0.03",
+      "listings": 15459,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Rune%20Boots%20(Legendary)%20A"
+    },
+    {
+      "marketHashName": "Mystic Armor (Legendary) A",
+      "name": "Mystic Armor (Legendary) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsItfSN9HIkg9yUeh0fyCFvFAiQmlUA",
+      "displayedSubtotal": "$0.03",
+      "listings": 13971,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Mystic%20Armor%20(Legendary)%20A"
+    },
+    {
+      "marketHashName": "Rune Axe (Legendary) A",
+      "name": "Rune Axe (Legendary) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsItVQM8mSE08yU6-kLyVBkY_8Tc",
+      "displayedSubtotal": "$0.03",
+      "listings": 711,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Rune%20Axe%20(Legendary)%20A"
+    },
+    {
+      "marketHashName": "Herald Staff (Legendary) A",
+      "name": "Herald Staff (Legendary) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsJlZRNZTIk4-yUeg0vyCFvFQzXVDUQ",
+      "displayedSubtotal": "$0.03",
+      "listings": 3163,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Herald%20Staff%20(Legendary)%20A"
+    },
+    {
+      "marketHashName": "Novice Scepter (Immortal) A",
+      "name": "Novice Scepter (Immortal) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsJlOQMBBOC9TykSg0OLDVuZeP6RxPIf_",
+      "displayedSubtotal": "$0.03",
+      "listings": 2581,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Novice%20Scepter%20(Immortal)%20A"
+    },
+    {
+      "marketHashName": "Fate Axe (Legendary) A",
+      "name": "Fate Axe (Legendary) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsItVQM8mSE08yEa-kLyVCpJ2FBY",
+      "displayedSubtotal": "$0.03",
+      "listings": 499,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Fate%20Axe%20(Legendary)%20A"
+    },
+    {
+      "marketHashName": "Dimensional Boots (Legendary) A",
+      "name": "Dimensional Boots (Legendary) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsIhCSsRGIkg_yUeh1_yCFvEB3bNr4w",
+      "displayedSubtotal": "$0.03",
+      "listings": 21833,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Dimensional%20Boots%20(Legendary)%20A"
+    },
+    {
+      "marketHashName": "Dusk Bow (Legendary) A",
+      "name": "Dusk Bow (Legendary) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsIhCUs8mTE08yUC-kLyV4niTZto",
+      "displayedSubtotal": "$0.03",
+      "listings": 21731,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Dusk%20Bow%20(Legendary)%20A"
+    },
+    {
+      "marketHashName": "Ancient Bolt (Legendary) C",
+      "name": "Ancient Bolt (Legendary) C",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsIhCScRKSUk8yUapzqKcH22Heh-s",
+      "displayedSubtotal": "$0.03",
+      "listings": 135,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Ancient%20Bolt%20(Legendary)%20C"
+    },
+    {
+      "marketHashName": "Haste Arrow (Legendary) A",
+      "name": "Haste Arrow (Legendary) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsItfV99CIkk9yUeh1PyCFvFwJGSIxg",
+      "displayedSubtotal": "$0.03",
+      "listings": 7848,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Haste%20Arrow%20(Legendary)%20A"
+    },
+    {
+      "marketHashName": "Abyss Bracer (Legendary) C",
+      "name": "Abyss Bracer (Legendary) C",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsIhfRNNQLyI6ykeg0evcCPhXJWKNIMs",
+      "displayedSubtotal": "$0.03",
+      "listings": 182503,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Abyss%20Bracer%20(Legendary)%20C"
+    },
+    {
+      "marketHashName": "Iron Crossbow (Legendary) A",
+      "name": "Iron Crossbow (Legendary) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsIlfSsNGPzJbpkSk0OLCT7hANiaFSfv86g",
+      "displayedSubtotal": "$0.03",
+      "listings": 174,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Iron%20Crossbow%20(Legendary)%20A"
+    },
+    {
+      "marketHashName": "Limitless Crossbow (Legendary) A",
+      "name": "Limitless Crossbow (Legendary) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsIlfSsNGPzJbpkSk0OLDTLhANiYel3xWxw",
+      "displayedSubtotal": "$0.03",
+      "listings": 922,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Limitless%20Crossbow%20(Legendary)%20A"
+    },
+    {
+      "marketHashName": "Mystic Shield (Legendary) A",
+      "name": "Mystic Shield (Legendary) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsJlFTNVZOSI4yUeg0ePcCPhXXlwYl6o",
+      "displayedSubtotal": "$0.03",
+      "listings": 5164,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Mystic%20Shield%20(Legendary)%20A"
+    },
+    {
+      "marketHashName": "Crimson Bracer (Legendary) A",
+      "name": "Crimson Bracer (Legendary) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsIhfRNNQLyI6ykeg0OvcCPhXsCuXqDA",
+      "displayedSubtotal": "$0.03",
+      "listings": 7894,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Crimson%20Bracer%20(Legendary)%20A"
+    },
+    {
+      "marketHashName": "Heavy Shield (Legendary) A",
+      "name": "Heavy Shield (Legendary) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsJlFTNVZOSI4yUeg0OfcCPhXmXghbS8",
+      "displayedSubtotal": "$0.03",
+      "listings": 2541,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Heavy%20Shield%20(Legendary)%20A"
+    },
+    {
+      "marketHashName": "War Tome (Legendary) A",
+      "name": "War Tome (Legendary) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsJ5CSNVKSU48yUenzqKcH57T8ExQ",
+      "displayedSubtotal": "$0.03",
+      "listings": 2951,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/War%20Tome%20(Legendary)%20A"
+    },
+    {
+      "marketHashName": "Bronze Amulet (Legendary) A",
+      "name": "Bronze Amulet (Legendary) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsItAUNxQKSI6yUeg0ODcCPhXltzM3Rc",
+      "displayedSubtotal": "$0.03",
+      "listings": 2367,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Bronze%20Amulet%20(Legendary)%20A"
+    },
+    {
+      "marketHashName": "Sacred Staff (Legendary) A",
+      "name": "Sacred Staff (Legendary) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsJlZRNZTIk4-yUeh1PyCFvG8eqj7kg",
+      "displayedSubtotal": "$0.03",
+      "listings": 17992,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Sacred%20Staff%20(Legendary)%20A"
+    },
+    {
+      "marketHashName": "Ethereal Bracer (Legendary) A",
+      "name": "Ethereal Bracer (Legendary) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsIhfRNNQLyI6ykeg0eXcCPhX8JAhIZU",
+      "displayedSubtotal": "$0.03",
+      "listings": 7292,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Ethereal%20Bracer%20(Legendary)%20A"
+    },
+    {
+      "marketHashName": "Fate Bolt (Immortal) A",
+      "name": "Fate Bolt (Immortal) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsIhCScRKSUk8yUahzqKcH07_h8kw",
+      "displayedSubtotal": "$0.03",
+      "listings": 609,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Fate%20Bolt%20(Immortal)%20A"
+    },
+    {
+      "marketHashName": "Emerald Amulet (Legendary) A",
+      "name": "Emerald Amulet (Legendary) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsItAUNxQKSI6yUeg0ePcCPhXepQTZ0Y",
+      "displayedSubtotal": "$0.03",
+      "listings": 13771,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Emerald%20Amulet%20(Legendary)%20A"
+    },
+    {
+      "marketHashName": "Silver Bracer (Legendary) A",
+      "name": "Silver Bracer (Legendary) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsIhfRNNQLyI6ykeg0OHcCPhXclT9oI0",
+      "displayedSubtotal": "$0.03",
+      "listings": 3314,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Silver%20Bracer%20(Legendary)%20A"
+    },
+    {
+      "marketHashName": "Void Staff (Legendary) A",
+      "name": "Void Staff (Legendary) A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsJlZRNZTIk4-yUeh0fyCFvH12Iir3g",
+      "displayedSubtotal": "$0.03",
+      "listings": 14948,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Void%20Staff%20(Legendary)%20A"
+    },
+    {
+      "marketHashName": "Eternal Helmet (Legendary) C",
+      "name": "Eternal Helmet (Legendary) C",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsIJISd1QKSI5yUeg0evcCPhXEUHC_LM",
+      "displayedSubtotal": "$0.03",
+      "listings": 181861,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Eternal%20Helmet%20(Legendary)%20C"
+    },
+    {
+      "marketHashName": "Topaz",
+      "name": "Topaz",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsIN5YP1KTEw-yUejzqKcH_Ra0Nr4",
+      "displayedSubtotal": "$0.03",
+      "listings": 87403,
+      "steamUrl": "https://steamcommunity.com/market/listings/3678970/Topaz"
+    }
+  ]
+}
