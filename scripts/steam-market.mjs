@@ -52,7 +52,7 @@ export function priceMatchesCurrency(text, currency) {
   return parsePriceMinor(text, currency) !== null;
 }
 
-export function normalizeResult(result, currency = 'JPY') {
+export function normalizeResult(result, currency = 'JPY', appid = APPID) {
   if (!result || typeof result !== 'object' || !CURRENCIES[currency]) throw new Error('Invalid item');
   const asset = result.asset_description;
   // A missing market_hash_name cannot be inferred safely from a localized display name.
@@ -61,7 +61,7 @@ export function normalizeResult(result, currency = 'JPY') {
   if (typeof name !== 'string' || !name.trim() || typeof hashName !== 'string' || !hashName.trim()) {
     throw new Error('Steam item identifier missing');
   }
-  if (asset?.appid !== undefined && Number(asset.appid) !== APPID) throw new Error('Unexpected Steam appid');
+  if (asset?.appid !== undefined && Number(asset.appid) !== appid) throw new Error('Unexpected Steam appid');
   const priceText = typeof result.sell_price_text === 'string' && result.sell_price_text.trim() ? result.sell_price_text.trim() : null;
   const priceAmount = Number.isSafeInteger(result.sell_price) && result.sell_price >= 0 ? result.sell_price : null;
   const displayedMinor = priceText === null ? null : parsePriceMinor(priceText, currency);
@@ -79,9 +79,10 @@ export function normalizeResult(result, currency = 'JPY') {
     marketHashName: hashName,
     imageUrl: safeSteamImage(asset?.icon_url ? `https://community.cloudflare.steamstatic.com/economy/image/${asset.icon_url}` : null),
     priceMinor: verifiedPrice,
-    priceText,
+    // The UI must never display an unverified string when the numeric amount is absent.
+    priceText: verifiedPrice === null ? null : priceText,
     listings,
-    steamUrl: `https://steamcommunity.com/market/listings/${APPID}/${encodeURIComponent(hashName)}`,
+    steamUrl: `https://steamcommunity.com/market/listings/${appid}/${encodeURIComponent(hashName)}`,
   };
 }
 
@@ -171,6 +172,7 @@ export function validateSnapshot(snapshot, currency) {
       || (snapshot.status === 'ok' && snapshot.items.length === 0)) throw new Error('Invalid market snapshot');
   for (const item of snapshot.items) {
     if (typeof item.marketHashName !== 'string' || typeof item.name !== 'string'
+        || (item.priceText === null) !== (item.priceMinor === null)
         || (item.priceText !== null && !priceMatchesCurrency(item.priceText, currency))
         || (item.priceMinor !== null && item.priceMinor !== parsePriceMinor(item.priceText, currency))) {
       throw new Error('Invalid market item');

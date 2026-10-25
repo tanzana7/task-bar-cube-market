@@ -29,3 +29,6 @@ Viteの出力は`dist/`です。Cloudflare Pagesはビルドコマンド`npm run
 - [参考リポジトリの技術調査](docs/tbh-market-tool-analysis.md)
 - [Steamデータ調査](docs/steam-data-investigation.md)
 - [更新運用](docs/refresh-operations.md)
+- [TBH実レスポンス検証](docs/tbh-live-validation.md)
+
+TBH検証は`node scripts/verify-tbh.mjs`で保存済みの最小fixtureを使用します。明示的な`--live`を付けた場合だけ、TBH AppID 3678970の先頭10件を読み取ります。本番JSONには書き込みません。

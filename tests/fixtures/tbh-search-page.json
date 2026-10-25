@@ -1,0 +1,18 @@
+{
+  "success": true,
+  "start": 0,
+  "pagesize": 1,
+  "total_count": 1,
+  "results": [{
+    "name": "Contaminated Reliquary (Beyond)",
+    "hash_name": "Contaminated Reliquary (Beyond)",
+    "sell_listings": 26,
+    "sell_price": 517,
+    "sell_price_text": "$5.17",
+    "asset_description": {
+      "appid": 3678970,
+      "market_hash_name": "Contaminated Reliquary (Beyond)",
+      "icon_url": "eBLtYAl6ntbtQ8HLU9Nwq_spna9pYjVMElAg-FGKLvMFaUQ2uz-HsIN5YP1KTEs9yUehzqKcH6DnYPOe"
+    }
+  }]
+}

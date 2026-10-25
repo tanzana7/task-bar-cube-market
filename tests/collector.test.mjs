@@ -35,6 +35,19 @@ test('normalizes verified price, listing count and encoded Steam link', () => {
   assert.throws(() => normalizeResult({ name: 'Missing' }, 'USD'));
 });
 
+test('observed TBH fields normalize without entering the Cube cache', async () => {
+  const page = JSON.parse(await readFile(new URL('./fixtures/tbh-search-page.json', import.meta.url), 'utf8'));
+  parsePage(page, 0);
+  const item = normalizeResult(page.results[0], 'USD', 3678970);
+  assert.equal(item.priceMinor, 517);
+  assert.equal(item.priceText, '$5.17');
+  assert.equal(item.listings, 26);
+  assert.equal(item.steamUrl, 'https://steamcommunity.com/market/listings/3678970/Contaminated%20Reliquary%20(Beyond)');
+  assert.ok(item.imageUrl.startsWith('https://community.cloudflare.steamstatic.com/economy/image/'));
+  assert.throws(() => normalizeResult(page.results[0], 'USD'), /Unexpected Steam appid/);
+  assert.throws(() => normalizeResult(page.results[0], 'JPY', 3678970), /Currency could not be verified/);
+});
+
 test('accepts documented currency symbols and spacing, with matching hundredths', () => {
   assert.equal(parsePriceMinor('¥ 1,000', 'JPY'), 100000);
   assert.equal(parsePriceMinor('￥　1,000', 'JPY'), 100000);
@@ -52,6 +65,10 @@ test('accepts documented currency symbols and spacing, with matching hundredths'
   const missing = normalizeResult({ name: 'Cube', sell_price: 100, asset_description: { market_hash_name: 'Cube' } }, 'JPY');
   assert.equal(missing.priceMinor, null);
   assert.equal(missing.priceText, null);
+  const missingAmount = normalizeResult({ name: 'Cube', sell_price_text: '$1.00', asset_description: { market_hash_name: 'Cube' } }, 'USD');
+  assert.equal(missingAmount.priceMinor, null);
+  assert.equal(missingAmount.priceText, null);
+  assert.throws(() => validateSnapshot({ schemaVersion: 2, appid: APPID, currency: 'USD', status: 'ok', items: [{ name: 'Cube', marketHashName: 'Cube', priceText: '$1.00', priceMinor: null }] }, 'USD'), /Invalid market item/);
 });
 
 test('handles missing start and pagesize while checking every page', async () => {
