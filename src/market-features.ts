@@ -1,5 +1,6 @@
 import type { MarketItem, MarketSnapshot } from './market';
 import { filterHistoryPoints, type HistoryPoint, type HistoryRange } from './history.ts';
+import { gradeAtLeast, type ItemGrade, type ItemType, classifyItemName } from './item-classification.ts';
 
 export type MarketFilters = {
   query: string;
@@ -9,6 +10,11 @@ export type MarketFilters = {
   minimumListings: number | null;
   favoritesOnly: boolean;
   favorites: Set<string>;
+  grades?: Set<ItemGrade>;
+  minimumGrade?: ItemGrade | null;
+  types?: Set<ItemType>;
+  minimumQuality?: number | null;
+  maximumQuality?: number | null;
 };
 
 export type MarketSort = 'price-asc' | 'price-desc' | 'name' | 'listings-desc' | 'listings-asc';
@@ -49,6 +55,14 @@ export function filterMarketItems(items: MarketItem[], filters: MarketFilters, s
   const matches = items.filter(item => {
     if (needle && !item.name.toLocaleLowerCase().includes(needle)) return false;
     if (filters.favoritesOnly && !filters.favorites.has(item.marketHashName)) return false;
+    const classification = classifyItemName(item.marketHashName);
+    if (filters.grades?.size && (classification.grade === null || !filters.grades.has(classification.grade))) return false;
+    if (filters.minimumGrade && !gradeAtLeast(classification.grade, filters.minimumGrade)) return false;
+    if (filters.types?.size && (classification.type === null || !filters.types.has(classification.type))) return false;
+    if (filters.minimumQuality !== null && filters.minimumQuality !== undefined
+        && (classification.quality === null || classification.quality < filters.minimumQuality)) return false;
+    if (filters.maximumQuality !== null && filters.maximumQuality !== undefined
+        && (classification.quality === null || classification.quality > filters.maximumQuality)) return false;
     const comparison = comparablePrice(item, filters.currency ?? 'USD');
     if (filters.minimumPrice !== null && (comparison === null || comparison < filters.minimumPrice)) return false;
     if (filters.maximumPrice !== null && (comparison === null || comparison > filters.maximumPrice)) return false;
@@ -69,6 +83,82 @@ export function filterMarketItems(items: MarketItem[], filters: MarketFilters, s
     if (bPrice === null) return -1;
     return (sort === 'price-desc' ? bPrice - aPrice : aPrice - bPrice) || collator.compare(a.name, b.name);
   });
+}
+
+export type RecommendationPriority = 'price' | 'quality' | 'balanced';
+export type RecommendationOptions = {
+  type: ItemType;
+  minimumGrade: ItemGrade | null;
+  minimumQuality: number | null;
+  budgetMinor: number | null;
+  currency: 'USD' | 'JPY';
+  priority: RecommendationPriority;
+};
+export type RecommendedItem = { item: MarketItem; score: number | null; reason: string };
+
+/**
+ * Recommendations are a transparent ordering aid, not a gameplay power estimate.
+ * Balance mode only compares the selected equipment type and only scores observed attributes.
+ */
+export function recommendEquipment(items: MarketItem[], options: RecommendationOptions): RecommendedItem[] {
+  const candidates = items.filter(item => {
+    const classification = classifyItemName(item.marketHashName);
+    if (classification.type !== options.type) return false;
+    if (options.minimumGrade && !gradeAtLeast(classification.grade, options.minimumGrade)) return false;
+    if (options.minimumQuality !== null && (classification.quality === null || classification.quality < options.minimumQuality)) return false;
+    const price = comparablePrice(item, options.currency);
+    if (options.budgetMinor !== null && (price === null || price > options.budgetMinor)) return false;
+    return true;
+  });
+  const priceOf = (item: MarketItem) => comparablePrice(item, options.currency);
+  const priceSorted = [...candidates].sort((a, b) => {
+    const pa = priceOf(a); const pb = priceOf(b);
+    if (pa === null) return pb === null ? a.name.localeCompare(b.name) : 1;
+    if (pb === null) return -1;
+    return pa - pb || a.name.localeCompare(b.name);
+  });
+  const qualitySorted = [...candidates].sort((a, b) => {
+    const qa = classifyItemName(a.marketHashName).quality; const qb = classifyItemName(b.marketHashName).quality;
+    if (qa === null) return qb === null ? (priceOf(a) ?? Infinity) - (priceOf(b) ?? Infinity) : 1;
+    if (qb === null) return -1;
+    return qb - qa || (priceOf(a) ?? Infinity) - (priceOf(b) ?? Infinity);
+  });
+  const knownPrices = candidates.map(priceOf).filter((value): value is number => value !== null);
+  const minKnownPrice = knownPrices.reduce((minimum, value) => Math.min(minimum, value), Infinity);
+  const maxKnownPrice = knownPrices.reduce((maximum, value) => Math.max(maximum, value), -Infinity);
+  const balancedScore = (item: MarketItem): number | null => {
+    const classification = classifyItemName(item.marketHashName);
+    const dimensions: number[] = [];
+    const gradeIndex = classification.grade ? ITEM_GRADE_INDEX(classification.grade) : null;
+    if (gradeIndex !== null) dimensions.push(gradeIndex / 6 * 45);
+    if (classification.quality !== null) dimensions.push(classification.quality / 95 * 35);
+    const currentPrice = priceOf(item);
+    if (currentPrice !== null && knownPrices.length > 1) {
+      dimensions.push((maxKnownPrice === minKnownPrice ? 1 : 1 - (currentPrice - minKnownPrice) / (maxKnownPrice - minKnownPrice)) * 20);
+    } else if (currentPrice !== null) dimensions.push(20);
+    return dimensions.length ? dimensions.reduce((sum, value) => sum + value, 0) : null;
+  };
+  const ordered = options.priority === 'price' ? priceSorted
+    : options.priority === 'quality' ? qualitySorted
+      : [...candidates].sort((a, b) => (balancedScore(b) ?? -1) - (balancedScore(a) ?? -1)
+        || (priceOf(a) ?? Infinity) - (priceOf(b) ?? Infinity) || a.name.localeCompare(b.name));
+  return ordered.map((item, index) => {
+    const classification = classifyItemName(item.marketHashName);
+    const price = priceOf(item);
+    const reason = options.priority === 'price'
+      ? price === null ? '価格未取得' : index === 0 ? '条件内で参考価格が最安' : '参考価格の安い順'
+      : options.priority === 'quality'
+        ? classification.quality === null ? 'Quality未取得' : index === 0 ? `Quality ${classification.quality}%で最高` : `${classification.quality}% · 同Qualityは価格順`
+        : classification.grade === null || classification.quality === null
+          ? '分類情報の一部が未取得'
+          : '同Type内でGrade・Quality・価格を比較';
+    return { item, score: options.priority === 'balanced' ? balancedScore(item) : null, reason };
+  });
+}
+
+function ITEM_GRADE_INDEX(value: ItemGrade): number {
+  const order: ItemGrade[] = ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary', 'Mythic', 'Divine'];
+  return order.indexOf(value);
 }
 
 function comparablePrice(item: MarketItem, currency: 'USD' | 'JPY'): number | null {

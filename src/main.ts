@@ -2,7 +2,8 @@ import './style.css';
 import { formatFxRateLabel, parseFreshFxRate, prepareMarketPriceView, type FxRateRecord, type MarketSnapshot } from './market';
 import { latestObservedItems, parseMarketObservations, parseUsdReferenceMinor, selectMarketDisplayItems, type ListedItem, type MarketObservations, type ObservationPoint } from './market-observations';
 import { filterHistoryPoints, formatHistoryPrice, makeChartPoints, parseHistoryIndex, parseProductHistory, type HistoryCurrency, type HistoryIndex, type HistoryRange, type ProductHistory } from './history';
-import { calculateTechnicalIndicators, currencyView, filterMarketItems, parseFavorites, parsePriceFilterInput, parseRankingSnapshot, priceStatistics, summarizeMarket, toggleFavorite, type MarketSort, type RankingSnapshot } from './market-features';
+import { calculateTechnicalIndicators, currencyView, filterMarketItems, parseFavorites, parsePriceFilterInput, parseRankingSnapshot, priceStatistics, recommendEquipment, summarizeMarket, toggleFavorite, type MarketSort, type RankingSnapshot, type RecommendationPriority } from './market-features';
+import { classifyItemName, ITEM_GRADES, ITEM_QUALITIES, ITEM_TYPES, type ItemGrade, type ItemType } from './item-classification';
 import { evaluateWatchTarget, mergeFavoriteKeys, parseWatchTargetPrice, parseWatchTargets, serializeWatchTargets, setWatchTarget, WATCH_TARGETS_STORAGE_KEY, type WatchDirection, type WatchTarget } from './watchlist';
 
 type Snapshot = MarketSnapshot;
@@ -33,6 +34,29 @@ const maximumPriceInput = document.querySelector<HTMLInputElement>('#maximum-pri
 const minimumListingsInput = document.querySelector<HTMLInputElement>('#minimum-listings')!;
 const favoritesOnlyInput = document.querySelector<HTMLInputElement>('#favorites-only')!;
 const favoriteCountNode = document.querySelector<HTMLSpanElement>('#favorite-count')!;
+const gradeOptionsNode = document.querySelector<HTMLFieldSetElement>('#grade-options')!;
+const typeOptionsNode = document.querySelector<HTMLFieldSetElement>('#type-options')!;
+const minimumGradeSelect = document.querySelector<HTMLSelectElement>('#minimum-grade')!;
+const minimumQualitySelect = document.querySelector<HTMLSelectElement>('#minimum-quality')!;
+const maximumQualitySelect = document.querySelector<HTMLSelectElement>('#maximum-quality')!;
+const activeFiltersNode = document.querySelector<HTMLDivElement>('#active-filters')!;
+const recommendOpenButton = document.querySelector<HTMLButtonElement>('#recommend-open')!;
+const recommendDialog = document.querySelector<HTMLDialogElement>('#recommend-dialog')!;
+const recommendCloseButton = document.querySelector<HTMLButtonElement>('#recommend-close')!;
+const recommendForm = document.querySelector<HTMLFormElement>('#recommend-form')!;
+const recommendTypeSelect = document.querySelector<HTMLSelectElement>('#recommend-type')!;
+const recommendGradeSelect = document.querySelector<HTMLSelectElement>('#recommend-grade')!;
+const recommendQualitySelect = document.querySelector<HTMLSelectElement>('#recommend-quality')!;
+const recommendBudgetInput = document.querySelector<HTMLInputElement>('#recommend-budget')!;
+const recommendCurrencySelect = document.querySelector<HTMLSelectElement>('#recommend-currency')!;
+const recommendPrioritySelect = document.querySelector<HTMLSelectElement>('#recommend-priority')!;
+const recommendResultsNode = document.querySelector<HTMLDivElement>('#recommend-results')!;
+const recommendStalenessNode = document.querySelector<HTMLParagraphElement>('#recommend-staleness')!;
+const compareCountNode = document.querySelector<HTMLSpanElement>('#compare-count')!;
+const compareOpenButton = document.querySelector<HTMLButtonElement>('#compare-open')!;
+const compareDialog = document.querySelector<HTMLDialogElement>('#compare-dialog')!;
+const compareCloseButton = document.querySelector<HTMLButtonElement>('#compare-close')!;
+const compareTableNode = document.querySelector<HTMLDivElement>('#compare-table')!;
 const overviewItemsNode = document.querySelector<HTMLElement>('#overview-items')!;
 const overviewListingsNode = document.querySelector<HTMLElement>('#overview-listings')!;
 const overviewUpdatedNode = document.querySelector<HTMLElement>('#overview-updated')!;
@@ -75,6 +99,8 @@ let selectedHistory: ProductHistory | null = null;
 let historyFxFallbackNotice: string | null = null;
 let historyLoadSequence = 0;
 let loadSequence = 0;
+const selectedForCompare = new Set<string>();
+let currentMarketItems: ListedItem[] = [];
 function storedValue(key: string): string | null {
   try { return localStorage.getItem(key); } catch { return null; }
 }
@@ -97,6 +123,30 @@ currencySelect.value = storedValue('tbcm-currency') === 'USD' ? 'USD' : 'JPY';
 // On narrow screens, keep the frequent search and sort controls visible while allowing
 // the less frequent price/listing filters to be opened without pushing results far down.
 if (window.matchMedia('(max-width: 620px)').matches) filterDisclosure.open = false;
+
+function addSelectOptions(select: HTMLSelectElement, values: readonly (string | number)[]) {
+  for (const value of values) {
+    const option = document.createElement('option');
+    option.value = String(value);
+    option.textContent = typeof value === 'number' ? `${value}%` : value;
+    select.append(option);
+  }
+}
+for (const [values, fieldset, name] of [[ITEM_GRADES, gradeOptionsNode, 'grade'], [ITEM_TYPES, typeOptionsNode, 'type']] as const) {
+  for (const value of values) {
+    const label = document.createElement('label');
+    const input = document.createElement('input'); input.type = 'checkbox'; input.value = value; input.name = name;
+    label.append(input, document.createTextNode(value)); fieldset.append(label);
+  }
+}
+addSelectOptions(minimumGradeSelect, ITEM_GRADES);
+addSelectOptions(recommendTypeSelect, ITEM_TYPES);
+const noMinimumGrade = document.createElement('option'); noMinimumGrade.value = ''; noMinimumGrade.textContent = '指定なし'; recommendGradeSelect.append(noMinimumGrade);
+addSelectOptions(recommendGradeSelect, ITEM_GRADES);
+for (const select of [minimumQualitySelect, maximumQualitySelect, recommendQualitySelect]) {
+  const none = document.createElement('option'); none.value = ''; none.textContent = '指定なし'; select.append(none);
+  addSelectOptions(select, ITEM_QUALITIES);
+}
 
 function isSnapshot(value: unknown): value is Snapshot {
   if (!value || typeof value !== 'object') return false;
@@ -135,9 +185,9 @@ function safeSteamUrl(url: string): string | null {
   }
 }
 
-type ItemType = 'sword' | 'boots' | 'ring' | 'bracelet' | 'chestplate' | 'gloves' | 'helmet' | 'necklace' | 'pants' | 'chest' | 'other';
+type ArtworkType = Lowercase<ItemType> | 'other';
 
-const ITEM_TYPE_PATHS: Record<ItemType, string[]> = {
+const ITEM_TYPE_PATHS: Record<ArtworkType, string[]> = {
   sword: ['M19 3 9 17', 'M7 16 4 20l4-3', 'm9 17 3 3', 'm14 8 2 2'],
   boots: ['M7 4v8l-3 3v4h15v-3l-6-2-2-4V4z', 'M4 16h15'],
   ring: ['M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18z', 'M12 7a5 5 0 1 0 0 10a5 5 0 1 0 0-10z'],
@@ -151,15 +201,11 @@ const ITEM_TYPE_PATHS: Record<ItemType, string[]> = {
   other: ['M5 5h14v14H5z', 'M8 12h8', 'M12 8v8'],
 };
 
-function itemTypeFromName(name: string): ItemType {
-  const normalized = name.toLocaleLowerCase('en-US');
-  const suffix = /(?:^|\s)(sword|boots|ring|bracelet|chestplate|gloves|helmet|necklace|pants)\s*(?:\d+%?)?$/.exec(normalized)?.[1];
-  if (suffix) return suffix as ItemType;
-  if (/^chest\s+lv\.\d+$/i.test(name)) return 'chest';
-  return 'other';
+function itemTypeFromName(name: string): ArtworkType {
+  return classifyItemName(name).type?.toLowerCase() as ArtworkType | undefined ?? 'other';
 }
 
-function appendTypeGlyph(box: HTMLElement, type: ItemType) {
+function appendTypeGlyph(box: HTMLElement, type: ArtworkType) {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('viewBox', '0 0 24 24');
   svg.setAttribute('class', 'type-art-glyph');
@@ -400,6 +446,42 @@ async function openHistory(item: ListedItem | MarketSnapshot['items'][number]) {
   }
 }
 
+function checkedValues<T extends string>(root: HTMLElement): Set<T> {
+  return new Set(Array.from(root.querySelectorAll<HTMLInputElement>('input[type="checkbox"]:checked'), input => input.value as T));
+}
+
+function renderActiveFilters() {
+  activeFiltersNode.replaceChildren();
+  const chips: Array<{ label: string; remove: () => void }> = [];
+  if (search.value.trim()) chips.push({ label: `検索 ${search.value.trim()}`, remove: () => { search.value = ''; } });
+  for (const input of Array.from(gradeOptionsNode.querySelectorAll<HTMLInputElement>('input:checked'))) {
+    chips.push({ label: `Grade ${input.value}`, remove: () => { input.checked = false; } });
+  }
+  for (const input of Array.from(typeOptionsNode.querySelectorAll<HTMLInputElement>('input:checked'))) {
+    chips.push({ label: `Type ${input.value}`, remove: () => { input.checked = false; } });
+  }
+  if (minimumGradeSelect.value) chips.push({ label: `${minimumGradeSelect.value}以上`, remove: () => { minimumGradeSelect.value = ''; } });
+  if (minimumQualitySelect.value) chips.push({ label: `Quality ${minimumQualitySelect.value}%以上`, remove: () => { minimumQualitySelect.value = ''; } });
+  if (maximumQualitySelect.value) chips.push({ label: `Quality ${maximumQualitySelect.value}%以下`, remove: () => { maximumQualitySelect.value = ''; } });
+  if (minimumPriceInput.value) chips.push({ label: `価格 ${currencySelect.value} ${minimumPriceInput.value}以上`, remove: () => { minimumPriceInput.value = ''; } });
+  if (maximumPriceInput.value) chips.push({ label: `価格 ${currencySelect.value} ${maximumPriceInput.value}以下`, remove: () => { maximumPriceInput.value = ''; } });
+  if (minimumListingsInput.value) chips.push({ label: `出品 ${minimumListingsInput.value}件以上`, remove: () => { minimumListingsInput.value = ''; } });
+  if (favoritesOnlyInput.checked) chips.push({ label: 'ウォッチのみ', remove: () => { favoritesOnlyInput.checked = false; } });
+  for (const chip of chips) {
+    const button = document.createElement('button'); button.type = 'button'; button.className = 'filter-chip'; button.textContent = `${chip.label} ×`;
+    button.setAttribute('aria-label', `${chip.label}の条件を解除`);
+    button.addEventListener('click', () => { chip.remove(); render(); });
+    activeFiltersNode.append(button);
+  }
+  activeFiltersNode.hidden = chips.length === 0;
+}
+
+function refreshCompareControls() {
+  compareCountNode.textContent = selectedForCompare.size ? `${selectedForCompare.size}件選択` : '';
+  compareOpenButton.disabled = selectedForCompare.size < 2 || selectedForCompare.size > 4;
+  compareOpenButton.textContent = `選択商品を比較${selectedForCompare.size ? ` (${selectedForCompare.size})` : ''}`;
+}
+
 function render() {
   if (!snapshot) return;
   const priceView = prepareMarketPriceView(snapshot.items, snapshot.currency, snapshot.priceSource, currentFxRate?.rateDate);
@@ -412,6 +494,9 @@ function render() {
       ? Number(minimumListingsInput.value) : null)
     : null;
   if (minimumListingsInput.value.trim() && minimumListings === null) errors.push('最低出品数は0以上の整数で入力してください。');
+  const minimumQuality = minimumQualitySelect.value ? Number(minimumQualitySelect.value) : null;
+  const maximumQuality = maximumQualitySelect.value ? Number(maximumQualitySelect.value) : null;
+  if (minimumQuality !== null && maximumQuality !== null && minimumQuality > maximumQuality) errors.push('Quality下限は上限以下にしてください。');
   filterErrorNode.hidden = errors.length === 0;
   filterErrorNode.textContent = [...new Set(errors)].join(' ');
   if (errors.length > 0) {
@@ -426,6 +511,7 @@ function render() {
     latestObservedItems(importedSnapshot), visibleCurrency, currentFxRate?.rate ?? null);
   importedObservations = new Map([...selection.imported].flatMap(([key, item]) => item.observation ? [[key, item.observation] as const] : []));
   const allItems = selection.items;
+  currentMarketItems = allItems;
   displayItemsByKey = new Map(allItems.map(item => [item.marketHashName, item]));
   updateWatchlistSummary();
   if (watchlistDialog.open) renderWatchlist();
@@ -438,7 +524,14 @@ function render() {
     minimumListings,
     favoritesOnly: favoritesOnlyInput.checked,
     favorites,
+    grades: checkedValues<ItemGrade>(gradeOptionsNode),
+    minimumGrade: (minimumGradeSelect.value || null) as ItemGrade | null,
+    types: checkedValues<ItemType>(typeOptionsNode),
+    minimumQuality,
+    maximumQuality,
   }, sort.value as MarketSort);
+  renderActiveFilters();
+  refreshCompareControls();
   favoriteCountNode.textContent = favorites.size.toLocaleString('ja-JP');
   countNode.textContent = `${visible.length}件のアイテム`;
   itemsNode.replaceChildren();
@@ -478,13 +571,21 @@ function render() {
     listings.textContent = item.listings === null ? '出品数 未取得' : `出品 ${item.listings.toLocaleString('ja-JP')}件`;
     const info = document.createElement('span');
     info.className = 'item-info';
-    const type = itemTypeFromName(item.name);
+    const classification = classifyItemName(item.marketHashName);
+    const type = classification.type ?? 'other';
+    const gradeLabel = document.createElement('small');
+    gradeLabel.className = classification.grade ? `item-grade grade-${classification.grade.toLowerCase()}` : 'item-grade is-unknown';
+    gradeLabel.textContent = classification.grade ?? 'Grade 未取得';
+    info.append(gradeLabel);
     if (type !== 'other') {
       const typeLabel = document.createElement('small');
       typeLabel.className = 'item-type';
-      typeLabel.textContent = type === 'chestplate' ? 'Chestplate' : type[0].toUpperCase() + type.slice(1);
+      typeLabel.textContent = type;
       info.append(typeLabel);
     }
+    const qualityLabel = document.createElement('small'); qualityLabel.className = 'item-quality';
+    qualityLabel.textContent = classification.quality === null ? 'Quality 未取得' : `${classification.quality}%`;
+    info.append(qualityLabel);
     const price = document.createElement('span');
     price.className = 'price item-price';
     price.textContent = priceView.expiredFx && !observation ? '参考円価格は更新待ち'
@@ -516,11 +617,105 @@ function render() {
     favoriteButton.setAttribute('aria-label', favorites.has(item.marketHashName) ? `${item.name}をウォッチリストから解除` : `${item.name}をウォッチリストに追加`);
     favoriteButton.textContent = favorites.has(item.marketHashName) ? '★' : '☆';
     favoriteButton.addEventListener('click', () => setFavorite(item.marketHashName));
+    const compareButton = document.createElement('button');
+    compareButton.type = 'button'; compareButton.className = 'compare-toggle';
+    compareButton.setAttribute('aria-pressed', String(selectedForCompare.has(item.marketHashName)));
+    compareButton.textContent = selectedForCompare.has(item.marketHashName) ? '✓ 比較' : '+ 比較';
+    compareButton.setAttribute('aria-label', selectedForCompare.has(item.marketHashName) ? `${item.name}を比較から外す` : `${item.name}を比較に追加`);
+    compareButton.addEventListener('click', () => {
+      if (selectedForCompare.has(item.marketHashName)) selectedForCompare.delete(item.marketHashName);
+      else if (selectedForCompare.size >= 4) compareCountNode.textContent = '比較は4商品までです';
+      else {
+        const type = classifyItemName(item.marketHashName).type;
+        const firstSelected = [...selectedForCompare].map(key => currentMarketItems.find(candidate => candidate.marketHashName === key)).find(Boolean);
+        const selectedType = firstSelected ? classifyItemName(firstSelected.marketHashName).type : null;
+        if (firstSelected && type !== selectedType) compareCountNode.textContent = '同じTypeの商品を選んでください';
+        else selectedForCompare.add(item.marketHashName);
+      }
+      render();
+    });
     main.append(imageBox, name, info, price, listings);
-    card.append(main, favoriteButton, steamLink);
+    card.append(main, favoriteButton, compareButton, steamLink);
     fragment.append(card);
   }
   itemsNode.append(fragment);
+  refreshCompareControls();
+}
+
+function displayedPrice(item: ListedItem): string {
+  return item.importedPriceText ?? item.priceText ?? '価格情報なし';
+}
+
+function makeFeatureLink(item: ListedItem): HTMLAnchorElement {
+  const link = document.createElement('a'); link.href = safeSteamUrl(item.steamUrl) ?? 'https://steamcommunity.com/market/search?appid=5084200';
+  link.target = '_blank'; link.rel = 'noopener noreferrer'; link.textContent = 'Steam ↗';
+  return link;
+}
+
+function renderRecommendations() {
+  const currency = recommendCurrencySelect.value as 'USD' | 'JPY';
+  const budget = recommendBudgetInput.value.trim() ? parsePriceFilterInput(recommendBudgetInput.value, currency) : { value: null, error: null };
+  recommendBudgetInput.setCustomValidity(budget.error ?? '');
+  if (budget.error) { recommendBudgetInput.reportValidity(); return; }
+  const options = {
+    type: recommendTypeSelect.value as ItemType,
+    minimumGrade: (recommendGradeSelect.value || null) as ItemGrade | null,
+    minimumQuality: recommendQualitySelect.value ? Number(recommendQualitySelect.value) : null,
+    budgetMinor: budget.value,
+    currency,
+    priority: recommendPrioritySelect.value as RecommendationPriority,
+  };
+  const results = recommendEquipment(currentMarketItems, options);
+  recommendResultsNode.replaceChildren();
+  const latestObservation = importedSnapshot?.imports.map(entry => entry.observedAt).sort().at(-1);
+  recommendStalenessNode.textContent = latestObservation ? `保存済み観測 · ${formatObservedAt(latestObservation)}` : '読み込み済みの市場観測を使用';
+  if (results.length === 0) {
+    const empty = document.createElement('p'); empty.className = 'recommend-empty';
+    empty.textContent = '条件に合う商品がありません。最低Grade・Quality・予算を緩めてください。';
+    recommendResultsNode.append(empty); return;
+  }
+  for (const [index, result] of results.entries()) {
+    const row = document.createElement('article'); row.className = 'feature-result';
+    const title = document.createElement('strong'); title.textContent = result.item.name;
+    const classification = classifyItemName(result.item.marketHashName);
+    const facts = document.createElement('span');
+    const observedAt = importedObservations.get(result.item.marketHashName)?.observedAt ?? usdSnapshot?.fetchedAt;
+    facts.textContent = `${classification.grade ?? 'Grade未取得'} · ${classification.quality === null ? 'Quality未取得' : `${classification.quality}%`} · ${displayedPrice(result.item)} · 出品 ${result.item.listings ?? '未取得'}件 · ${observedAt ? `観測 ${formatObservedAt(observedAt)}` : '観測日時未取得'}`;
+    const reason = document.createElement('small'); reason.textContent = `${index + 1}位 · ${result.reason}${result.score === null ? '' : ` · ${result.score.toFixed(1)}点`}`;
+    const favoriteButton = document.createElement('button'); favoriteButton.type = 'button'; favoriteButton.className = 'recommend-watch';
+    favoriteButton.textContent = favorites.has(result.item.marketHashName) ? '★ 登録済み' : '☆ ウォッチ';
+    favoriteButton.setAttribute('aria-pressed', String(favorites.has(result.item.marketHashName)));
+    favoriteButton.addEventListener('click', () => setFavorite(result.item.marketHashName));
+    row.append(title, facts, reason, makeFeatureLink(result.item), favoriteButton);
+    recommendResultsNode.append(row);
+  }
+}
+
+function renderComparison() {
+  compareTableNode.replaceChildren();
+  const selected = [...selectedForCompare].map(key => currentMarketItems.find(item => item.marketHashName === key))
+    .filter((item): item is ListedItem => item !== undefined);
+  if (selected.length < 2 || selected.length > 4) return;
+  const table = document.createElement('table'); table.className = 'comparison-grid';
+  const head = table.createTHead().insertRow();
+  const blank = document.createElement('th'); blank.scope = 'col'; blank.textContent = '項目'; head.append(blank);
+  for (const item of selected) { const cell = document.createElement('th'); cell.scope = 'col'; cell.textContent = item.name; head.append(cell); }
+  const rows: Array<[string, (item: ListedItem) => string]> = [
+    ['Grade', item => classifyItemName(item.marketHashName).grade ?? '未取得'],
+    ['Type', item => classifyItemName(item.marketHashName).type ?? '未取得'],
+    ['Quality', item => { const value = classifyItemName(item.marketHashName).quality; return value === null ? '未取得' : `${value}%`; }],
+    ['参考価格', displayedPrice],
+    ['出品数', item => item.listings === null ? '未取得' : `${item.listings.toLocaleString('ja-JP')}件`],
+    ['最終観測', item => { const observedAt = importedObservations.get(item.marketHashName)?.observedAt ?? usdSnapshot?.fetchedAt; return observedAt ? formatObservedAt(observedAt) : '未取得'; }],
+  ];
+  const body = table.createTBody();
+  for (const [label, valueFor] of rows) {
+    const row = body.insertRow(); const heading = document.createElement('th'); heading.scope = 'row'; heading.textContent = label; row.append(heading);
+    for (const item of selected) { const cell = row.insertCell(); cell.textContent = valueFor(item); }
+  }
+  const linkRow = body.insertRow(); const linkHeading = document.createElement('th'); linkHeading.scope = 'row'; linkHeading.textContent = 'Steam'; linkRow.append(linkHeading);
+  for (const item of selected) { const cell = linkRow.insertCell(); cell.append(makeFeatureLink(item)); }
+  compareTableNode.append(table);
 }
 
 function rawWatchPrice(marketHashName: string): { priceMinor: number; observedAt: string; listings: number | null } | null {
@@ -675,6 +870,7 @@ function setFavorite(marketHashName: string) {
     saveValue(WATCH_TARGETS_KEY, serializeWatchTargets(watchTargets));
   }
   render();
+  if (recommendDialog.open) renderRecommendations();
   if (activeHistoryItem?.marketHashName === marketHashName) {
     historyFavoriteButton.setAttribute('aria-pressed', String(favorites.has(marketHashName)));
     historyFavoriteButton.textContent = favorites.has(marketHashName) ? '★ ウォッチ中' : '☆ ウォッチ';
@@ -818,6 +1014,8 @@ filterForm.addEventListener('reset', () => {
 currencySelect.addEventListener('change', () => {
   const currency = currencySelect.value === 'USD' ? 'USD' : 'JPY';
   saveValue('tbcm-currency', currency);
+  recommendCurrencySelect.value = currency;
+  recommendBudgetInput.step = currency === 'USD' ? '0.01' : '1';
   void load(currency);
 });
 historyClose.addEventListener('click', () => historyDialog.close());
@@ -832,5 +1030,21 @@ historyFavoriteButton.addEventListener('click', () => {
   if (activeHistoryItem) setFavorite(activeHistoryItem.marketHashName);
 });
 for (const input of [indicatorSma, indicatorBands, indicatorRsi]) input.addEventListener('change', renderHistoryChart);
+recommendOpenButton.addEventListener('click', () => {
+  recommendCurrencySelect.value = currencySelect.value;
+  recommendBudgetInput.step = recommendCurrencySelect.value === 'USD' ? '0.01' : '1';
+  renderRecommendations(); recommendDialog.showModal();
+});
+recommendCloseButton.addEventListener('click', () => recommendDialog.close());
+recommendForm.addEventListener('submit', event => { event.preventDefault(); renderRecommendations(); });
+recommendCurrencySelect.addEventListener('change', () => {
+  currencySelect.value = recommendCurrencySelect.value;
+  const currency = recommendCurrencySelect.value as 'USD' | 'JPY';
+  saveValue('tbcm-currency', currency);
+  recommendBudgetInput.step = currency === 'USD' ? '0.01' : '1';
+  void load(currency).then(renderRecommendations);
+});
+compareOpenButton.addEventListener('click', () => { renderComparison(); compareDialog.showModal(); });
+compareCloseButton.addEventListener('click', () => compareDialog.close());
 historyDialog.addEventListener('close', () => { historyLoadSequence += 1; activeHistoryItem = null; });
 void load(currencySelect.value as 'JPY' | 'USD');

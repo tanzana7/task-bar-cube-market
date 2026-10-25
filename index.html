@@ -33,11 +33,18 @@
           <label>最低価格<input id="minimum-price" type="number" min="0" step="0.01" inputmode="decimal" /></label>
           <label>最高価格<input id="maximum-price" type="number" min="0" step="0.01" inputmode="decimal" /></label>
           <label>最低出品数<input id="minimum-listings" type="number" min="0" step="1" inputmode="numeric" /></label>
+          <details class="filter-group"><summary>Grade</summary><fieldset id="grade-options" aria-label="Gradeを複数選択"></fieldset></details>
+          <label>最低Grade<select id="minimum-grade"><option value="">指定なし</option></select></label>
+          <details class="filter-group"><summary>Type</summary><fieldset id="type-options" aria-label="Typeを複数選択"></fieldset></details>
+          <label>Quality下限<select id="minimum-quality"></select></label>
+          <label>Quality上限<select id="maximum-quality"></select></label>
           <label class="favorite-filter"><input id="favorites-only" type="checkbox" /> お気に入りのみ <span id="favorite-count">0</span></label>
           <button id="reset-filters" type="reset">リセット</button>
         </form>
       </details>
       <p id="filter-error" class="filter-error" role="status" hidden></p>
+      <div id="active-filters" class="active-filters" aria-label="適用中の条件"></div>
+      <div class="market-tools"><button id="recommend-open" type="button">装備を探す</button><span id="compare-count" aria-live="polite"></span><button id="compare-open" type="button" disabled>選択商品を比較</button></div>
       <div class="list-head"><span id="result-count">読み込み中</span><span id="updated-at">更新日時 —</span></div>
       <div id="status" class="status" role="status">マーケットデータを読み込んでいます…</div>
       <div id="items" class="items" hidden></div>
@@ -76,6 +83,25 @@
       <p id="watchlist-status" class="history-status" role="status"></p>
       <div id="watchlist-items" class="watchlist-items"></div>
     </div>
+  </dialog>
+  <dialog id="recommend-dialog" class="history-dialog feature-dialog" aria-labelledby="recommend-title">
+    <div class="history-dialog-content">
+      <div class="history-heading"><div><h2 id="recommend-title">装備を探す</h2><p id="recommend-staleness"></p></div><button id="recommend-close" class="icon-button" type="button" aria-label="閉じる">×</button></div>
+      <form id="recommend-form" class="recommend-controls">
+        <label>Type<select id="recommend-type"></select></label>
+        <label>最低Grade<select id="recommend-grade"></select></label>
+        <label>最低Quality<select id="recommend-quality"></select></label>
+        <label>予算<input id="recommend-budget" type="number" min="0" step="0.01" inputmode="decimal"></label>
+        <label>通貨<select id="recommend-currency"><option value="JPY">JPY</option><option value="USD">USD</option></select></label>
+        <label>重視<select id="recommend-priority"><option value="price">価格</option><option value="quality">Quality</option><option value="balanced">バランス</option></select></label>
+        <button type="submit">検索</button>
+      </form>
+      <p class="recommend-method">バランスは同じType内でGrade 45点・Quality 35点・価格 20点。未取得属性は加点しません。</p>
+      <div id="recommend-results" class="feature-results" aria-live="polite"></div>
+    </div>
+  </dialog>
+  <dialog id="compare-dialog" class="history-dialog feature-dialog" aria-labelledby="compare-title">
+    <div class="history-dialog-content"><div class="history-heading"><h2 id="compare-title">商品比較</h2><button id="compare-close" class="icon-button" type="button" aria-label="閉じる">×</button></div><div id="compare-table" class="compare-table"></div></div>
   </dialog>
   <script type="module" src="/src/main.ts"></script>
 </body>

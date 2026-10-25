@@ -37,3 +37,13 @@ test('market cards use a responsive image grid and type-specific artwork fallbac
   assert.match(main, /className = 'item-steam'/);
   assert.match(html, /id="history-image" class="history-item-art"/);
 });
+
+test('classification filters, explainable recommendations, and same-type comparison are wired into the market page', () => {
+  for (const id of ['grade-options', 'minimum-grade', 'type-options', 'minimum-quality', 'maximum-quality', 'active-filters', 'recommend-open', 'recommend-dialog', 'recommend-type', 'recommend-grade', 'recommend-quality', 'recommend-budget', 'recommend-currency', 'recommend-priority', 'compare-open', 'compare-dialog']) {
+    assert.ok(html.includes(`id="${id}"`), `Missing market feature ${id}`);
+  }
+  assert.match(main, /recommendEquipment\(currentMarketItems, options\)/);
+  assert.match(main, /同じTypeの商品を選んでください/);
+  assert.match(main, /最終観測/);
+  assert.match(css, /\.comparison-grid/);
+});
