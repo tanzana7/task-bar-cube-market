@@ -32,6 +32,7 @@ Viteの出力は`dist/`です。Cloudflare Pagesはビルドコマンド`npm run
 - [TBH実レスポンス検証](docs/tbh-live-validation.md)
 - [JPY/USD取得方式の調査](docs/currency-investigation.md)
 - [本番稼働手順](docs/launch-runbook.md)
+- [USD価格履歴](docs/price-history.md)
 
 発売後の確認・運用コマンドは`npm run market:check`（fixture、Steam通信なし）、`npm run market:check -- --live`（先頭ページ1回）、`npm run market:validate`（ローカル検証）、`npm run market:refresh`（許可環境変数必須、Pushなし）です。為替レート単独の更新・検証は`npm run fx:refresh`・`npm run fx:validate`を使います。為替Actionsは毎日18:17 UTCにFrankfurterだけを確認し、公表レートが変わった場合だけ`fx-rate.json`をコミットします。
 

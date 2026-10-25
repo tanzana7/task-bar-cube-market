@@ -28,6 +28,18 @@
     <p id="market-note" class="market-note">価格は取得時点の最安出品価格です。購入時はSteamでご確認ください。</p>
   </main>
   <footer class="site-footer"><div class="shell footer-row"><span>Task Bar Cube Market · 非公式ファンサイト</span><span>Valveおよびゲーム開発元とは無関係です。 <a href="/privacy.html">プライバシー</a></span></div></footer>
+  <dialog id="history-dialog" class="history-dialog" aria-labelledby="history-title">
+    <div class="history-dialog-content">
+      <div class="history-heading"><img id="history-image" alt="" hidden /><div><h2 id="history-title"></h2><p id="history-summary"></p></div><button id="history-close" class="icon-button" type="button" aria-label="閉じる">×</button></div>
+      <div class="history-controls">
+        <label>期間<select id="history-range"><option value="7d">7日</option><option value="30d">30日</option><option value="all">全期間</option></select></label>
+        <label>通貨<select id="history-currency"><option value="USD">USD</option><option value="JPY">JPY</option></select></label>
+      </div>
+      <p id="history-status" class="history-status" role="status"></p>
+      <div id="history-chart" class="history-chart"></div>
+      <a id="history-steam" class="history-steam" target="_blank" rel="noopener noreferrer">Steam Market ↗</a>
+    </div>
+  </dialog>
   <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

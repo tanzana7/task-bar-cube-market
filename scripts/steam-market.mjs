@@ -310,10 +310,10 @@ export async function saveSnapshot(snapshot, currency, cachePath = new URL(`../p
 export async function saveSnapshotPair(pair, paths = {
   JPY: new URL('../public/market-jpy.json', import.meta.url),
   USD: new URL('../public/market-usd.json', import.meta.url),
-}) {
+}, additionalFiles = []) {
   validateSnapshotPair(pair);
   const originals = {};
-  const temporary = {};
+  const files = [];
   for (const currency of ['JPY', 'USD']) {
     validateSnapshot(pair[currency], currency);
     originals[currency] = await readFile(paths[currency], 'utf8');
@@ -321,29 +321,59 @@ export async function saveSnapshotPair(pair, paths = {
     if (previous.status === 'ok' && pair[currency].status !== 'ok') {
       throw new Error(`Refusing to replace populated ${currency} cache`);
     }
-    temporary[currency] = new URL(paths[currency].href + '.tmp');
+    files.push({ path: paths[currency], content: `${JSON.stringify(pair[currency])}\n` });
   }
+  await saveFilesAtomically([...files, ...additionalFiles]);
+}
+
+export async function saveFilesAtomically(files) {
+  const paths = new Set();
+  const originals = new Map();
+  const staged = [];
+  const urlFor = value => value instanceof URL ? value : pathToFileURL(resolve(value));
+  for (const file of files) {
+    const path = urlFor(file.path);
+    if (path.protocol !== 'file:' || paths.has(path.href) || typeof file.content !== 'string') {
+      throw new Error('Invalid or duplicate atomic file update');
+    }
+    paths.add(path.href);
+    try { originals.set(path.href, await readFile(path, 'utf8')); }
+    catch (error) {
+      if (error.code !== 'ENOENT') throw error;
+      originals.set(path.href, null);
+    }
+    staged.push({ path, temporary: new URL(`${path.href}.tmp`), rollback: new URL(`${path.href}.rollback.tmp`), content: file.content });
+  }
+
+  const committed = [];
   try {
-    for (const currency of ['JPY', 'USD']) {
-      await writeFile(temporary[currency], JSON.stringify(pair[currency]) + '\n', 'utf8');
+    for (const file of staged) await writeFile(file.temporary, file.content, 'utf8');
+    for (const file of staged) {
+      await rename(file.temporary, file.path);
+      committed.push(file);
     }
-    await rename(temporary.JPY, paths.JPY);
-    try {
-      await rename(temporary.USD, paths.USD);
-    } catch (error) {
-      // A failed second rename must not leave a mixed-capture pair on disk.
+  } catch (error) {
+    const rollbackErrors = [];
+    for (const file of committed.reverse()) {
       try {
-        await writeFile(temporary.JPY, originals.JPY, 'utf8');
-        await rename(temporary.JPY, paths.JPY);
+        const original = originals.get(file.path.href);
+        if (original === null) await unlink(file.path);
+        else {
+          await writeFile(file.rollback, original, 'utf8');
+          await rename(file.rollback, file.path);
+        }
       } catch (rollbackError) {
-        throw new AggregateError([error, rollbackError], 'USD write and JPY rollback both failed');
+        rollbackErrors.push(rollbackError);
       }
-      throw error;
     }
+    if (rollbackErrors.length) throw new AggregateError([error, ...rollbackErrors], 'File update and rollback failed');
+    throw error;
   } finally {
-    for (const currency of ['JPY', 'USD']) {
-      try { await unlink(temporary[currency]); }
-      catch (error) { if (error.code !== 'ENOENT') console.warn('Temporary cache cleanup failed', error); }
+    for (const file of staged) {
+      for (const temporary of [file.temporary, file.rollback]) {
+        try { await unlink(temporary); }
+        catch (error) { if (error.code !== 'ENOENT') console.warn('Temporary update cleanup failed', error); }
+      }
     }
   }
 }
@@ -351,7 +381,9 @@ export async function saveSnapshotPair(pair, paths = {
 async function main() {
   if (process.argv.includes('--validate-cache')) {
     await validateCachedPair();
-    console.info('Both market caches are valid');
+    const { validateHistoryCache } = await import('./price-history.mjs');
+    const history = await validateHistoryCache();
+    console.info(`Market caches and ${history.products.length} price histories are valid`);
     return;
   }
   const live = process.argv.includes('--live');
@@ -361,9 +393,13 @@ async function main() {
   // Collect both before writing either cache, so a network or currency failure cannot publish a partial pair.
   const pair = await collectPair(fetch, ms => new Promise(resolve => setTimeout(resolve, ms)), fetch,
     () => new Date(), { fxRateCachePath: new URL('../public/fx-rate.json', import.meta.url) });
-  await saveSnapshotPair(pair);
+  const { prepareHistoryUpdate } = await import('./price-history.mjs');
+  const history = await prepareHistoryUpdate(pair.USD);
+  await saveSnapshotPair(pair, undefined, history.files);
   await validateCachedPair();
-  console.info(`Steam snapshots saved: JPY ${pair.JPY.items.length}, USD ${pair.USD.items.length}`);
+  const { validateHistoryCache } = await import('./price-history.mjs');
+  const validatedHistory = await validateHistoryCache();
+  console.info(`Steam snapshots saved: JPY ${pair.JPY.items.length}, USD ${pair.USD.items.length}; history products ${validatedHistory.products.length}`);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
