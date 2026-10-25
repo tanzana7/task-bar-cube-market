@@ -1,0 +1,88 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { calculateTechnicalIndicators, currencyView, filterMarketItems, makeRankingSnapshot, parseFavorites, parseRankingSnapshot, priceStatistics, summarizeMarket, toggleFavorite } from '../src/market-features.ts';
+
+const marketItem = (marketHashName, name, priceMinor, listings) => ({ marketHashName, name, imageUrl: null, priceMinor,
+  priceText: priceMinor === null ? null : `$${(priceMinor / 100).toFixed(2)}`, listings,
+  steamUrl: `https://steamcommunity.com/market/listings/5084200/${encodeURIComponent(marketHashName)}` });
+
+test('filters by text, price, listings and favorite while keeping unknowns available by default', () => {
+  const items = [marketItem('a', 'Alpha', 100, 3), marketItem('b', 'Beta', 250, 8), marketItem('c', 'Unknown', null, null)];
+  const favorites = new Set(['b']);
+  const base = { query: '', minimumPrice: null, maximumPrice: null, minimumListings: null, favoritesOnly: false, favorites };
+  assert.deepEqual(filterMarketItems(items, base, 'price-asc').map(item => item.name), ['Alpha', 'Beta', 'Unknown']);
+  assert.deepEqual(filterMarketItems(items, { ...base, query: 'ta', minimumPrice: 200, maximumPrice: 300, minimumListings: 5, favoritesOnly: true }, 'listings-desc').map(item => item.name), ['Beta']);
+  assert.deepEqual(filterMarketItems(items, { ...base, minimumListings: 4 }, 'name').map(item => item.name), ['Beta']);
+  assert.deepEqual(filterMarketItems(items, base, 'listings-asc').map(item => item.name), ['Alpha', 'Beta', 'Unknown']);
+});
+
+test('watchlist is keyed by market name and handles malformed storage without throwing', () => {
+  assert.deepEqual([...parseFavorites('["Localized Name", "other"]')], ['Localized Name', 'other']);
+  assert.equal(parseFavorites('{bad').size, 0);
+  const next = toggleFavorite(new Set(['item']), 'item');
+  assert.equal(next.has('item'), false);
+  assert.equal(toggleFavorite(next, 'item').has('item'), true);
+});
+
+test('overview distinguishes unavailable listing counts from a real zero', () => {
+  assert.deepEqual(summarizeMarket([marketItem('a', 'A', 0, 0), marketItem('b', 'B', 10, 4)]), { itemTypes: 2, totalListings: 4 });
+  assert.deepEqual(summarizeMarket([marketItem('a', 'A', 0, null)]), { itemTypes: 1, totalListings: null });
+});
+
+test('period stats use observed points and avoid division by a zero baseline', () => {
+  const points = [
+    { observedAt: '2026-10-20T00:00:00.000Z', priceCents: 100, listings: 7 },
+    { observedAt: '2026-10-24T00:00:00.000Z', priceCents: 150, listings: 5 },
+  ];
+  const stats = priceStatistics(points, 'all', Date.parse('2026-10-25T00:00:00.000Z'));
+  assert.equal(stats.minimum, 100); assert.equal(stats.maximum, 150); assert.equal(stats.changePercent, 50); assert.equal(stats.latestListings, 5);
+  assert.equal(priceStatistics([{ ...points[0], priceCents: 0 }, points[1]], 'all').changePercent, null);
+});
+
+test('rankings require actual observations near each period and validate the compact output', () => {
+  const recent = [
+    { observedAt: '2026-10-24T00:00:00.000Z', priceCents: 100, listings: 4 },
+    { observedAt: '2026-10-25T00:00:00.000Z', priceCents: 120, listings: 5 },
+  ];
+  const sparse = [
+    { observedAt: '2026-09-25T00:00:00.000Z', priceCents: 100, listings: 4 },
+    { observedAt: '2026-10-25T00:00:00.000Z', priceCents: 200, listings: 5 },
+  ];
+  const result = makeRankingSnapshot([{ marketHashName: 'up', points: recent }, { marketHashName: 'sparse', points: sparse }], '2026-10-25T00:00:00.000Z');
+  assert.deepEqual(result.periods['24h'].up.map(item => item.marketHashName), ['up']);
+  assert.deepEqual(result.periods['7d'].up, []);
+  assert.ok(parseRankingSnapshot(result));
+  assert.equal(parseRankingSnapshot({ ...result, periods: { ...result.periods, '24h': { ...result.periods['24h'], toleranceHours: 100 } } }), null);
+});
+
+test('rankings exclude stale histories and items absent from the current priced snapshot', () => {
+  const now = '2026-10-25T00:00:00.000Z';
+  const stale = [
+    { observedAt: '2026-09-20T00:00:00.000Z', priceCents: 100, listings: 1 },
+    { observedAt: '2026-09-21T00:00:00.000Z', priceCents: 200, listings: 2 },
+  ];
+  const current = [
+    { observedAt: '2026-10-24T00:00:00.000Z', priceCents: 100, listings: 1 },
+    { observedAt: now, priceCents: 200, listings: 2 },
+  ];
+  const result = makeRankingSnapshot([
+    { marketHashName: 'stale', points: stale },
+    { marketHashName: 'unpriced-now', points: current },
+    { marketHashName: 'current', points: current },
+  ], now, ['current']);
+  assert.deepEqual(result.periods['24h'].up.map(item => item.marketHashName), ['current']);
+});
+
+test('technical indicators appear only after enough observed points', () => {
+  assert.equal(calculateTechnicalIndicators([{ observedAt: '2026-10-25T00:00:00.000Z', priceCents: 100, listings: 1 }])[0].sma20, null);
+  const points = Array.from({ length: 20 }, (_, index) => ({ observedAt: new Date(Date.UTC(2026, 0, index + 1)).toISOString(), priceCents: 100 + index, listings: index }));
+  const last = calculateTechnicalIndicators(points).at(-1);
+  assert.equal(last.sma20, 109.5); assert.ok(last.upperBand > last.sma20); assert.ok(last.lowerBand < last.sma20); assert.ok(last.rsi14 > 0);
+});
+
+test('JPY market view converts canonical USD when fresh and withholds it without a rate', () => {
+  const usd = { schemaVersion: 2, appid: 5084200, currency: 'USD', status: 'ok', fetchedAt: '2026-10-25T00:00:00.000Z', items: [marketItem('a', 'A', 123, 2)] };
+  assert.equal(currencyView(usd, 'JPY', 150).items[0].priceText, '¥185');
+  assert.equal(currencyView(usd, 'JPY', null).items[0].priceText, null);
+  assert.equal(currencyView(usd, 'USD', null).items[0].priceText, '$1.23');
+});

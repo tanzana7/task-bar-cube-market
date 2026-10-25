@@ -1,9 +1,11 @@
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { APPID, validateSnapshot } from './steam-market.mjs';
+import { makeRankingSnapshot } from '../src/market-features.ts';
 
 const DEFAULT_INDEX = new URL('../public/history/index.json', import.meta.url);
 const DEFAULT_DIRECTORY = new URL('../public/history/', import.meta.url);
+const DEFAULT_RANKINGS = new URL('../public/market-rankings.json', import.meta.url);
 
 function fileUrl(directory, id) {
   return new URL(`${id}.json`, directory);
@@ -67,6 +69,7 @@ async function readIndex(indexPath) {
 export async function prepareHistoryUpdate(usdSnapshot, {
   indexPath = DEFAULT_INDEX,
   directory = DEFAULT_DIRECTORY,
+  rankingsPath = DEFAULT_RANKINGS,
 } = {}) {
   validateSnapshot(usdSnapshot, 'USD');
   const index = await readIndex(indexPath);
@@ -128,7 +131,28 @@ export async function prepareHistoryUpdate(usdSnapshot, {
     const updatedIndex = validateHistoryIndex({ schemaVersion: 1, appid: APPID, products });
     files.push({ path: indexPath, content: `${JSON.stringify(updatedIndex, null, 2)}\n` });
   }
-  return { files, products: products.length, observations: files.filter(file => file.path.href !== indexPath.href).length };
+  const stagedByPath = new Map(files.map(file => [file.path.href, file.content]));
+  const histories = [];
+  for (const product of products) {
+    const path = fileUrl(directory, product.id);
+    const staged = stagedByPath.get(path.href);
+    const history = staged
+      ? validateProductHistory(JSON.parse(staged), product.marketHashName)
+      : validateProductHistory(JSON.parse(await readFile(path, 'utf8')), product.marketHashName);
+    histories.push({ marketHashName: product.marketHashName, points: history.points });
+  }
+  const currentPricedNames = usdSnapshot.items
+    .filter(item => item.priceMinor !== null && item.listings !== null)
+    .map(item => item.marketHashName);
+  const ranking = makeRankingSnapshot(histories, usdSnapshot.fetchedAt, currentPricedNames);
+  const rankingContent = `${JSON.stringify(ranking, null, 2)}\n`;
+  try {
+    if (await readFile(rankingsPath, 'utf8') !== rankingContent) files.push({ path: rankingsPath, content: rankingContent });
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw new Error('Could not read existing ranking cache', { cause: error });
+    files.push({ path: rankingsPath, content: rankingContent });
+  }
+  return { files, products: products.length, observations: files.filter(file => file.path.href !== indexPath.href && file.path.href !== rankingsPath.href).length };
 }
 
 export async function validateHistoryCache({ indexPath = DEFAULT_INDEX, directory = DEFAULT_DIRECTORY } = {}) {
@@ -145,6 +169,17 @@ export async function validateHistoryCache({ indexPath = DEFAULT_INDEX, director
     } catch (error) {
       throw new Error(`Invalid price history ${product.id}`, { cause: error });
     }
+  }
+  try {
+    const ranking = JSON.parse(await readFile(DEFAULT_RANKINGS, 'utf8'));
+    if (ranking?.schemaVersion !== 1 || ranking.appid !== APPID
+        || (ranking.generatedAt !== null && (typeof ranking.generatedAt !== 'string' || !Number.isFinite(Date.parse(ranking.generatedAt))))
+        || !ranking.periods || !['24h', '7d'].every(period => ranking.periods[period]
+          && Array.isArray(ranking.periods[period].up) && Array.isArray(ranking.periods[period].down))) {
+      throw new Error('Invalid ranking snapshot');
+    }
+  } catch (error) {
+    throw new Error('Price ranking cache is missing or invalid', { cause: error });
   }
   return index;
 }

@@ -21,20 +21,21 @@ HTTP 403・429、CAPTCHAらしい応答、非JSON応答では停止する。再�
 
 ## 2. 最初の実レスポンスを確認
 
-`market:check -- --live`はUSD指定の1ページのみ確認する。購入者ウォレット通貨やSteamのセッション条件によって要求通貨と応答通貨が異なる可能性がある。レスポンスがUSDで通貨・数値整合性を通過した場合だけ更新処理を検討する。認証Cookieを付けない。JPY通貨不一致ならUSDからの参考換算となり、SteamのJPY実価格ではない。
+`market:check -- --live`はUSD指定の1ページのみ確認する。レスポンスがUSDで通貨・数値整合性を通過した場合だけ更新処理を検討する。認証Cookieを付けない。市場更新ではJPYをSteamへ要求せず、JPY参考価格はサイト閲覧時点の為替レートから生成する。
 
 `priceoverview`は前回HTTP 429だったため、許可確認なしに追加照会しない。
 
 ## 3. JPY/USDと為替換算を確認
 
-更新後は次の2ファイルを確認する。
+更新後は正規のUSD市場JSON、履歴、ランキングを確認する。
 
 ```powershell
 Get-Content public/market-usd.json
-Get-Content public/market-jpy.json
+Get-Content public/history/index.json
+Get-Content public/market-rankings.json
 ```
 
-USD側はSteamの取得値を保持する。JPY側は`priceSource`が`steam`なら直接価格、`fx`ならFrankfurter日次レートによる「参考価格・為替換算」。`fxRate.rateDate`はレート公表日、`fxRate.fetchedAt`は取得時刻。為替取得失敗や4日より古いレートでは更新に失敗し、従来の両キャッシュを保持する。
+USD JSONはSteamの取得値を保持します。JPY表示はFrankfurterの日次レートによる参考換算で、SteamのJPY実価格ではありません。為替取得が失敗・期限切れでもUSD更新と履歴追加は続きます。
 
 ## 4. GitHub Actionsの設定を確認
 
@@ -46,7 +47,7 @@ Steamの取得・価格表示・画像再配布の条件を確認し、許可を
 
 ### GitHub Actions
 
-GitHubのActionsで`Validate and refresh market snapshots`を選び、`workflow_dispatch`を実行する。利用条件の確認後に限って`mode=live`を選ぶ。Actionsは両通貨の収集・検証が完了してからJSONを保存し、正常な変更だけをコミット・Pushする。失敗したジョブは成功扱いにならず、変更をPushしない。
+GitHubのActionsで`Validate and refresh market snapshots`を選び、`workflow_dispatch`を実行する。利用条件の確認後に限って`mode=live`を選ぶ。ActionsはUSDのみ取得し、USD市場・履歴・ランキングを検証してからまとめてコミット・Pushする。JPYのSteam取得やFrankfurterへのアクセスはありません。失敗したジョブは成功扱いにならず、変更をPushしません。
 
 ### ローカル
 
@@ -66,12 +67,12 @@ Remove-Item Env:STEAM_MARKET_COLLECTION_ALLOWED
 npm run market:validate
 ```
 
-このコマンドはSteamへ接続しない。現在の両JSON、AppID、通貨・価格、換算レート、商品識別子、重複、複数ページ、失敗時のキャッシュ保持などを検証する。
+このコマンドはSteamへ接続しない。USD JSON、AppID、通貨・価格、商品識別子、重複、複数ページ、USD履歴、ランキング、失敗時のキャッシュ保持などを検証する。
 
 ローカル更新の場合は差分を確認し、JSON以外に意図しない変更がないことを見てから反映する。
 
 ```powershell
-git diff -- public/market-jpy.json public/market-usd.json
+git diff -- public/market-usd.json public/history public/market-rankings.json
 git status --short
 ```
 
@@ -80,7 +81,7 @@ git status --short
 Actionsの`live`経路では検証後にActionsがコミット・Pushする。ローカル経路なら内容を確認し、明示的にコミット・Pushする。
 
 ```powershell
-git add public/market-jpy.json public/market-usd.json
+git add public/market-usd.json public/history public/market-rankings.json
 git commit -m "Update verified Steam market snapshots"
 git push origin main
 ```
@@ -95,9 +96,12 @@ Cloudflare Pagesの`task-bar-cube-market`で新しいProduction deploymentを確
 
 本番URL `https://task-bar-cube-market.pages.dev/` を開き、1280pxと390pxで確認する。
 
-- 商品名、画像、出品数、Steamリンク
+- 商品名検索、価格帯・最低出品数・お気に入りフィルター
+- 商品詳細、USD履歴、出品数推移、JPY参考グラフ
+- 商品画像、出品数、Steamリンク
 - JPY/USD切り替えとlocalStorage保存
-- USD価格と、JPYが換算の場合の「参考価格・為替換算」表示
+- USD価格とJPYの「参考価格・為替換算」表示
+- 市場概要と価格変動ランキングの正しい空状態
 - 為替期限切れ時も商品情報とリンクが残り、換算価格が「参考円価格は更新待ち」になること
 - 検索・価格順・名前順
 - 更新時刻、GA4不在、Cloudflare Web Analytics
@@ -117,7 +121,7 @@ npm run fx:validate
 Get-Content public/fx-rate.json
 ```
 
-サイトは有効な`fx-rate.json`があれば、商品が0件でも公表日つきの参考為替を表示する。JPYが為替換算データの場合、USDスナップショットと商品識別子・取得日時が一致するときだけ、ブラウザー上で最新レートから再計算する。市場スナップショットの`fetchedAt`は変えず、Steamの直接JPY価格は再計算で上書きしない。
+サイトは有効な`fx-rate.json`があれば、商品が0件でも公表日つきの参考為替を表示する。JPYは常に正規USDスナップショットからブラウザー上で再計算します。市場スナップショットの`fetchedAt`は為替更新で変えません。レート欠損・期限切れの場合はUSD表示を維持し、JPY価格だけを「参考円価格は更新待ち」にします。
 
 ## 12. ロールバック
 

@@ -43,6 +43,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           persist-credentials: true
       - uses: actions/setup-node@v4
         with:
@@ -55,12 +56,14 @@ jobs:
       - run: node scripts/steam-market.mjs --validate-cache
       - name: Commit only verified changes
         run: |
-          git add public/market-jpy.json public/market-usd.json public/history
-          if git diff --cached --quiet -- public/market-jpy.json public/market-usd.json public/history; then
+          git add public/market-usd.json public/history public/market-rankings.json
+          if git diff --cached --quiet -- public/market-usd.json public/history public/market-rankings.json; then
             echo "No snapshot changes"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "Update verified Steam market snapshots"
-          git push
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main

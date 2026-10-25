@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "appid": 5084200,
+  "generatedAt": "2026-10-20T10:00:00.000Z",
+  "periods": {
+    "24h": {
+      "toleranceHours": 6,
+      "up": [],
+      "down": []
+    },
+    "7d": {
+      "toleranceHours": 36,
+      "up": [],
+      "down": []
+    }
+  }
+}

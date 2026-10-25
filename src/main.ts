@@ -1,6 +1,7 @@
 import './style.css';
-import { deriveJpyReferenceSnapshot, filterAndSort, formatFxRateLabel, parseFreshFxRate, prepareMarketPriceView, type FxRateRecord, type MarketSnapshot, type SortMode } from './market';
+import { formatFxRateLabel, parseFreshFxRate, prepareMarketPriceView, type FxRateRecord, type MarketSnapshot } from './market';
 import { filterHistoryPoints, formatHistoryPrice, makeChartPoints, parseHistoryIndex, parseProductHistory, type HistoryCurrency, type HistoryIndex, type HistoryRange, type ProductHistory } from './history';
+import { calculateTechnicalIndicators, currencyView, filterMarketItems, parseFavorites, parseRankingSnapshot, priceStatistics, summarizeMarket, toggleFavorite, type MarketSort, type RankingSnapshot } from './market-features';
 
 type Snapshot = MarketSnapshot;
 
@@ -12,7 +13,6 @@ const statusNode = document.querySelector<HTMLDivElement>('#status')!;
 const countNode = document.querySelector<HTMLSpanElement>('#result-count')!;
 const updatedNode = document.querySelector<HTMLSpanElement>('#updated-at')!;
 const noteNode = document.querySelector<HTMLParagraphElement>('#market-note')!;
-const fxRateNode = document.querySelector<HTMLParagraphElement>('#fx-rate')!;
 const historyDialog = document.querySelector<HTMLDialogElement>('#history-dialog')!;
 const historyTitle = document.querySelector<HTMLHeadingElement>('#history-title')!;
 const historyImage = document.querySelector<HTMLImageElement>('#history-image')!;
@@ -23,10 +23,33 @@ const historyRange = document.querySelector<HTMLSelectElement>('#history-range')
 const historyCurrency = document.querySelector<HTMLSelectElement>('#history-currency')!;
 const historySteam = document.querySelector<HTMLAnchorElement>('#history-steam')!;
 const historyClose = document.querySelector<HTMLButtonElement>('#history-close')!;
+const filterForm = document.querySelector<HTMLFormElement>('#filters')!;
+const minimumPriceInput = document.querySelector<HTMLInputElement>('#minimum-price')!;
+const maximumPriceInput = document.querySelector<HTMLInputElement>('#maximum-price')!;
+const minimumListingsInput = document.querySelector<HTMLInputElement>('#minimum-listings')!;
+const favoritesOnlyInput = document.querySelector<HTMLInputElement>('#favorites-only')!;
+const favoriteCountNode = document.querySelector<HTMLSpanElement>('#favorite-count')!;
+const overviewItemsNode = document.querySelector<HTMLElement>('#overview-items')!;
+const overviewListingsNode = document.querySelector<HTMLElement>('#overview-listings')!;
+const overviewUpdatedNode = document.querySelector<HTMLElement>('#overview-updated')!;
+const overviewFxNode = document.querySelector<HTMLElement>('#overview-fx')!;
+const rankingPeriodSelect = document.querySelector<HTMLSelectElement>('#ranking-period')!;
+const rankingStatusNode = document.querySelector<HTMLDivElement>('#ranking-status')!;
+const rankingListNode = document.querySelector<HTMLDivElement>('#ranking-list')!;
+const historyStatsNode = document.querySelector<HTMLDivElement>('#history-stats')!;
+const listingChart = document.querySelector<HTMLDivElement>('#listing-chart')!;
+const historyFavoriteButton = document.querySelector<HTMLButtonElement>('#history-favorite')!;
+const indicatorSma = document.querySelector<HTMLInputElement>('#indicator-sma')!;
+const indicatorBands = document.querySelector<HTMLInputElement>('#indicator-bands')!;
+const indicatorRsi = document.querySelector<HTMLInputElement>('#indicator-rsi')!;
+const indicatorStatus = document.querySelector<HTMLParagraphElement>('#indicator-status')!;
 let snapshot: Snapshot | null = null;
 let usdSnapshot: Snapshot | null = null;
 let currentFxRate: FxRateRecord | null = null;
 let historyIndex: HistoryIndex | null = null;
+let rankingSnapshot: RankingSnapshot | null = null;
+let favorites = parseFavorites(storedValue('tbcm-5084200-watchlist'));
+let activeHistoryItem: MarketSnapshot['items'][number] | null = null;
 let selectedHistory: ProductHistory | null = null;
 let historyLoadSequence = 0;
 let loadSequence = 0;
@@ -35,6 +58,14 @@ function storedValue(key: string): string | null {
 }
 function saveValue(key: string, value: string) {
   try { localStorage.setItem(key, value); } catch (error) { console.warn('Preference could not be saved', error); }
+}
+
+function numericFilter(input: HTMLInputElement, multiplier = 1, integer = false): number | null {
+  if (!input.value || !input.validity.valid) return null;
+  const value = Number(input.value);
+  if (!Number.isFinite(value) || value < 0 || (integer && !Number.isSafeInteger(value))) return null;
+  const scaled = value * multiplier;
+  return Number.isSafeInteger(scaled) ? scaled : null;
 }
 
 async function readOptionalJson(path: string): Promise<unknown | null> {
@@ -89,36 +120,22 @@ function formatObservedAt(value: string): string {
     .format(new Date(value));
 }
 
-function renderHistoryChart() {
-  historyChart.replaceChildren();
-  if (!selectedHistory || selectedHistory.points.length === 0) {
-    historyStatus.textContent = '価格履歴はまだありません。';
-    return;
-  }
-  const currency = historyCurrency.value as HistoryCurrency;
-  const rateDependentPoints = makeChartPoints(selectedHistory.points, currency, currentFxRate);
-  if (!rateDependentPoints) {
-    historyStatus.textContent = '為替レートが未取得または期限切れのため、JPYグラフを表示できません。USDを選択してください。';
-    return;
-  }
-  const points = filterHistoryPoints(rateDependentPoints, historyRange.value as HistoryRange);
-  if (points.length === 0) {
-    historyStatus.textContent = 'この期間の価格履歴はありません。';
-    return;
-  }
-
+function makeChart(node: HTMLElement, points: Array<{ observedAt: string; value: number; label: string; listings: number }>, yLabel: (value: number) => string, title: string, overlays: Array<{ values: Array<number | null>; className: string }> = []) {
+  node.replaceChildren();
+  if (points.length === 0) return;
   const width = 760;
   const height = 300;
   const margin = { top: 18, right: 24, bottom: 42, left: 76 };
   const plotWidth = width - margin.left - margin.right;
   const plotHeight = height - margin.top - margin.bottom;
   const times = points.map(point => Date.parse(point.observedAt));
-  const values = points.map(point => point.value);
+  const overlayValues = overlays.flatMap(overlay => overlay.values.filter((value): value is number => value !== null));
+  const values = [...points.map(point => point.value), ...overlayValues];
   const firstTime = times[0];
   const lastTime = times[times.length - 1];
   const minValue = Math.min(...values);
   const maxValue = Math.max(...values);
-  const pad = maxValue === minValue ? Math.max(Math.abs(maxValue) * 0.08, currency === 'USD' ? 0.01 : 1) : (maxValue - minValue) * 0.12;
+  const pad = maxValue === minValue ? Math.max(Math.abs(maxValue) * 0.08, 1) : (maxValue - minValue) * 0.12;
   const yMin = Math.max(0, minValue - pad);
   const yMax = maxValue + pad || 1;
   const x = (time: number) => margin.left + (lastTime === firstTime ? plotWidth / 2 : (time - firstTime) / (lastTime - firstTime) * plotWidth);
@@ -126,94 +143,136 @@ function renderHistoryChart() {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
   svg.setAttribute('role', 'img');
-  svg.setAttribute('aria-label', `${historyTitle.textContent} ${currency}価格推移、観測点${points.length}件`);
+  svg.setAttribute('aria-label', `${title}、観測点${points.length}件`);
   svg.classList.add('history-svg');
-
   for (let tick = 0; tick <= 4; tick += 1) {
     const value = yMin + (yMax - yMin) * tick / 4;
     const yPos = y(value);
     const grid = document.createElementNS(svg.namespaceURI, 'line');
-    grid.setAttribute('x1', String(margin.left));
-    grid.setAttribute('x2', String(width - margin.right));
-    grid.setAttribute('y1', String(yPos));
-    grid.setAttribute('y2', String(yPos));
-    grid.setAttribute('class', 'chart-grid');
-    svg.append(grid);
+    grid.setAttribute('x1', String(margin.left)); grid.setAttribute('x2', String(width - margin.right));
+    grid.setAttribute('y1', String(yPos)); grid.setAttribute('y2', String(yPos)); grid.setAttribute('class', 'chart-grid'); svg.append(grid);
     const label = document.createElementNS(svg.namespaceURI, 'text');
-    label.setAttribute('x', String(margin.left - 10));
-    label.setAttribute('y', String(yPos + 4));
-    label.setAttribute('text-anchor', 'end');
-    label.setAttribute('class', 'chart-label');
-    label.textContent = formatHistoryPrice(value, currency);
-    svg.append(label);
+    label.setAttribute('x', String(margin.left - 10)); label.setAttribute('y', String(yPos + 4)); label.setAttribute('text-anchor', 'end');
+    label.setAttribute('class', 'chart-label'); label.textContent = yLabel(value); svg.append(label);
   }
-
   const axis = document.createElementNS(svg.namespaceURI, 'line');
-  axis.setAttribute('x1', String(margin.left));
-  axis.setAttribute('x2', String(width - margin.right));
-  axis.setAttribute('y1', String(height - margin.bottom));
-  axis.setAttribute('y2', String(height - margin.bottom));
-  axis.setAttribute('class', 'chart-axis');
-  svg.append(axis);
-
-  const firstLabel = document.createElementNS(svg.namespaceURI, 'text');
-  firstLabel.setAttribute('x', String(margin.left));
-  firstLabel.setAttribute('y', String(height - 12));
-  firstLabel.setAttribute('class', 'chart-label');
-  firstLabel.textContent = formatObservedAt(points[0].observedAt);
-  svg.append(firstLabel);
+  axis.setAttribute('x1', String(margin.left)); axis.setAttribute('x2', String(width - margin.right));
+  axis.setAttribute('y1', String(height - margin.bottom)); axis.setAttribute('y2', String(height - margin.bottom)); axis.setAttribute('class', 'chart-axis'); svg.append(axis);
+  const firstDate = document.createElementNS(svg.namespaceURI, 'text');
+  firstDate.setAttribute('x', String(margin.left)); firstDate.setAttribute('y', String(height - 12));
+  firstDate.setAttribute('class', 'chart-label'); firstDate.textContent = formatObservedAt(points[0].observedAt); svg.append(firstDate);
   if (points.length > 1) {
-    const lastLabel = document.createElementNS(svg.namespaceURI, 'text');
-    lastLabel.setAttribute('x', String(width - margin.right));
-    lastLabel.setAttribute('y', String(height - 12));
-    lastLabel.setAttribute('text-anchor', 'end');
-    lastLabel.setAttribute('class', 'chart-label');
-    lastLabel.textContent = formatObservedAt(points[points.length - 1].observedAt);
-    svg.append(lastLabel);
+    const lastDate = document.createElementNS(svg.namespaceURI, 'text');
+    lastDate.setAttribute('x', String(width - margin.right)); lastDate.setAttribute('y', String(height - 12));
+    lastDate.setAttribute('text-anchor', 'end'); lastDate.setAttribute('class', 'chart-label');
+    lastDate.textContent = formatObservedAt(points[points.length - 1].observedAt); svg.append(lastDate);
   }
-
   if (points.length > 1) {
+    const gaps = times.slice(1).map((time, index) => time - times[index]);
+    const ordered = [...gaps].sort((a, b) => a - b);
+    const typicalGap = ordered[Math.floor(ordered.length / 2)];
+    for (let index = 1; index < points.length; index += 1) {
+      const segment = document.createElementNS(svg.namespaceURI, 'line');
+      segment.setAttribute('x1', String(x(times[index - 1]))); segment.setAttribute('y1', String(y(points[index - 1].value)));
+      segment.setAttribute('x2', String(x(times[index]))); segment.setAttribute('y2', String(y(points[index].value)));
+      segment.setAttribute('class', gaps[index - 1] > typicalGap * 3 ? 'chart-gap' : 'chart-line-segment'); svg.append(segment);
+    }
+  }
+  overlays.forEach(overlay => {
+    const segments = overlay.values.map((value, index) => value === null ? null : `${x(times[index])},${y(value)}`).filter((value): value is string => value !== null);
+    if (segments.length < 2) return;
     const line = document.createElementNS(svg.namespaceURI, 'polyline');
-    line.setAttribute('points', points.map((point, index) => `${x(times[index])},${y(point.value)}`).join(' '));
-    line.setAttribute('class', 'chart-line');
-    svg.append(line);
-  }
+    line.setAttribute('points', segments.join(' ')); line.setAttribute('class', overlay.className); svg.append(line);
+  });
   points.forEach((point, index) => {
     const marker = document.createElementNS(svg.namespaceURI, 'circle');
-    marker.setAttribute('cx', String(x(times[index])));
-    marker.setAttribute('cy', String(y(point.value)));
-    marker.setAttribute('r', points.length === 1 ? '6' : '4');
-    marker.setAttribute('class', 'chart-point');
-    marker.setAttribute('tabindex', '0');
-    marker.setAttribute('role', 'button');
+    marker.setAttribute('cx', String(x(times[index]))); marker.setAttribute('cy', String(y(point.value)));
+    marker.setAttribute('r', points.length === 1 ? '6' : '4'); marker.setAttribute('class', 'chart-point'); marker.setAttribute('tabindex', '0'); marker.setAttribute('role', 'button');
     const description = `${formatObservedAt(point.observedAt)} · ${point.label} · 出品 ${point.listings.toLocaleString('ja-JP')}件`;
     marker.setAttribute('aria-label', description);
-    const title = document.createElementNS(svg.namespaceURI, 'title');
-    title.textContent = description;
-    marker.append(title);
+    const titleElement = document.createElementNS(svg.namespaceURI, 'title'); titleElement.textContent = description; marker.append(titleElement);
     marker.addEventListener('pointerup', () => { historyStatus.textContent = description; });
     marker.addEventListener('keydown', event => {
       const keyEvent = event as KeyboardEvent;
-      if (keyEvent.key === 'Enter' || keyEvent.key === ' ') {
-        keyEvent.preventDefault();
-        historyStatus.textContent = description;
-      }
+      if (keyEvent.key === 'Enter' || keyEvent.key === ' ') { keyEvent.preventDefault(); historyStatus.textContent = description; }
     });
     svg.append(marker);
   });
-  historyChart.append(svg);
-  historyStatus.textContent = points.length === 1 ? '観測点 1件' : `観測点 ${points.length.toLocaleString('ja-JP')}件`;
+  node.append(svg);
+}
+
+function renderHistoryChart() {
+  historyChart.replaceChildren();
+  listingChart.replaceChildren();
+  historyStatsNode.replaceChildren();
+  indicatorStatus.textContent = '';
+  if (!selectedHistory || selectedHistory.points.length === 0) {
+    historyStatus.textContent = '価格履歴はまだありません。';
+    return;
+  }
+  const currency = historyCurrency.value as HistoryCurrency;
+  const converted = makeChartPoints(selectedHistory.points, currency, currentFxRate);
+  if (!converted) {
+    historyStatus.textContent = '為替レートが未取得または期限切れのため、JPYグラフを表示できません。USDを選択してください。';
+    return;
+  }
+  const points = filterHistoryPoints(converted, historyRange.value as HistoryRange);
+  if (points.length === 0) {
+    historyStatus.textContent = 'この期間の価格履歴はありません。';
+    return;
+  }
+  const usdPoints = filterHistoryPoints(selectedHistory.points, historyRange.value as HistoryRange);
+  const indicators = calculateTechnicalIndicators(selectedHistory.points);
+  const selectedIndicators = filterHistoryPoints(selectedHistory.points.map((point, index) => ({ ...point, ...indicators[index] })), historyRange.value as HistoryRange);
+  const major = (cents: number) => currency === 'USD' ? cents / 100 : Math.round(cents * currentFxRate!.rate / 100);
+  const overlays: Array<{ values: Array<number | null>; className: string }> = [];
+  if (indicatorSma.checked) overlays.push({ values: selectedIndicators.map(point => point.sma20 === null ? null : major(point.sma20)), className: 'chart-indicator chart-sma' });
+  if (indicatorBands.checked) {
+    overlays.push({ values: selectedIndicators.map(point => point.upperBand === null ? null : major(point.upperBand)), className: 'chart-indicator chart-band' });
+    overlays.push({ values: selectedIndicators.map(point => point.lowerBand === null ? null : major(point.lowerBand)), className: 'chart-indicator chart-band' });
+  }
+  makeChart(historyChart, points, value => formatHistoryPrice(value, currency), `${currency}価格推移`, overlays);
+  const listingPoints = points.map(point => ({ ...point, value: point.listings, label: `${point.listings.toLocaleString('ja-JP')}件` }));
+  makeChart(listingChart, listingPoints, value => Math.round(value).toLocaleString('ja-JP'), '出品数の推移');
+  const stats = priceStatistics(usdPoints, historyRange.value as HistoryRange);
+  if (stats) {
+    const yenStats = currency === 'JPY';
+    const display = (cents: number) => formatHistoryPrice(yenStats ? major(cents) : cents / 100, currency);
+    const rows: Array<[string, string]> = [
+      ['期間内最安', display(stats.minimum)], ['期間内最高', display(stats.maximum)],
+      ['価格変化', `${display(Math.abs(stats.change))} ${stats.change > 0 ? '↑' : stats.change < 0 ? '↓' : '→'}${stats.changePercent === null ? '' : ` (${stats.changePercent > 0 ? '+' : ''}${stats.changePercent.toFixed(1)}%)`}`],
+      ['直近の観測', `${display(stats.latest)} · 出品 ${stats.latestListings.toLocaleString('ja-JP')}件`],
+    ];
+    for (const [label, value] of rows) {
+      const card = document.createElement('article'); const term = document.createElement('span'); const data = document.createElement('strong');
+      term.textContent = label; data.textContent = value; card.append(term, data); historyStatsNode.append(card);
+    }
+  }
+  const last = indicators[indicators.length - 1];
+  const names: string[] = [];
+  if (indicatorSma.checked) names.push(last?.sma20 === null ? '移動平均: 点数不足' : `移動平均: ${last?.sma20 === undefined ? '未取得' : formatHistoryPrice(major(last.sma20), currency)}`);
+  if (indicatorBands.checked) names.push(last?.upperBand === null ? 'ボリンジャーバンド: 点数不足' : `バンド: ${formatHistoryPrice(major(last!.lowerBand!), currency)}–${formatHistoryPrice(major(last!.upperBand!), currency)}`);
+  if (indicatorRsi.checked) names.push(last?.rsi14 === null ? 'RSI: 点数不足' : `RSI: ${last?.rsi14?.toFixed(1) ?? '未取得'}`);
+  indicatorStatus.textContent = names.length ? names.join(' · ') : '';
+  const intervals = points.slice(1).map((point, index) => Date.parse(point.observedAt) - Date.parse(points[index].observedAt)).sort((a, b) => a - b);
+  const typical = intervals.length ? intervals[Math.floor(intervals.length / 2)] : 0;
+  const longGaps = intervals.filter(interval => interval > typical * 3).length;
+  historyStatus.textContent = `観測点 ${points.length.toLocaleString('ja-JP')}件 · 点間の価格は未取得${longGaps ? ` · 長い観測間隔 ${longGaps}か所` : ''}`;
 }
 
 async function openHistory(item: MarketSnapshot['items'][number]) {
   const request = ++historyLoadSequence;
+  activeHistoryItem = item;
   selectedHistory = null;
   historyCurrency.value = currencySelect.value;
   historyTitle.textContent = item.name;
-  const usdItem = usdSnapshot?.items.find(candidate => candidate.marketHashName === item.marketHashName);
-  const currentPrice = usdItem?.priceText ?? 'USD価格情報なし';
-  const listings = item.listings === null ? '出品数 未取得' : `出品 ${item.listings.toLocaleString('ja-JP')}件`;
-  historySummary.textContent = `${currentPrice} · ${listings}`;
+  const visibleItem = snapshot?.items.find(candidate => candidate.marketHashName === item.marketHashName) ?? item;
+  const currentPrice = visibleItem.priceText ?? (currencySelect.value === 'JPY' ? '参考円価格は更新待ち' : '価格情報なし');
+  const listings = visibleItem.listings === null ? '出品数 未取得' : `出品 ${visibleItem.listings.toLocaleString('ja-JP')}件`;
+  const captured = usdSnapshot?.fetchedAt ? ` · ${formatObservedAt(usdSnapshot.fetchedAt)}` : '';
+  historySummary.textContent = `${currentPrice} · ${listings}${captured}`;
+  historyFavoriteButton.setAttribute('aria-pressed', String(favorites.has(item.marketHashName)));
+  historyFavoriteButton.textContent = favorites.has(item.marketHashName) ? '★ ウォッチ中' : '☆ ウォッチ';
   const imageUrl = safeImage(item.imageUrl);
   historyImage.hidden = !imageUrl;
   if (imageUrl) historyImage.src = imageUrl;
@@ -247,8 +306,16 @@ async function openHistory(item: MarketSnapshot['items'][number]) {
 
 function render() {
   if (!snapshot) return;
-  const priceView = prepareMarketPriceView(snapshot.items, snapshot.currency, snapshot.priceSource, snapshot.fxRate?.rateDate);
-  const visible = filterAndSort(priceView.items, search.value, sort.value as SortMode);
+  const priceView = prepareMarketPriceView(snapshot.items, snapshot.currency, snapshot.priceSource, currentFxRate?.rateDate);
+  const visible = filterMarketItems(priceView.items, {
+    query: search.value,
+    minimumPrice: numericFilter(minimumPriceInput, 100),
+    maximumPrice: numericFilter(maximumPriceInput, 100),
+    minimumListings: numericFilter(minimumListingsInput, 1, true),
+    favoritesOnly: favoritesOnlyInput.checked,
+    favorites,
+  }, sort.value as MarketSort);
+  favoriteCountNode.textContent = favorites.size.toLocaleString('ja-JP');
   countNode.textContent = `${visible.length}件のアイテム`;
   itemsNode.replaceChildren();
   if (snapshot.status === 'unavailable') {
@@ -308,10 +375,72 @@ function render() {
     steamLink.rel = 'noopener noreferrer';
     steamLink.setAttribute('aria-label', `${item.name}をSteam Marketで開く`);
     steamLink.textContent = 'Steam ↗';
-    card.append(imageBox, main, price, steamLink);
+    const favoriteButton = document.createElement('button');
+    favoriteButton.type = 'button';
+    favoriteButton.className = 'favorite-button';
+    favoriteButton.setAttribute('aria-pressed', String(favorites.has(item.marketHashName)));
+    favoriteButton.setAttribute('aria-label', favorites.has(item.marketHashName) ? `${item.name}をお気に入りから解除` : `${item.name}をお気に入りに追加`);
+    favoriteButton.textContent = favorites.has(item.marketHashName) ? '★' : '☆';
+    favoriteButton.addEventListener('click', () => setFavorite(item.marketHashName));
+    card.append(imageBox, main, price, favoriteButton, steamLink);
     fragment.append(card);
   }
   itemsNode.append(fragment);
+}
+
+function setFavorite(marketHashName: string) {
+  favorites = toggleFavorite(favorites, marketHashName);
+  saveValue('tbcm-5084200-watchlist', JSON.stringify([...favorites]));
+  render();
+  if (activeHistoryItem?.marketHashName === marketHashName) {
+    historyFavoriteButton.setAttribute('aria-pressed', String(favorites.has(marketHashName)));
+    historyFavoriteButton.textContent = favorites.has(marketHashName) ? '★ ウォッチ中' : '☆ ウォッチ';
+  }
+}
+
+function renderOverview() {
+  if (!usdSnapshot) return;
+  const overview = summarizeMarket(usdSnapshot.items);
+  overviewItemsNode.textContent = usdSnapshot.status === 'unavailable' ? '未取得' : overview.itemTypes.toLocaleString('ja-JP');
+  overviewListingsNode.textContent = usdSnapshot.status === 'unavailable' || overview.totalListings === null
+    ? '未取得' : overview.totalListings.toLocaleString('ja-JP');
+  overviewUpdatedNode.textContent = usdSnapshot.fetchedAt ? formatObservedAt(usdSnapshot.fetchedAt) : '未取得';
+  overviewFxNode.textContent = formatFxRateLabel(currentFxRate)?.replace(/^参考為替：/, '') ?? '未取得';
+}
+
+function renderRankings() {
+  rankingListNode.replaceChildren();
+  const period = rankingPeriodSelect.value as '24h' | '7d';
+  const section = rankingSnapshot?.periods[period];
+  if (!section || (!section.up.length && !section.down.length)) {
+    rankingStatusNode.textContent = 'この期間の価格変動データはまだありません。';
+    return;
+  }
+  rankingStatusNode.textContent = `基準時刻±${section.toleranceHours}時間以内に観測点がある商品だけを比較`;
+  for (const [kind, entries] of [['値上がり', section.up], ['値下がり', section.down]] as const) {
+    const column = document.createElement('section');
+    column.className = 'ranking-column';
+    const heading = document.createElement('h3'); heading.textContent = kind; column.append(heading);
+    if (entries.length === 0) {
+      const empty = document.createElement('p'); empty.textContent = '該当なし'; column.append(empty);
+    }
+    for (const entry of entries) {
+      const button = document.createElement('button'); button.type = 'button'; button.className = 'ranking-row';
+      const itemName = document.createElement('strong'); itemName.textContent = entry.marketHashName;
+      const multiplier = currentFxRate?.rate ?? null;
+      const change = currencySelect.value === 'USD'
+        ? formatHistoryPrice(Math.abs(entry.changeCents) / 100, 'USD')
+        : multiplier === null ? '参考円価格は更新待ち' : formatHistoryPrice(Math.round(Math.abs(entry.changeCents) * multiplier / 100), 'JPY');
+      const value = document.createElement('span'); value.textContent = `${entry.changeCents > 0 ? '+' : '−'}${change} · ${entry.changePercent > 0 ? '+' : ''}${entry.changePercent.toFixed(1)}%`;
+      button.append(itemName, value);
+      button.addEventListener('click', () => {
+        const item = usdSnapshot?.items.find(candidate => candidate.marketHashName === entry.marketHashName);
+        if (item) void openHistory(item);
+      });
+      column.append(button);
+    }
+    rankingListNode.append(column);
+  }
 }
 
 async function load(currency: 'JPY' | 'USD') {
@@ -322,27 +451,24 @@ async function load(currency: 'JPY' | 'USD') {
   countNode.textContent = '読み込み中';
   updatedNode.textContent = '更新日時 —';
   try {
-    const [response, fxValue, usdValue, historyIndexValue] = await Promise.all([
-      fetch(`/market-${currency.toLowerCase()}.json`, { cache: 'no-cache' }),
+    const [response, fxValue, historyIndexValue, rankingValue] = await Promise.all([
+      fetch('/market-usd.json', { cache: 'no-cache' }),
       readOptionalJson('/fx-rate.json'),
-      currency === 'JPY' ? readOptionalJson('/market-usd.json') : Promise.resolve(null),
       readOptionalJson('/history/index.json'),
+      readOptionalJson('/market-rankings.json'),
     ]);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const value: unknown = await response.json();
-    if (!isSnapshot(value) || value.currency !== currency) throw new Error('Invalid snapshot');
+    if (!isSnapshot(value) || value.currency !== 'USD') throw new Error('Invalid USD snapshot');
     if (sequence !== loadSequence) return;
     currentFxRate = parseFreshFxRate(fxValue);
     historyIndex = parseHistoryIndex(historyIndexValue);
-    const usdCandidate = currency === 'JPY' && isSnapshot(usdValue) && usdValue.currency === 'USD' ? usdValue : null;
-    usdSnapshot = currency === 'USD' ? value : usdCandidate;
-    const latestJpySnapshot = currency === 'JPY' && value.priceSource === 'fx' && currentFxRate && usdCandidate
-      ? deriveJpyReferenceSnapshot(value, usdCandidate, currentFxRate) : null;
-    snapshot = latestJpySnapshot ?? value;
-    const fxLabel = formatFxRateLabel(currentFxRate);
-    fxRateNode.hidden = !fxLabel;
-    fxRateNode.textContent = fxLabel ?? '';
-    const priceView = prepareMarketPriceView(snapshot.items, snapshot.currency, snapshot.priceSource, snapshot.fxRate?.rateDate);
+    rankingSnapshot = parseRankingSnapshot(rankingValue);
+    usdSnapshot = value;
+    snapshot = currencyView(value, currency, currentFxRate?.rate ?? null);
+    renderOverview();
+    renderRankings();
+    const priceView = prepareMarketPriceView(snapshot.items, snapshot.currency, snapshot.priceSource, currentFxRate?.rateDate);
     noteNode.textContent = priceView.expiredFx
       ? '為替レートの期限切れにより、JPY参考価格を表示していません。商品情報はSteamでご確認ください。'
       : snapshot.priceSource === 'fx'
@@ -354,12 +480,12 @@ async function load(currency: 'JPY' | 'USD') {
         updatedNode.textContent = `取得 ${new Intl.DateTimeFormat('ja-JP', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Tokyo' }).format(date)}`;
       }
     }
-    if (snapshot.priceSource === 'fx' && snapshot.fxRate) {
-      const rateDate = new Date(snapshot.fxRate.fetchedAt);
+    if (snapshot.priceSource === 'fx' && currentFxRate) {
+      const rateDate = new Date(currentFxRate.fetchedAt);
       if (!Number.isNaN(rateDate.valueOf())) {
         updatedNode.textContent += priceView.expiredFx
-          ? ` · 為替レート期限切れ（${snapshot.fxRate.rateDate}・Frankfurter）`
-          : ` · 為替 ${snapshot.fxRate.rate}円/USD（${snapshot.fxRate.rateDate}・Frankfurter、取得 ${new Intl.DateTimeFormat('ja-JP', { dateStyle: 'short', timeStyle: 'short', timeZone: 'Asia/Tokyo' }).format(rateDate)}）`;
+          ? ` · 為替レート期限切れ（${currentFxRate.rateDate}・Frankfurter）`
+          : ` · 為替 ${currentFxRate.rate}円/USD（${currentFxRate.rateDate}・Frankfurter、取得 ${new Intl.DateTimeFormat('ja-JP', { dateStyle: 'short', timeStyle: 'short', timeZone: 'Asia/Tokyo' }).format(rateDate)}）`;
       }
     }
     // Static snapshots can outlive a failed refresh; show the true capture time.
@@ -377,6 +503,11 @@ async function load(currency: 'JPY' | 'USD') {
 
 search.addEventListener('input', render);
 sort.addEventListener('change', render);
+filterForm.addEventListener('input', render);
+filterForm.addEventListener('change', render);
+filterForm.addEventListener('reset', () => {
+  window.setTimeout(() => { search.value = ''; sort.value = 'price-asc'; render(); }, 0);
+});
 currencySelect.addEventListener('change', () => {
   const currency = currencySelect.value === 'USD' ? 'USD' : 'JPY';
   saveValue('tbcm-currency', currency);
@@ -385,5 +516,10 @@ currencySelect.addEventListener('change', () => {
 historyClose.addEventListener('click', () => historyDialog.close());
 historyRange.addEventListener('change', renderHistoryChart);
 historyCurrency.addEventListener('change', renderHistoryChart);
-historyDialog.addEventListener('close', () => { historyLoadSequence += 1; });
+rankingPeriodSelect.addEventListener('change', renderRankings);
+historyFavoriteButton.addEventListener('click', () => {
+  if (activeHistoryItem) setFavorite(activeHistoryItem.marketHashName);
+});
+for (const input of [indicatorSma, indicatorBands, indicatorRsi]) input.addEventListener('change', renderHistoryChart);
+historyDialog.addEventListener('close', () => { historyLoadSequence += 1; activeHistoryItem = null; });
 void load(currencySelect.value as 'JPY' | 'USD');

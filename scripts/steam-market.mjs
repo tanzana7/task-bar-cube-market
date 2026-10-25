@@ -1,6 +1,6 @@
-import { readFile, writeFile, rename, unlink } from 'node:fs/promises';
-import { resolve } from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { readFile, writeFile, rename, unlink, mkdir } from 'node:fs/promises';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 export const APPID = 5084200;
 export const CURRENCIES = Object.freeze({
@@ -291,6 +291,36 @@ export async function validateCachedPair(paths = {
   validateSnapshotPair(pair);
 }
 
+export async function validateUsdCache(cachePath = new URL('../public/market-usd.json', import.meta.url)) {
+  const snapshot = JSON.parse(await readFile(cachePath, 'utf8'));
+  return validateSnapshot(snapshot, 'USD');
+}
+
+export async function saveUsdSnapshot(snapshot, cachePath = new URL('../public/market-usd.json', import.meta.url), additionalFiles = []) {
+  validateSnapshot(snapshot, 'USD');
+  let previous = null;
+  try { previous = JSON.parse(await readFile(cachePath, 'utf8')); }
+  catch (error) { if (error.code !== 'ENOENT') throw new Error('Could not read USD cache', { cause: error }); }
+  if (previous?.status === 'ok' && snapshot.status !== 'ok') {
+    throw new Error('Refusing to replace a populated USD cache with an unverified snapshot');
+  }
+  await saveFilesAtomically([
+    { path: cachePath, content: `${JSON.stringify(snapshot)}\n` },
+    ...additionalFiles,
+  ]);
+}
+
+export async function refreshUsdSnapshot(fetchImpl = fetch, pause = ms => new Promise(resolve => setTimeout(resolve, ms)), {
+  cachePath = new URL('../public/market-usd.json', import.meta.url),
+  historyOptions = {},
+} = {}) {
+  const snapshot = await collect('USD', fetchImpl, pause);
+  const { prepareHistoryUpdate } = await import('./price-history.mjs');
+  const history = await prepareHistoryUpdate(snapshot, historyOptions);
+  await saveUsdSnapshot(snapshot, cachePath, history.files);
+  return { snapshot, history };
+}
+
 export async function saveSnapshot(snapshot, currency, cachePath = new URL(`../public/${CURRENCIES[currency].file}`, import.meta.url)) {
   validateSnapshot(snapshot, currency);
   let previous = null;
@@ -337,6 +367,7 @@ export async function saveFilesAtomically(files) {
       throw new Error('Invalid or duplicate atomic file update');
     }
     paths.add(path.href);
+    await mkdir(dirname(fileURLToPath(path)), { recursive: true });
     try { originals.set(path.href, await readFile(path, 'utf8')); }
     catch (error) {
       if (error.code !== 'ENOENT') throw error;
@@ -380,26 +411,22 @@ export async function saveFilesAtomically(files) {
 
 async function main() {
   if (process.argv.includes('--validate-cache')) {
-    await validateCachedPair();
+    await validateUsdCache();
     const { validateHistoryCache } = await import('./price-history.mjs');
     const history = await validateHistoryCache();
-    console.info(`Market caches and ${history.products.length} price histories are valid`);
+    console.info(`USD market cache, ${history.products.length} price histories, and rankings are valid`);
     return;
   }
   const live = process.argv.includes('--live');
   if (!live || process.env.STEAM_MARKET_COLLECTION_ALLOWED !== 'true') {
     throw new Error('Live Steam collection requires --live and STEAM_MARKET_COLLECTION_ALLOWED=true');
   }
-  // Collect both before writing either cache, so a network or currency failure cannot publish a partial pair.
-  const pair = await collectPair(fetch, ms => new Promise(resolve => setTimeout(resolve, ms)), fetch,
-    () => new Date(), { fxRateCachePath: new URL('../public/fx-rate.json', import.meta.url) });
-  const { prepareHistoryUpdate } = await import('./price-history.mjs');
-  const history = await prepareHistoryUpdate(pair.USD);
-  await saveSnapshotPair(pair, undefined, history.files);
-  await validateCachedPair();
+  // USD is the only market source of truth. FX outages or unsupported JPY listings must not block it.
+  const { snapshot: usd, history } = await refreshUsdSnapshot(fetch, ms => new Promise(resolve => setTimeout(resolve, ms)));
+  await validateUsdCache();
   const { validateHistoryCache } = await import('./price-history.mjs');
   const validatedHistory = await validateHistoryCache();
-  console.info(`Steam snapshots saved: JPY ${pair.JPY.items.length}, USD ${pair.USD.items.length}; history products ${validatedHistory.products.length}`);
+  console.info(`USD Steam snapshot saved: ${usd.items.length} items; history products ${validatedHistory.products.length}`);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {

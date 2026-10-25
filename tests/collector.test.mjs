@@ -4,7 +4,7 @@ import { readFile, writeFile, mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { APPID, FX_RATE_URL, collect, collectPair, convertUsdToJpy, fetchFxRate, normalizeResult, parsePage, parsePriceMinor, saveSnapshot, saveSnapshotPair, searchUrl, validateSnapshot, validateSnapshotPair } from '../scripts/steam-market.mjs';
+import { APPID, FX_RATE_URL, collect, collectPair, convertUsdToJpy, fetchFxRate, normalizeResult, parsePage, parsePriceMinor, refreshUsdSnapshot, saveSnapshot, saveSnapshotPair, searchUrl, validateSnapshot, validateSnapshotPair } from '../scripts/steam-market.mjs';
 
 const fixture = JSON.parse(await readFile(new URL('./fixtures/steam-pages.json', import.meta.url), 'utf8'));
 const response = body => ({ ok: true, status: 200, json: async () => body });
@@ -80,6 +80,41 @@ test('handles missing start and pagesize while checking every page', async () =>
   assert.equal(usd.items[0].priceText, '$1.00');
   validateSnapshot(jpy, 'JPY');
   validateSnapshot(usd, 'USD');
+});
+
+test('USD-only refresh writes verified market, history and rankings without FX or JPY requests', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'tbcm-usd-only-'));
+  const root = pathToFileURL(`${dir}/`);
+  const cachePath = new URL('market-usd.json', root);
+  const historyDirectory = new URL('history/', root);
+  const indexPath = new URL('index.json', historyDirectory);
+  const rankingsPath = new URL('rankings.json', root);
+  await writeFile(cachePath, JSON.stringify({ schemaVersion: 2, appid: APPID, currency: 'USD', status: 'unavailable', fetchedAt: null, items: [] }));
+  const requests = [];
+  try {
+    const refreshed = await refreshUsdSnapshot(async url => {
+      const parsed = new URL(url);
+      requests.push(parsed.hostname + parsed.pathname + '?' + parsed.searchParams.toString());
+      assert.equal(parsed.hostname, 'steamcommunity.com');
+      assert.equal(parsed.searchParams.get('currency'), '1');
+      return mockPages(fixture.USD)(url);
+    }, immediate, { cachePath, historyOptions: { directory: historyDirectory, indexPath, rankingsPath } });
+    assert.equal(refreshed.snapshot.items.length, 3);
+    assert.equal(requests.length, 2);
+    assert.match(requests[1], /start=2/);
+    assert.equal(JSON.parse(await readFile(cachePath, 'utf8')).currency, 'USD');
+    assert.equal(JSON.parse(await readFile(indexPath, 'utf8')).products.length, 3);
+    assert.equal(JSON.parse(await readFile(rankingsPath, 'utf8')).appid, APPID);
+
+    const previousMarket = await readFile(cachePath, 'utf8');
+    const previousHistory = await readFile(indexPath, 'utf8');
+    await assert.rejects(refreshUsdSnapshot(async () => ({ ok: false, status: 429 }), immediate,
+      { cachePath, historyOptions: { directory: historyDirectory, indexPath, rankingsPath } }), /access stopped/);
+    assert.equal(await readFile(cachePath, 'utf8'), previousMarket);
+    assert.equal(await readFile(indexPath, 'utf8'), previousHistory);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
 });
 
 test('rejects incomplete, mismatched and blocked pages', async () => {

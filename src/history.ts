@@ -3,7 +3,7 @@ import { isFxRateExpired, type FxRateRecord } from './market.ts';
 export type HistoryPoint = { observedAt: string; priceCents: number; listings: number };
 export type ProductHistory = { schemaVersion: 1; appid: 5084200; currency: 'USD'; marketHashName: string; points: HistoryPoint[] };
 export type HistoryIndex = { schemaVersion: 1; appid: 5084200; products: Array<{ id: string; marketHashName: string }> };
-export type HistoryRange = '7d' | '30d' | 'all';
+export type HistoryRange = '24h' | '7d' | '30d' | '90d' | 'all';
 export type HistoryCurrency = 'USD' | 'JPY';
 export type ChartPoint = HistoryPoint & { value: number; label: string };
 
@@ -43,7 +43,7 @@ export function parseProductHistory(value: unknown, marketHashName: string): Pro
 
 export function filterHistoryPoints<T extends HistoryPoint>(points: T[], range: HistoryRange, now = Date.now()): T[] {
   if (range === 'all') return [...points];
-  const duration = range === '7d' ? 7 : 30;
+  const duration = range === '24h' ? 1 : range === '7d' ? 7 : range === '30d' ? 30 : 90;
   const since = now - duration * 24 * 60 * 60 * 1000;
   return points.filter(point => Date.parse(point.observedAt) >= since && Date.parse(point.observedAt) <= now);
 }

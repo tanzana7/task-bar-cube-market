@@ -18,8 +18,9 @@ async function withHistory(action) {
   const dir = await mkdtemp(join(tmpdir(), 'tbcm-history-'));
   const directory = pathToFileURL(`${join(dir, 'history')}${sep}`);
   const indexPath = new URL('index.json', directory);
+  const rankingsPath = new URL('rankings.json', pathToFileURL(`${dir}${sep}`));
   await mkdir(directory, { recursive: true });
-  try { await action({ directory, indexPath }); }
+  try { await action({ directory, indexPath, rankingsPath }); }
   finally { await rm(dir, { recursive: true, force: true }); }
 }
 
@@ -85,7 +86,7 @@ test('unpriced items create no zero-price observation', async () => {
   await withHistory(async paths => {
     const plan = await prepareHistoryUpdate(snapshot('2026-10-20T10:00:00.000Z', [item('No price', null, 0)]), paths);
     assert.equal(plan.products, 0);
-    assert.equal(plan.files.length, 0);
+    assert.equal(plan.observations, 0);
   });
 });
 
