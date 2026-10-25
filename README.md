@@ -65,3 +65,9 @@ Steam Market画面の表示DOMを構造化した`steam-market-dom` JSONも同じ
 発売後の確認・運用コマンドは`npm run market:check`（fixture、Steam通信なし）、`npm run market:check -- --live`（先頭ページ1回）、`npm run market:validate`（ローカル検証）、`npm run market:refresh`（許可環境変数必須、Pushなし）です。為替レート単独の更新・検証は`npm run fx:refresh`・`npm run fx:validate`を使います。為替Actionsは毎日18:17 UTCにFrankfurterだけを確認し、公表レートが変わった場合だけ`fx-rate.json`をコミットします。
 
 TBH検証は`node scripts/verify-tbh.mjs`で保存済みの最小fixtureを使用します。明示的な`--live`を付けた場合だけ、TBH AppID 3678970の先頭10件を読み取ります。本番JSONには書き込みません。
+
+## 継続更新の試作
+
+HTTPフィード受信から既存の検証・観測統合・GitHub Push・Pages照合まで接続しました。許可済み供給元の設定がない現在は本番フィード処理を停止しています。Steamの定期アクセスは有効化していません。
+
+実データ56件を使う隔離総合試験は `npm run market:feed:e2e`。初回実観測と、1商品だけ変更した模擬再観測を区別して検証し、本番へ商品を公開しません。取得方式の比較、Actions設定、利用条件、運用手順は[市場更新アーキテクチャ](docs/market-update-architecture.md)を参照してください。

@@ -3,3 +3,4 @@ dist/
 *.log
 /.market/tbc-dom-observation-*.json
 /.market/dom-preview/
+/.market/feed-preview/

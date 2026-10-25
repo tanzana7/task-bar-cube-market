@@ -1,0 +1,46 @@
+name: Receive approved TBC market feed
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [tbc-market-feed-updated]
+  # Poll only the configured licensed feed, never a Steam endpoint.
+  schedule:
+    - cron: '23 2,8,14,20 * * *'
+
+concurrency:
+  group: market-data-refresh
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  update:
+    if: vars.TBCM_FEED_ENABLED == 'true' && vars.TBCM_FEED_URL != '' && vars.TBCM_FEED_RIGHTS_REFERENCE != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    env:
+      TBCM_FEED_ENABLED: ${{ vars.TBCM_FEED_ENABLED }}
+      TBCM_FEED_URL: ${{ vars.TBCM_FEED_URL }}
+      TBCM_FEED_RIGHTS_REFERENCE: ${{ vars.TBCM_FEED_RIGHTS_REFERENCE }}
+      TBCM_FEED_PROVENANCE: ${{ vars.TBCM_FEED_PROVENANCE || 'Configured TBC market feed' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - name: Configure commit identity
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+      # Event payloads cannot substitute a URL, timestamp, rights flag or shell command.
+      - name: Fetch, validate, merge, publish and verify Pages
+        run: npm run market:feed -- --once

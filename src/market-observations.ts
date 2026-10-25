@@ -103,7 +103,7 @@ export function parseMarketObservations(value: unknown): MarketObservations | nu
           && validUsdText(point.referencePriceText, Number(point.referencePriceText.replace(/[^\d.]/g, '').replace('.', '')))
         : point?.sourceKind === 'steam-dom'
           ? point.priceBasis === 'steam-market-rendered-ui-unverified-price' && point.priceMinor === null
-            && point.priceText === null && validUsdReferenceText(point.referencePriceText)
+            && point.priceText === null && (point.referencePriceText === null || validUsdReferenceText(point.referencePriceText))
           : point.priceBasis === 'steam-search-render-sell-price'
           && ((point.priceMinor === null && point.priceText === null)
             || (point.priceMinor !== null && validUsdText(point.priceText, point.priceMinor)))
@@ -159,7 +159,7 @@ export function latestObservedItems(data: MarketObservations | null): ListedItem
       importedPriceText: observation.sourceKind === 'query-action'
         ? `${observation.referencePriceText} USD · 参考値`
         : observation.sourceKind === 'steam-dom'
-          ? `${observation.referencePriceText} USD`
+          ? observation.referencePriceText === null ? '価格情報なし' : `${observation.referencePriceText} USD`
         : observation.priceText ? `${observation.priceText} USD · 取込値` : '価格情報なし',
     };
   });
@@ -182,7 +182,7 @@ export function selectMarketDisplayItems(
     const selected = {
       ...imported,
       // USD imports are retained as raw USD values. JPY mode never compares USD minor units
-      // against yen, and rendered UI/queryAction reference observations remain non-numeric in either view.
+      // against yen. Reference comparison values remain separate from canonical prices.
       priceMinor: currency === 'USD' && imported.observation?.sourceKind === 'search-render' ? imported.priceMinor : null,
       priceText: currency === 'USD' && imported.observation?.sourceKind === 'search-render' ? imported.priceText : null,
     };

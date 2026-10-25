@@ -237,7 +237,7 @@ function parseSteamDom(payload, observedAt) {
     if (!row || row.currency !== 'USD' || typeof row.marketHashName !== 'string' || !row.marketHashName.trim()
         || typeof row.name !== 'string' || !row.name.trim()
         || row.listings !== null && (!Number.isSafeInteger(row.listings) || row.listings < 0)
-        || typeof row.priceText !== 'string' || !/^\$\s*(?:\d{1,3}(?:,\d{3})+|\d+)\.\d{2}～?$/.test(row.priceText)) {
+        || (row.priceText !== null && (typeof row.priceText !== 'string' || !/^\$\s*(?:\d{1,3}(?:,\d{3})+|\d+)\.\d{2}～?$/.test(row.priceText)))) {
       throw new Error('Invalid rendered-DOM item name, USD reference price, or listing count');
     }
     const steamUrl = `https://steamcommunity.com/market/listings/${TBC_APPID}/${encodeURIComponent(row.marketHashName)}`;
@@ -301,8 +301,8 @@ export function validateMarketObservations(value) {
             || point.priceText !== null || parsePriceMinor(point.referencePriceText, 'USD') === null))
           || (steamDom && (point.requestCurrencyId !== null || point.responseCurrencyId !== null
             || point.priceBasis !== 'steam-market-rendered-ui-unverified-price' || point.priceMinor !== null
-            || point.priceText !== null || typeof point.referencePriceText !== 'string'
-            || !/^\$\s*(?:\d{1,3}(?:,\d{3})+|\d+)\.\d{2}～?$/.test(point.referencePriceText)))
+            || point.priceText !== null || (point.referencePriceText !== null && (typeof point.referencePriceText !== 'string'
+            || !/^\$\s*(?:\d{1,3}(?:,\d{3})+|\d+)\.\d{2}～?$/.test(point.referencePriceText)))))
           || (!queryAction && (!(point.requestCurrencyId === null || point.requestCurrencyId === 1) || point.responseCurrencyId !== null
             || (!steamDom && point.priceBasis !== 'steam-search-render-sell-price')
             || (point.priceMinor === null) !== (point.priceText === null)
@@ -462,11 +462,11 @@ export function mergeMarketObservations(previous, incoming) {
     ...base,
     generatedAt: addedPoints > 0 ? incoming.generatedAt : base.generatedAt,
     products: [...productMap.values()].sort((a, b) => a.marketHashName.localeCompare(b.marketHashName)),
-    imports: [...base.imports],
+    imports: structuredClone(base.imports),
   };
   let addedCaptures = 0;
   for (const capture of incoming.imports) {
-    const sameCapture = base.imports.find(existing => existing.sourceKind === capture.sourceKind
+    const sameCapture = merged.imports.find(existing => existing.sourceKind === capture.sourceKind
       && existing.observedAt === capture.observedAt && existing.provenance === capture.provenance
       && existing.start === capture.start && existing.totalCount === capture.totalCount
       && existing.pageSize === capture.pageSize && existing.complete === capture.complete);

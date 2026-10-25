@@ -418,7 +418,8 @@ function render() {
       const sourceNote = observation.sourceKind === 'query-action' ? '参考値・価格基準確認中'
         : observation.sourceKind === 'steam-dom' ? '画面参考値・価格基準未確認'
           : `観測・${observation.provenance}`;
-      detail.textContent = `${sourceNote} · ${coverage}${formatObservedAt(observation.observedAt)}`;
+      const age = Date.now() - Date.parse(observation.observedAt) > 24 * 60 * 60 * 1000 ? ' · 古い観測' : '';
+      detail.textContent = `${sourceNote} · ${coverage}${formatObservedAt(observation.observedAt)}${age}`;
       card.dataset.marketObservation = 'imported';
       price.append(detail);
     }
@@ -550,7 +551,7 @@ async function load(currency: 'JPY' | 'USD') {
     noteNode.textContent = latestCapture?.sourceKind === 'query-action'
       ? '取込データは商品ごとの部分観測です。queryActionのUSD表示額は参考値で、価格基準確認中です。購入前にSteamでご確認ください。'
       : latestCapture?.sourceKind === 'steam-dom'
-        ? `${latestCapture.pageSize}/${latestCapture.totalCount}件を部分観測。価格順・価格帯は選択通貨の表示参考価格で比較します。JPYは有効な為替レートがある場合のみ換算します。価格基準は未確認です。`
+        ? `${importedSnapshot && importedSnapshot.products.length !== latestCapture.pageSize ? `保持${importedSnapshot.products.length}件・直近` : ''}${latestCapture.pageSize}/${latestCapture.totalCount}件を部分観測。価格順・価格帯は選択通貨の表示参考価格で比較します。JPYは有効な為替レートがある場合のみ換算します。価格基準は未確認です。`
       : latestCapture
         ? '取込データはSteam応答の部分観測です。表示価格と出品数には商品ごとの観測日時を付けています。購入前にSteamでご確認ください。'
         : baseNote;
