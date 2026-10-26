@@ -34,6 +34,7 @@
           <label>最高価格<input id="maximum-price" type="number" min="0" step="0.01" inputmode="decimal" /></label>
           <label>最低出品数<input id="minimum-listings" type="number" min="0" step="1" inputmode="numeric" /></label>
           <details class="filter-group"><summary>Grade</summary><fieldset id="grade-options" aria-label="Gradeを複数選択"></fieldset></details>
+          <small id="grade-filter-status" class="filter-hint" hidden>Grade情報未取得</small>
           <label>最低Grade<select id="minimum-grade"><option value="">指定なし</option></select></label>
           <details class="filter-group"><summary>Type</summary><fieldset id="type-options" aria-label="Typeを複数選択"></fieldset></details>
           <label>Quality下限<select id="minimum-quality"></select></label>
@@ -96,7 +97,7 @@
         <label>重視<select id="recommend-priority"><option value="price">価格</option><option value="quality">Quality</option><option value="balanced">バランス</option></select></label>
         <button type="submit">検索</button>
       </form>
-      <p class="recommend-method">バランスは同じType内でGrade 45点・Quality 35点・価格 20点。未取得属性は加点しません。</p>
+      <p id="recommend-method" class="recommend-method">バランスは同じType内でGrade 45・Quality 35・価格 20を比較します。不明項目は除外し、重みを調整します。</p>
       <div id="recommend-results" class="feature-results" aria-live="polite"></div>
     </div>
   </dialog>

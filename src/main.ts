@@ -2,7 +2,7 @@ import './style.css';
 import { formatFxRateLabel, parseFreshFxRate, prepareMarketPriceView, type FxRateRecord, type MarketSnapshot } from './market';
 import { latestObservedItems, parseMarketObservations, parseUsdReferenceMinor, selectMarketDisplayItems, type ListedItem, type MarketObservations, type ObservationPoint } from './market-observations';
 import { filterHistoryPoints, formatHistoryPrice, makeChartPoints, parseHistoryIndex, parseProductHistory, type HistoryCurrency, type HistoryIndex, type HistoryRange, type ProductHistory } from './history';
-import { calculateTechnicalIndicators, currencyView, filterMarketItems, parseFavorites, parsePriceFilterInput, parseRankingSnapshot, priceStatistics, recommendEquipment, summarizeMarket, toggleFavorite, type MarketSort, type RankingSnapshot, type RecommendationPriority } from './market-features';
+import { calculateTechnicalIndicators, currencyView, filterMarketItems, isObservationStale, parseFavorites, parsePriceFilterInput, parseRankingSnapshot, priceStatistics, recommendEquipment, summarizeMarket, toggleFavorite, type MarketSort, type RankingSnapshot, type RecommendationPriority } from './market-features';
 import { classifyItemName, ITEM_GRADES, ITEM_QUALITIES, ITEM_TYPES, type ItemGrade, type ItemType } from './item-classification';
 import { evaluateWatchTarget, mergeFavoriteKeys, parseWatchTargetPrice, parseWatchTargets, serializeWatchTargets, setWatchTarget, WATCH_TARGETS_STORAGE_KEY, type WatchDirection, type WatchTarget } from './watchlist';
 
@@ -35,6 +35,7 @@ const minimumListingsInput = document.querySelector<HTMLInputElement>('#minimum-
 const favoritesOnlyInput = document.querySelector<HTMLInputElement>('#favorites-only')!;
 const favoriteCountNode = document.querySelector<HTMLSpanElement>('#favorite-count')!;
 const gradeOptionsNode = document.querySelector<HTMLFieldSetElement>('#grade-options')!;
+const gradeFilterStatusNode = document.querySelector<HTMLElement>('#grade-filter-status')!;
 const typeOptionsNode = document.querySelector<HTMLFieldSetElement>('#type-options')!;
 const minimumGradeSelect = document.querySelector<HTMLSelectElement>('#minimum-grade')!;
 const minimumQualitySelect = document.querySelector<HTMLSelectElement>('#minimum-quality')!;
@@ -52,6 +53,7 @@ const recommendCurrencySelect = document.querySelector<HTMLSelectElement>('#reco
 const recommendPrioritySelect = document.querySelector<HTMLSelectElement>('#recommend-priority')!;
 const recommendResultsNode = document.querySelector<HTMLDivElement>('#recommend-results')!;
 const recommendStalenessNode = document.querySelector<HTMLParagraphElement>('#recommend-staleness')!;
+const recommendMethodNode = document.querySelector<HTMLParagraphElement>('#recommend-method')!;
 const compareCountNode = document.querySelector<HTMLSpanElement>('#compare-count')!;
 const compareOpenButton = document.querySelector<HTMLButtonElement>('#compare-open')!;
 const compareDialog = document.querySelector<HTMLDialogElement>('#compare-dialog')!;
@@ -512,6 +514,7 @@ function render() {
   importedObservations = new Map([...selection.imported].flatMap(([key, item]) => item.observation ? [[key, item.observation] as const] : []));
   const allItems = selection.items;
   currentMarketItems = allItems;
+  updateGradeAvailability(allItems);
   displayItemsByKey = new Map(allItems.map(item => [item.marketHashName, item]));
   updateWatchlistSummary();
   if (watchlistDialog.open) renderWatchlist();
@@ -603,6 +606,14 @@ function render() {
       note.textContent = '参考価格・為替換算';
       price.append(note);
     }
+    const observedAt = observation?.observedAt ?? usdSnapshot?.fetchedAt ?? null;
+    let staleLabel: HTMLElement | null = null;
+    if (observedAt && isObservationStale(observedAt)) {
+      staleLabel = document.createElement('small');
+      staleLabel.className = 'item-stale';
+      staleLabel.textContent = `古い観測 · ${formatObservedAt(observedAt)}`;
+      staleLabel.setAttribute('aria-label', `24時間以上前の観測、${formatObservedAt(observedAt)}`);
+    }
     const steamLink = document.createElement('a');
     steamLink.className = 'item-steam';
     steamLink.href = link;
@@ -635,6 +646,7 @@ function render() {
       render();
     });
     main.append(imageBox, name, info, price, listings);
+    if (staleLabel) main.append(staleLabel);
     card.append(main, favoriteButton, compareButton, steamLink);
     fragment.append(card);
   }
@@ -644,6 +656,25 @@ function render() {
 
 function displayedPrice(item: ListedItem): string {
   return item.importedPriceText ?? item.priceText ?? '価格情報なし';
+}
+
+function itemObservedAt(item: ListedItem): string | null {
+  return importedObservations.get(item.marketHashName)?.observedAt ?? item.observation?.observedAt ?? usdSnapshot?.fetchedAt ?? null;
+}
+
+function updateGradeAvailability(items: ListedItem[]): void {
+  // Item names currently provide no verified grade source. Disable grade filters instead of
+  // letting an unavailable attribute silently produce an empty market result.
+  const hasVerifiedGrade = items.some(item => classifyItemName(item.marketHashName).grade !== null);
+  gradeOptionsNode.disabled = !hasVerifiedGrade;
+  minimumGradeSelect.disabled = !hasVerifiedGrade;
+  recommendGradeSelect.disabled = !hasVerifiedGrade;
+  gradeFilterStatusNode.hidden = hasVerifiedGrade;
+  if (!hasVerifiedGrade) {
+    for (const input of Array.from(gradeOptionsNode.querySelectorAll<HTMLInputElement>('input'))) input.checked = false;
+    minimumGradeSelect.value = '';
+    recommendGradeSelect.value = '';
+  }
 }
 
 function makeFeatureLink(item: ListedItem): HTMLAnchorElement {
@@ -667,8 +698,16 @@ function renderRecommendations() {
   };
   const results = recommendEquipment(currentMarketItems, options);
   recommendResultsNode.replaceChildren();
-  const latestObservation = importedSnapshot?.imports.map(entry => entry.observedAt).sort().at(-1);
-  recommendStalenessNode.textContent = latestObservation ? `保存済み観測 · ${formatObservedAt(latestObservation)}` : '読み込み済みの市場観測を使用';
+  const itemAges = currentMarketItems.map(item => itemObservedAt(item)).filter((value): value is string => value !== null);
+  const staleCount = itemAges.filter(isObservationStale).length;
+  const latestObservation = itemAges.sort((a, b) => Date.parse(b) - Date.parse(a))[0];
+  recommendStalenessNode.textContent = latestObservation
+    ? `最終観測 ${formatObservedAt(latestObservation)}${staleCount ? ` · ${staleCount}件は24時間超` : ''}`
+    : '観測日時未取得';
+  const hasAnyGrade = currentMarketItems.some(item => classifyItemName(item.marketHashName).grade !== null);
+  recommendMethodNode.textContent = hasAnyGrade
+    ? 'バランスは同じType内でGrade 45・Quality 35・価格 20を比較します。不明項目は除外し、利用可能な重みを調整します。'
+    : 'Grade情報未取得 · バランスはQuality 35・価格 20を利用可能な項目に合わせて調整します。';
   if (results.length === 0) {
     const empty = document.createElement('p'); empty.className = 'recommend-empty';
     empty.textContent = '条件に合う商品がありません。最低Grade・Quality・予算を緩めてください。';
@@ -679,9 +718,10 @@ function renderRecommendations() {
     const title = document.createElement('strong'); title.textContent = result.item.name;
     const classification = classifyItemName(result.item.marketHashName);
     const facts = document.createElement('span');
-    const observedAt = importedObservations.get(result.item.marketHashName)?.observedAt ?? usdSnapshot?.fetchedAt;
-    facts.textContent = `${classification.grade ?? 'Grade未取得'} · ${classification.quality === null ? 'Quality未取得' : `${classification.quality}%`} · ${displayedPrice(result.item)} · 出品 ${result.item.listings ?? '未取得'}件 · ${observedAt ? `観測 ${formatObservedAt(observedAt)}` : '観測日時未取得'}`;
-    const reason = document.createElement('small'); reason.textContent = `${index + 1}位 · ${result.reason}${result.score === null ? '' : ` · ${result.score.toFixed(1)}点`}`;
+    const observedAt = itemObservedAt(result.item);
+    const staleText = observedAt && isObservationStale(observedAt) ? ' · 古い観測' : '';
+    facts.textContent = `${classification.grade ?? 'Grade未取得'} · ${classification.quality === null ? 'Quality未取得' : `${classification.quality}%`} · ${displayedPrice(result.item)} · 出品 ${result.item.listings ?? '未取得'}件 · ${observedAt ? `観測 ${formatObservedAt(observedAt)}` : '観測日時未取得'}${staleText}`;
+    const reason = document.createElement('small'); reason.textContent = `${index + 1}位 · ${result.reason}${result.score === null ? '' : ` · ${result.score.toFixed(1)}点`}${result.criteria ? ` · 評価 ${result.criteria}` : ''}`;
     const favoriteButton = document.createElement('button'); favoriteButton.type = 'button'; favoriteButton.className = 'recommend-watch';
     favoriteButton.textContent = favorites.has(result.item.marketHashName) ? '★ 登録済み' : '☆ ウォッチ';
     favoriteButton.setAttribute('aria-pressed', String(favorites.has(result.item.marketHashName)));
@@ -893,7 +933,9 @@ function renderOverview() {
     : observedAtValues.size > 1 ? '商品別に表示' : overview.totalListings.toLocaleString('ja-JP');
   const lastObserved = [usdSnapshot.fetchedAt, ...imported.map(item => item.observation?.observedAt ?? null)]
     .filter((value): value is string => typeof value === 'string').sort((a, b) => Date.parse(b) - Date.parse(a))[0];
-  overviewUpdatedNode.textContent = lastObserved ? formatObservedAt(lastObserved) : '未取得';
+  overviewUpdatedNode.textContent = lastObserved
+    ? `${formatObservedAt(lastObserved)}${isObservationStale(lastObserved) ? ' · 古い観測' : ''}`
+    : '未取得';
   overviewFxNode.textContent = formatFxRateLabel(currentFxRate)?.replace(/^参考為替：/, '') ?? '未取得';
 }
 

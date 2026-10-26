@@ -200,6 +200,7 @@ function publishArgs() {
 try {
   await prepareProject();
   const url = await startMockPages();
+  const baselineSnapshot = JSON.parse(await readFile(join(sourceRoot, 'public/market-observations.json'), 'utf8'));
   const fixture = JSON.parse(await readFile(join(sourceRoot, 'tests/fixtures/tbh-query-action-real-start30-usd.json'), 'utf8'));
   const rows = fixture.data.results.map(row => ({
     name: row.asset_description.market_name,
@@ -233,12 +234,19 @@ try {
   assertRunSucceeded(first, 'Initial 30-product, two-page publish did not complete through the local Git/Pages path');
   const initial = publicSnapshotInRemote();
   assert.equal(initial.appid, 5084200);
-  assert.equal(initial.products.length, 30);
-  assert.equal(initial.imports.length, 2);
-  assert.equal(initial.products[0].observations[0].priceMinor, 3);
-  assert.ok(initial.products.every(product => Number.isSafeInteger(product.observations[0].listings)));
-  assert.ok(initial.products.every(product => product.imageUrl?.startsWith('https://community.cloudflare.steamstatic.com/economy/image/')));
-  assert.ok(initial.products.every(product => product.steamUrl.startsWith('https://steamcommunity.com/market/listings/5084200/')));
+  const addedKeys = new Set(rows.map(row => row.asset_description.market_hash_name));
+  assert.equal([...addedKeys].filter(key => baselineSnapshot.products.some(product => product.marketHashName === key)).length, 0,
+    'isolated fixture products must not overwrite the captured baseline');
+  const expectedProducts = baselineSnapshot.products.length + addedKeys.size;
+  assert.equal(initial.products.length, expectedProducts);
+  assert.equal(initial.imports.length, baselineSnapshot.imports.length + 2);
+  assert.ok(baselineSnapshot.products.every(product => initial.products.some(result => result.marketHashName === product.marketHashName)),
+    'existing observed products must be retained by the isolated publish');
+  const fixtureProduct = initial.products.find(product => product.marketHashName === rows[0].asset_description.market_hash_name);
+  assert.equal(fixtureProduct.observations[0].priceMinor, 3);
+  assert.ok([...addedKeys].every(key => Number.isSafeInteger(initial.products.find(product => product.marketHashName === key)?.observations[0].listings)));
+  assert.ok([...addedKeys].every(key => initial.products.find(product => product.marketHashName === key)?.imageUrl?.startsWith('https://community.cloudflare.steamstatic.com/economy/image/')));
+  assert.ok([...addedKeys].every(key => initial.products.find(product => product.marketHashName === key)?.steamUrl.startsWith('https://steamcommunity.com/market/listings/5084200/')));
   const updatedProductKey = rows[0].asset_description.market_hash_name;
   assertNoHarSecrets(initial);
   assertNoHarSecrets(git(workDir, 'show', 'HEAD:public/market-observations.json'));
@@ -254,7 +262,7 @@ try {
   const updated = await publish(publishArgs(), testEnv);
   assertRunSucceeded(updated, 'Second observation update did not publish through the isolated remote');
   const updatedSnapshot = publicSnapshotInRemote();
-  assert.equal(updatedSnapshot.products.length, 30);
+  assert.equal(updatedSnapshot.products.length, expectedProducts);
   const updatedProduct = updatedSnapshot.products.find(product => product.marketHashName === updatedProductKey);
   assert.equal(updatedProduct.observations.length, 2);
   assert.equal(updatedProduct.observations.at(-1).priceMinor, 29);
@@ -284,13 +292,15 @@ try {
   assert.equal(git(workDir, 'rev-parse', 'HEAD'), git(workDir, 'rev-parse', 'origin/main'),
     'a pushed valid snapshot remains committed when deployment confirmation is unavailable');
   const afterDeployFailure = publicSnapshotInRemote();
-  assert.equal(afterDeployFailure.products.length, 30);
+  assert.equal(afterDeployFailure.products.length, expectedProducts);
   const deployFailureProduct = afterDeployFailure.products.find(product => product.marketHashName === rows[2].asset_description.market_hash_name);
   assert.equal(deployFailureProduct.observations.at(-1).priceMinor, 29);
 
   console.info(JSON.stringify({
     status: 'passed',
     isolatedProducts: afterDeployFailure.products.length,
+    baselineProductsRetained: baselineSnapshot.products.length,
+    syntheticFixtureProducts: addedKeys.size,
     pages: afterDeployFailure.imports.length,
     duplicateNoop: true,
     updateObservations: updatedProduct.observations.length,

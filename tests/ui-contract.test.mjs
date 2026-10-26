@@ -46,4 +46,10 @@ test('classification filters, explainable recommendations, and same-type compari
   assert.match(main, /同じTypeの商品を選んでください/);
   assert.match(main, /最終観測/);
   assert.match(css, /\.comparison-grid/);
+  assert.match(html, /id="grade-filter-status"[^>]+hidden>Grade情報未取得/);
+  assert.match(html, /id="recommend-method"/);
+  assert.match(main, /gradeOptionsNode\.disabled = !hasVerifiedGrade/);
+  assert.match(main, /古い観測 · \$\{formatObservedAt\(observedAt\)\}/);
+  assert.match(main, /利用可能な項目に合わせて調整します/);
+  assert.match(main, /評価 \$\{result\.criteria\}/);
 });

@@ -34,6 +34,13 @@ export type TechnicalPoint = { sma20: number | null; upperBand: number | null; l
 
 export type PriceFilterParse = { value: number | null; error: string | null };
 
+export const OBSERVATION_STALE_AFTER_MS = 24 * 60 * 60 * 1000;
+
+export function isObservationStale(observedAt: string, now = Date.now()): boolean {
+  const timestamp = Date.parse(observedAt);
+  return Number.isFinite(timestamp) && timestamp <= now && now - timestamp > OBSERVATION_STALE_AFTER_MS;
+}
+
 export function parsePriceFilterInput(input: string, currency: 'USD' | 'JPY'): PriceFilterParse {
   const value = input.trim();
   if (!value) return { value: null, error: null };
@@ -94,7 +101,7 @@ export type RecommendationOptions = {
   currency: 'USD' | 'JPY';
   priority: RecommendationPriority;
 };
-export type RecommendedItem = { item: MarketItem; score: number | null; reason: string };
+export type RecommendedItem = { item: MarketItem; score: number | null; reason: string; criteria: string | null };
 
 /**
  * Recommendations are a transparent ordering aid, not a gameplay power estimate.
@@ -126,33 +133,37 @@ export function recommendEquipment(items: MarketItem[], options: RecommendationO
   const knownPrices = candidates.map(priceOf).filter((value): value is number => value !== null);
   const minKnownPrice = knownPrices.reduce((minimum, value) => Math.min(minimum, value), Infinity);
   const maxKnownPrice = knownPrices.reduce((maximum, value) => Math.max(maximum, value), -Infinity);
-  const balancedScore = (item: MarketItem): number | null => {
+  const balancedScore = (item: MarketItem): { score: number; criteria: string } | null => {
     const classification = classifyItemName(item.marketHashName);
-    const dimensions: number[] = [];
+    const dimensions: Array<{ name: string; weight: number; value: number }> = [];
     const gradeIndex = classification.grade ? ITEM_GRADE_INDEX(classification.grade) : null;
-    if (gradeIndex !== null) dimensions.push(gradeIndex / 6 * 45);
-    if (classification.quality !== null) dimensions.push(classification.quality / 95 * 35);
+    if (gradeIndex !== null) dimensions.push({ name: 'Grade', weight: 45, value: gradeIndex / 6 * 100 });
+    if (classification.quality !== null) dimensions.push({ name: 'Quality', weight: 35, value: classification.quality / 95 * 100 });
     const currentPrice = priceOf(item);
     if (currentPrice !== null && knownPrices.length > 1) {
-      dimensions.push((maxKnownPrice === minKnownPrice ? 1 : 1 - (currentPrice - minKnownPrice) / (maxKnownPrice - minKnownPrice)) * 20);
-    } else if (currentPrice !== null) dimensions.push(20);
-    return dimensions.length ? dimensions.reduce((sum, value) => sum + value, 0) : null;
+      dimensions.push({ name: '価格', weight: 20, value: (maxKnownPrice === minKnownPrice ? 1 : 1 - (currentPrice - minKnownPrice) / (maxKnownPrice - minKnownPrice)) * 100 });
+    } else if (currentPrice !== null) dimensions.push({ name: '価格', weight: 20, value: 100 });
+    if (!dimensions.length) return null;
+    const totalWeight = dimensions.reduce((sum, dimension) => sum + dimension.weight, 0);
+    const score = dimensions.reduce((sum, dimension) => sum + dimension.value * dimension.weight, 0) / totalWeight;
+    const criteria = dimensions.map(dimension => `${dimension.name} ${((dimension.weight / totalWeight) * 100).toFixed(1)}%`).join(' · ');
+    return { score, criteria };
   };
   const ordered = options.priority === 'price' ? priceSorted
     : options.priority === 'quality' ? qualitySorted
-      : [...candidates].sort((a, b) => (balancedScore(b) ?? -1) - (balancedScore(a) ?? -1)
+      : [...candidates].sort((a, b) => (balancedScore(b)?.score ?? -1) - (balancedScore(a)?.score ?? -1)
         || (priceOf(a) ?? Infinity) - (priceOf(b) ?? Infinity) || a.name.localeCompare(b.name));
   return ordered.map((item, index) => {
     const classification = classifyItemName(item.marketHashName);
     const price = priceOf(item);
+    const balanced = options.priority === 'balanced' ? balancedScore(item) : null;
     const reason = options.priority === 'price'
       ? price === null ? '価格未取得' : index === 0 ? '条件内で参考価格が最安' : '参考価格の安い順'
       : options.priority === 'quality'
         ? classification.quality === null ? 'Quality未取得' : index === 0 ? `Quality ${classification.quality}%で最高` : `${classification.quality}% · 同Qualityは価格順`
-        : classification.grade === null || classification.quality === null
-          ? '分類情報の一部が未取得'
-          : '同Type内でGrade・Quality・価格を比較';
-    return { item, score: options.priority === 'balanced' ? balancedScore(item) : null, reason };
+        : balanced === null ? '比較できる価格・属性がありません' : '利用できる項目だけで比較';
+    return { item, score: balanced?.score ?? null, reason,
+      criteria: options.priority === 'balanced' ? balanced?.criteria ?? null : null };
   });
 }
 

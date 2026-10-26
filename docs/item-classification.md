@@ -6,7 +6,7 @@ Classification is derived from the Steam `marketHashName`; it does not alter mar
 
 - Type is a whole-word match against the ten supported equipment labels. `Chestplate` is checked independently from `Chest`, and `Chest Lv.N` is a Chest.
 - Quality is recognized only as a trailing integer percentage from 5% through 95% in 5-point steps. A level such as `Chest Lv.1` is not a quality.
-- Grade is recognized only when one of the seven supported grade names is an explicit leading token. Material/prefix words such as Rusty, Cobalt, Arcane, and Celestial are not mapped to Grade without an authoritative mapping.
+- Grade is recognized only when one of the seven supported grade names is an explicit leading token. Material/prefix words such as Rusty, Cobalt, Arcane, and Celestial are not mapped to Grade without an authoritative mapping. The Steam store page confirms the game has seven rarities from Common to Divine, but does not map individual market names or prefixes to a rarity. See [grade and refresh operations](grade-and-refresh-operations.md).
 - Missing classification stays unknown. Minimum Grade and minimum Quality filters intentionally exclude unknown values when those thresholds are active.
 
 ## Saved observation check
@@ -19,7 +19,7 @@ The 131 products in `public/market-observations.json` were classified from the s
 | Type | 131 / 131 | 0 |
 | Quality | 126 / 131 | 5 |
 
-All five unknown Quality values are the `Chest Lv.1` through `Chest Lv.5` products. The market names do not contain explicit Grade tokens, and the stored queryAction products omit asset tags/descriptions that could establish Grade. The public Steam store description confirms that game items can be sold on the market, but does not establish a name-prefix-to-Grade mapping: [Task Bar Cube on Steam](https://store.steampowered.com/app/5084200/Task_Bar_Cube/). Therefore the Grade filter and lower-bound control are available, but the current 131 products remain Grade-unknown until authoritative item metadata is supplied.
+All five unknown Quality values are the `Chest Lv.1` through `Chest Lv.5` products. The market names do not contain explicit Grade tokens, and the stored queryAction products omit asset tags/descriptions that could establish Grade. Since all 131 current products have unknown Grade, the Grade filters and recommendation threshold are disabled with an explicit “Grade情報未取得” status. They automatically become available when at least one verifiable Grade appears in a later item set.
 
 ## Recommendations
 
@@ -27,6 +27,6 @@ Recommendations match one Type, then apply optional minimum Grade, minimum Quali
 
 - Price priority orders by comparable price ascending; unknown prices come last.
 - Quality priority orders by Quality descending, then comparable price ascending.
-- Balance priority is within the chosen Type and adds up to 45 Grade points, 35 Quality points, and 20 affordability points. Affordability is scaled against the known prices among current candidates. Unknown attributes do not contribute points. The score is only an ordering aid and does not estimate combat power.
+- Balance priority is within the chosen Type, using original weights of Grade 45, Quality 35, and affordability 20. Affordability is scaled against known prices among current candidates. Missing attributes are excluded and each candidate’s remaining weights are normalized to 100%; the UI shows the actual weights used for each result. A stale-observation label appears on results older than 24 hours. The score is only an ordering aid and does not estimate combat power.
 
 Product comparison requires two to four products of the same Type. It shows the saved reference price, listings, available classification, and each product's actual observation time. The saved market snapshot is historical and does not imply a live quote.

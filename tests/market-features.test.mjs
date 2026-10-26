@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { calculateTechnicalIndicators, currencyView, filterMarketItems, makeRankingSnapshot, parseFavorites, parsePriceFilterInput, parseRankingSnapshot, priceStatistics, summarizeMarket, toggleFavorite } from '../src/market-features.ts';
+import { calculateTechnicalIndicators, currencyView, filterMarketItems, isObservationStale, makeRankingSnapshot, parseFavorites, parsePriceFilterInput, parseRankingSnapshot, priceStatistics, summarizeMarket, toggleFavorite } from '../src/market-features.ts';
 
 const marketItem = (marketHashName, name, priceMinor, listings) => ({ marketHashName, name, imageUrl: null, priceMinor,
   priceText: priceMinor === null ? null : `$${(priceMinor / 100).toFixed(2)}`, listings,
@@ -67,6 +67,14 @@ test('watchlist is keyed by market name and handles malformed storage without th
 test('overview distinguishes unavailable listing counts from a real zero', () => {
   assert.deepEqual(summarizeMarket([marketItem('a', 'A', 0, 0), marketItem('b', 'B', 10, 4)]), { itemTypes: 2, totalListings: 4 });
   assert.deepEqual(summarizeMarket([marketItem('a', 'A', 0, null)]), { itemTypes: 1, totalListings: null });
+});
+
+test('observations become stale after 24 hours without treating future or invalid timestamps as current data', () => {
+  const now = Date.parse('2026-10-26T00:00:00.000Z');
+  assert.equal(isObservationStale('2026-10-25T00:00:00.000Z', now), false);
+  assert.equal(isObservationStale('2026-10-24T23:59:59.999Z', now), true);
+  assert.equal(isObservationStale('2026-10-26T00:01:00.000Z', now), false);
+  assert.equal(isObservationStale('invalid', now), false);
 });
 
 test('period stats use observed points and avoid division by a zero baseline', () => {
