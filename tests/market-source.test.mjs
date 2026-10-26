@@ -95,3 +95,28 @@ test('source rejects publication gates before collection and rejects another app
     await assert.rejects(readFile(join(root, 'public', 'market-observations.json')), { code: 'ENOENT' });
   } finally { await rm(root, { recursive: true, force: true }); }
 });
+
+test('saved real TBC observations replay without Steam, preserve images and avoid duplicate updates', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'tbcm-factual-replay-'));
+  const savedStorePath = new URL('../.market/query-action-observations-5084200.json', import.meta.url);
+  const output = join(root, 'public', 'market-observations.json');
+  try {
+    const first = await runQueryActionSourceCycle({ savedStorePath, isolationRoot: root,
+      factualObservationPublication: true, includeSteamImages: true });
+    assert.equal(first.products, 131);
+    assert.equal(first.collection.complete, false);
+    const snapshot = parseMarketObservations(JSON.parse(await readFile(output, 'utf8')));
+    assert.equal(snapshot.products.length, 131);
+    assert.equal(snapshot.products.filter(product => product.imageUrl).length, 131);
+    assert.ok(snapshot.imports.every(row => row.rightsConfirmed === false && row.complete === false));
+    assert.ok(snapshot.products.every(product => product.observations.every(point => point.priceMinor === null)));
+    const original = await readFile(output, 'utf8');
+    const repeated = await runQueryActionSourceCycle({ savedStorePath, isolationRoot: root,
+      factualObservationPublication: true, includeSteamImages: true });
+    assert.equal(repeated.changed, false);
+    assert.equal(await readFile(output, 'utf8'), original);
+    await assert.rejects(runQueryActionSourceCycle({ live: true, enabled: true,
+      factualObservationPublication: true, collectImpl: async () => { throw new Error('must not fetch'); } }),
+    /cannot initiate live Steam collection/);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});

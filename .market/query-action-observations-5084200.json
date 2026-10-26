@@ -1,0 +1,4299 @@
+{
+  "schemaVersion": 1,
+  "appid": 5084200,
+  "source": "Steam Community Market queryAction",
+  "currency": "USD",
+  "priceBasis": "min-sell-subtotal-unverified-fees",
+  "products": [
+    {
+      "marketHashName": "Arcane Boots 60%",
+      "name": "Arcane Boots 60%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FidV1YVPTkLxQmI",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FidV1YVPTkLxQmI",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Boots%2060%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Arcane Boots 60%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$5.00",
+          "minSellSubtotalMinor": 500,
+          "listings": 1
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Arcane Boots 60%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$5.00",
+          "minSellSubtotalMinor": 500,
+          "listings": 1
+        }
+      ]
+    },
+    {
+      "marketHashName": "Arcane Bracelet 60%",
+      "name": "Arcane Bracelet 60%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztoahpWFAfMZx0Be",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztoahpWFAfMZx0Be",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Bracelet%2060%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Arcane Bracelet 60%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$4.46",
+          "minSellSubtotalMinor": 446,
+          "listings": 4
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Arcane Bracelet 60%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$4.46",
+          "minSellSubtotalMinor": 446,
+          "listings": 4
+        }
+      ]
+    },
+    {
+      "marketHashName": "Arcane Chestplate 60%",
+      "name": "Arcane Chestplate 60%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmdfFFrZSp2z3qtc",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmdfFFrZSp2z3qtc",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Chestplate%2060%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Arcane Chestplate 60%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.87",
+          "minSellSubtotalMinor": 87,
+          "listings": 2
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Arcane Chestplate 60%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.87",
+          "minSellSubtotalMinor": 87,
+          "listings": 2
+        }
+      ]
+    },
+    {
+      "marketHashName": "Arcane Gloves 60%",
+      "name": "Arcane Gloves 60%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCRJi5tGz3oD3ob8",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCRJi5tGz3oD3ob8",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Gloves%2060%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Arcane Gloves 60%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$3.27",
+          "minSellSubtotalMinor": 327,
+          "listings": 1
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Arcane Gloves 60%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$3.27",
+          "minSellSubtotalMinor": 327,
+          "listings": 1
+        }
+      ]
+    },
+    {
+      "marketHashName": "Arcane Helmet 60%",
+      "name": "Arcane Helmet 60%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5Kl8VYxoJPHPr99w",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5Kl8VYxoJPHPr99w",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Helmet%2060%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Arcane Helmet 60%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$1.19",
+          "minSellSubtotalMinor": 119,
+          "listings": 1
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Arcane Helmet 60%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$1.19",
+          "minSellSubtotalMinor": 119,
+          "listings": 1
+        }
+      ]
+    },
+    {
+      "marketHashName": "Arcane Necklace 60%",
+      "name": "Arcane Necklace 60%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztoahpWFAcv3aPRs",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztoahpWFAcv3aPRs",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Necklace%2060%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Arcane Necklace 60%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$5.49",
+          "minSellSubtotalMinor": 549,
+          "listings": 2
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Arcane Necklace 60%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$5.49",
+          "minSellSubtotalMinor": 549,
+          "listings": 2
+        }
+      ]
+    },
+    {
+      "marketHashName": "Arcane Pants 60%",
+      "name": "Arcane Pants 60%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FidV1YVPXvcT01Y",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FidV1YVPXvcT01Y",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Pants%2060%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Arcane Pants 60%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$1.28",
+          "minSellSubtotalMinor": 128,
+          "listings": 1
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Arcane Pants 60%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$1.28",
+          "minSellSubtotalMinor": 128,
+          "listings": 1
+        }
+      ]
+    },
+    {
+      "marketHashName": "Arcane Ring 60%",
+      "name": "Arcane Ring 60%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FidV1YVP3WjgiKI",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FidV1YVP3WjgiKI",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Arcane%20Ring%2060%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Arcane Ring 60%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$1.11",
+          "minSellSubtotalMinor": 111,
+          "listings": 4
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Arcane Ring 60%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$1.11",
+          "minSellSubtotalMinor": 111,
+          "listings": 4
+        }
+      ]
+    },
+    {
+      "marketHashName": "Blazing Gloves 65%",
+      "name": "Blazing Gloves 65%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCRIi5tGz-kpyViR",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCRIi5tGz-kpyViR",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Blazing%20Gloves%2065%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Blazing Gloves 65%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$3.72",
+          "minSellSubtotalMinor": 372,
+          "listings": 2
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Blazing Gloves 65%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$3.72",
+          "minSellSubtotalMinor": 372,
+          "listings": 2
+        }
+      ]
+    },
+    {
+      "marketHashName": "Blazing Helmet 65%",
+      "name": "Blazing Helmet 65%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5KlsVYxoLkbFnkcg",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5KlsVYxoLkbFnkcg",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Blazing%20Helmet%2065%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Blazing Helmet 65%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$14.73",
+          "minSellSubtotalMinor": 1473,
+          "listings": 1
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Blazing Helmet 65%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$14.73",
+          "minSellSubtotalMinor": 1473,
+          "listings": 1
+        }
+      ]
+    },
+    {
+      "marketHashName": "Blazing Necklace 65%",
+      "name": "Blazing Necklace 65%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztobhpWFAdSze_Ml",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztobhpWFAdSze_Ml",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Blazing%20Necklace%2065%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Blazing Necklace 65%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$22.32",
+          "minSellSubtotalMinor": 2232,
+          "listings": 1
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Blazing Necklace 65%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$22.32",
+          "minSellSubtotalMinor": 2232,
+          "listings": 1
+        }
+      ]
+    },
+    {
+      "marketHashName": "Blazing Pants 65%",
+      "name": "Blazing Pants 65%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FiZV1YVPp_tsYjU",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FiZV1YVPp_tsYjU",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Blazing%20Pants%2065%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Blazing Pants 65%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$1.31",
+          "minSellSubtotalMinor": 131,
+          "listings": 1
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Blazing Pants 65%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$1.31",
+          "minSellSubtotalMinor": 131,
+          "listings": 2
+        }
+      ]
+    },
+    {
+      "marketHashName": "Blazing Ring 65%",
+      "name": "Blazing Ring 65%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FiZV1YVPXG7Cqqk",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FiZV1YVPXG7Cqqk",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Blazing%20Ring%2065%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Blazing Ring 65%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$1.76",
+          "minSellSubtotalMinor": 176,
+          "listings": 1
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Blazing Ring 65%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$1.76",
+          "minSellSubtotalMinor": 176,
+          "listings": 1
+        }
+      ]
+    },
+    {
+      "marketHashName": "Celestial Chestplate 85%",
+      "name": "Celestial Chestplate 85%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmdLFFrZSywJ0260",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmdLFFrZSywJ0260",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Celestial%20Chestplate%2085%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Celestial Chestplate 85%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$24.99",
+          "minSellSubtotalMinor": 2499,
+          "listings": 1
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Celestial Chestplate 85%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$24.99",
+          "minSellSubtotalMinor": 2499,
+          "listings": 1
+        }
+      ]
+    },
+    {
+      "marketHashName": "Celestial Necklace 85%",
+      "name": "Celestial Necklace 85%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztofhpWFAaURzkrt",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztofhpWFAaURzkrt",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Celestial%20Necklace%2085%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Celestial Necklace 85%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$51.10",
+          "minSellSubtotalMinor": 5110,
+          "listings": 1
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Celestial Necklace 85%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$51.10",
+          "minSellSubtotalMinor": 5110,
+          "listings": 1
+        }
+      ]
+    },
+    {
+      "marketHashName": "Chest Lv.1",
+      "name": "Chest Lv.1",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyrk-t_-9LFjsLy4wNTooycQ",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyrk-t_-9LFjsLy4wNTooycQ",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Chest%20Lv.1",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Chest Lv.1",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 2894
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Chest Lv.1",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 2961
+        }
+      ]
+    },
+    {
+      "marketHashName": "Chest Lv.2",
+      "name": "Chest Lv.2",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyrk-t_-9LFTsLy4x3d2u2jw",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyrk-t_-9LFTsLy4x3d2u2jw",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Chest%20Lv.2",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Chest Lv.2",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 334
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Chest Lv.2",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 340
+        }
+      ]
+    },
+    {
+      "marketHashName": "Chest Lv.3",
+      "name": "Chest Lv.3",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyrk-t_-9LFDsLy4zqa78Pfg",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyrk-t_-9LFDsLy4zqa78Pfg",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Chest%20Lv.3",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Chest Lv.3",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 130
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Chest Lv.3",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 133
+        }
+      ]
+    },
+    {
+      "marketHashName": "Chest Lv.4",
+      "name": "Chest Lv.4",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyrk-t_-9LEzsLy4xgoo_iBQ",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyrk-t_-9LEzsLy4xgoo_iBQ",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Chest%20Lv.4",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Chest Lv.4",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 47
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Chest Lv.4",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 47
+        }
+      ]
+    },
+    {
+      "marketHashName": "Chest Lv.5",
+      "name": "Chest Lv.5",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyrk-t_-9LEjsLy4y8oJCVcw",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyrk-t_-9LEjsLy4y8oJCVcw",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Chest%20Lv.5",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Chest Lv.5",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.21",
+          "minSellSubtotalMinor": 21,
+          "listings": 23
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Chest Lv.5",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.21",
+          "minSellSubtotalMinor": 21,
+          "listings": 26
+        }
+      ]
+    },
+    {
+      "marketHashName": "Cobalt Boots 25%",
+      "name": "Cobalt Boots 25%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FyBV1YVPtGvRhIU",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FyBV1YVPtGvRhIU",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Boots%2025%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Cobalt Boots 25%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 21
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Cobalt Boots 25%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 21
+        }
+      ]
+    },
+    {
+      "marketHashName": "Cobalt Bracelet 25%",
+      "name": "Cobalt Bracelet 25%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsdhpWFAd2VuXdu",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsdhpWFAd2VuXdu",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Bracelet%2025%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Cobalt Bracelet 25%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 16
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Cobalt Bracelet 25%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 16
+        }
+      ]
+    },
+    {
+      "marketHashName": "Cobalt Chestplate 25%",
+      "name": "Cobalt Chestplate 25%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNDFFrZSU-daMxU",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNDFFrZSU-daMxU",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Chestplate%2025%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Cobalt Chestplate 25%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 16
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Cobalt Chestplate 25%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 16
+        }
+      ]
+    },
+    {
+      "marketHashName": "Cobalt Gloves 25%",
+      "name": "Cobalt Gloves 25%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVOi5tGz8NunSAm",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVOi5tGz8NunSAm",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Gloves%2025%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Cobalt Gloves 25%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 11
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Cobalt Gloves 25%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 11
+        }
+      ]
+    },
+    {
+      "marketHashName": "Cobalt Helmet 25%",
+      "name": "Cobalt Helmet 25%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5LkMVYxoIxvEtCxg",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5LkMVYxoIxvEtCxg",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Helmet%2025%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Cobalt Helmet 25%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 25
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Cobalt Helmet 25%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 25
+        }
+      ]
+    },
+    {
+      "marketHashName": "Cobalt Necklace 25%",
+      "name": "Cobalt Necklace 25%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsdhpWFAdO7PKu0",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsdhpWFAdO7PKu0",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Necklace%2025%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Cobalt Necklace 25%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 15
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Cobalt Necklace 25%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 16
+        }
+      ]
+    },
+    {
+      "marketHashName": "Cobalt Pants 25%",
+      "name": "Cobalt Pants 25%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FyBV1YVPYHswe4A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FyBV1YVPYHswe4A",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Pants%2025%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Cobalt Pants 25%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 18
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Cobalt Pants 25%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 18
+        }
+      ]
+    },
+    {
+      "marketHashName": "Cobalt Ring 25%",
+      "name": "Cobalt Ring 25%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FyBV1YVPVUH7vvg",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FyBV1YVPVUH7vvg",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Ring%2025%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Cobalt Ring 25%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 23
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Cobalt Ring 25%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 23
+        }
+      ]
+    },
+    {
+      "marketHashName": "Cobalt Sword 25%",
+      "name": "Cobalt Sword 25%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5LkMVYxoJa9SEitA",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5LkMVYxoJa9SEitA",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Cobalt%20Sword%2025%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Cobalt Sword 25%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 21
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Cobalt Sword 25%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 21
+        }
+      ]
+    },
+    {
+      "marketHashName": "Crimson Boots 40%",
+      "name": "Crimson Boots 40%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_Fy1V1YVPlZ2TnFo",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_Fy1V1YVPlZ2TnFo",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Boots%2040%25",
+      "lastObservedAt": "2026-10-25T13:54:11.199Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:51:28.011Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Crimson Boots 40%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.06",
+          "minSellSubtotalMinor": 6,
+          "listings": 13
+        },
+        {
+          "observedAt": "2026-10-25T13:54:11.199Z",
+          "pageStart": 0,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Crimson Boots 40%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.06",
+          "minSellSubtotalMinor": 6,
+          "listings": 13
+        }
+      ]
+    },
+    {
+      "marketHashName": "Crimson Bracelet 40%",
+      "name": "Crimson Bracelet 40%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsQhpWFAVIDrniP",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsQhpWFAVIDrniP",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Bracelet%2040%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Crimson Bracelet 40%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.28",
+          "minSellSubtotalMinor": 28,
+          "listings": 8
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Crimson Bracelet 40%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.28",
+          "minSellSubtotalMinor": 28,
+          "listings": 8
+        }
+      ]
+    },
+    {
+      "marketHashName": "Crimson Chestplate 40%",
+      "name": "Crimson Chestplate 40%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmN3FFrZShhrK9G8",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmN3FFrZShhrK9G8",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Chestplate%2040%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Crimson Chestplate 40%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.30",
+          "minSellSubtotalMinor": 30,
+          "listings": 6
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Crimson Chestplate 40%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.30",
+          "minSellSubtotalMinor": 30,
+          "listings": 6
+        }
+      ]
+    },
+    {
+      "marketHashName": "Crimson Gloves 40%",
+      "name": "Crimson Gloves 40%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVDi5tGz1FI9OBF",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVDi5tGz1FI9OBF",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Gloves%2040%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Crimson Gloves 40%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.13",
+          "minSellSubtotalMinor": 13,
+          "listings": 6
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Crimson Gloves 40%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.13",
+          "minSellSubtotalMinor": 13,
+          "listings": 6
+        }
+      ]
+    },
+    {
+      "marketHashName": "Crimson Helmet 40%",
+      "name": "Crimson Helmet 40%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5LncVYxoLGjeSvVA",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5LncVYxoLGjeSvVA",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Helmet%2040%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Crimson Helmet 40%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.11",
+          "minSellSubtotalMinor": 11,
+          "listings": 11
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Crimson Helmet 40%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.11",
+          "minSellSubtotalMinor": 11,
+          "listings": 11
+        }
+      ]
+    },
+    {
+      "marketHashName": "Crimson Necklace 40%",
+      "name": "Crimson Necklace 40%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsQhpWFAW7jgOk7",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsQhpWFAW7jgOk7",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Necklace%2040%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Crimson Necklace 40%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.37",
+          "minSellSubtotalMinor": 37,
+          "listings": 15
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Crimson Necklace 40%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.37",
+          "minSellSubtotalMinor": 37,
+          "listings": 15
+        }
+      ]
+    },
+    {
+      "marketHashName": "Crimson Pants 40%",
+      "name": "Crimson Pants 40%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_Fy1V1YVPY_6HoI4",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_Fy1V1YVPY_6HoI4",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Pants%2040%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Crimson Pants 40%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.23",
+          "minSellSubtotalMinor": 23,
+          "listings": 13
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Crimson Pants 40%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.23",
+          "minSellSubtotalMinor": 23,
+          "listings": 13
+        }
+      ]
+    },
+    {
+      "marketHashName": "Crimson Ring 40%",
+      "name": "Crimson Ring 40%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_Fy1V1YVPRKIJBkY",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_Fy1V1YVPRKIJBkY",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Ring%2040%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Crimson Ring 40%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.14",
+          "minSellSubtotalMinor": 14,
+          "listings": 9
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Crimson Ring 40%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.14",
+          "minSellSubtotalMinor": 14,
+          "listings": 9
+        }
+      ]
+    },
+    {
+      "marketHashName": "Crimson Sword 40%",
+      "name": "Crimson Sword 40%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5LncVYxoLWQabQ9Q",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5LncVYxoLWQabQ9Q",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Crimson%20Sword%2040%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Crimson Sword 40%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.20",
+          "minSellSubtotalMinor": 20,
+          "listings": 10
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Crimson Sword 40%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.20",
+          "minSellSubtotalMinor": 20,
+          "listings": 10
+        }
+      ]
+    },
+    {
+      "marketHashName": "Dragonforged Bracelet 80%",
+      "name": "Dragonforged Bracelet 80%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztoehpWFASKaGD6d",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztoehpWFASKaGD6d",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Dragonforged%20Bracelet%2080%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Dragonforged Bracelet 80%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$5.10",
+          "minSellSubtotalMinor": 510,
+          "listings": 1
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Dragonforged Bracelet 80%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$5.10",
+          "minSellSubtotalMinor": 510,
+          "listings": 1
+        }
+      ]
+    },
+    {
+      "marketHashName": "Dragonforged Ring 80%",
+      "name": "Dragonforged Ring 80%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FiNV1YVPz1IE5YM",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FiNV1YVPz1IE5YM",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Dragonforged%20Ring%2080%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Dragonforged Ring 80%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$13.28",
+          "minSellSubtotalMinor": 1328,
+          "listings": 1
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Dragonforged Ring 80%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$13.28",
+          "minSellSubtotalMinor": 1328,
+          "listings": 1
+        }
+      ]
+    },
+    {
+      "marketHashName": "Eternal Gloves 95%",
+      "name": "Eternal Gloves 95%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCRCi5tGz_n4DAUH",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCRCi5tGz_n4DAUH",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Eternal%20Gloves%2095%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Eternal Gloves 95%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$27.96",
+          "minSellSubtotalMinor": 2796,
+          "listings": 1
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Eternal Gloves 95%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$27.96",
+          "minSellSubtotalMinor": 2796,
+          "listings": 1
+        }
+      ]
+    },
+    {
+      "marketHashName": "Eternal Pants 95%",
+      "name": "Eternal Pants 95%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FixV1YVP3Del9nU",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FixV1YVP3Del9nU",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Eternal%20Pants%2095%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Eternal Pants 95%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$25.55",
+          "minSellSubtotalMinor": 2555,
+          "listings": 1
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Eternal Pants 95%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$25.55",
+          "minSellSubtotalMinor": 2555,
+          "listings": 1
+        }
+      ]
+    },
+    {
+      "marketHashName": "Eternal Sword 95%",
+      "name": "Eternal Sword 95%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5KnMVYxoJ5cKLqMw",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5KnMVYxoJ5cKLqMw",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Eternal%20Sword%2095%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Eternal Sword 95%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$6.26",
+          "minSellSubtotalMinor": 626,
+          "listings": 1
+        }
+      ]
+    },
+    {
+      "marketHashName": "Golden Boots 30%",
+      "name": "Golden Boots 30%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FyNV1YVPtPzaDjU",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FyNV1YVPtPzaDjU",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Boots%2030%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Golden Boots 30%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 18
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Golden Boots 30%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 18
+        }
+      ]
+    },
+    {
+      "marketHashName": "Golden Bracelet 30%",
+      "name": "Golden Bracelet 30%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsehpWFAf2Vk8hL",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsehpWFAf2Vk8hL",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Bracelet%2030%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Golden Bracelet 30%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 17
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Golden Bracelet 30%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 17
+        }
+      ]
+    },
+    {
+      "marketHashName": "Golden Chestplate 30%",
+      "name": "Golden Chestplate 30%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNPFFrZSMGCiFsc",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNPFFrZSMGCiFsc",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Chestplate%2030%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Golden Chestplate 30%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 17
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Golden Chestplate 30%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 17
+        }
+      ]
+    },
+    {
+      "marketHashName": "Golden Gloves 30%",
+      "name": "Golden Gloves 30%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVNi5tGz2USRfBV",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVNi5tGz2USRfBV",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Gloves%2030%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Golden Gloves 30%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 18
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Golden Gloves 30%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 18
+        }
+      ]
+    },
+    {
+      "marketHashName": "Golden Helmet 30%",
+      "name": "Golden Helmet 30%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5Lk8VYxoL5jYY4Rw",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5Lk8VYxoL5jYY4Rw",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Helmet%2030%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Golden Helmet 30%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 18
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Golden Helmet 30%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 18
+        }
+      ]
+    },
+    {
+      "marketHashName": "Golden Necklace 30%",
+      "name": "Golden Necklace 30%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsehpWFARQ6hu-5",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsehpWFARQ6hu-5",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Necklace%2030%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Golden Necklace 30%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 19
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Golden Necklace 30%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 19
+        }
+      ]
+    },
+    {
+      "marketHashName": "Golden Pants 30%",
+      "name": "Golden Pants 30%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FyNV1YVPKin7NBc",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FyNV1YVPKin7NBc",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Pants%2030%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Golden Pants 30%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 14
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Golden Pants 30%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 14
+        }
+      ]
+    },
+    {
+      "marketHashName": "Golden Ring 30%",
+      "name": "Golden Ring 30%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FyNV1YVPV5Cq8dE",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FyNV1YVPV5Cq8dE",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Ring%2030%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Golden Ring 30%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 12
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Golden Ring 30%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 12
+        }
+      ]
+    },
+    {
+      "marketHashName": "Golden Sword 30%",
+      "name": "Golden Sword 30%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5Lk8VYxoKIrXh7mw",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5Lk8VYxoKIrXh7mw",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Golden%20Sword%2030%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Golden Sword 30%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 14
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Golden Sword 30%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 14
+        }
+      ]
+    },
+    {
+      "marketHashName": "Mystic Boots 45%",
+      "name": "Mystic Boots 45%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FyxV1YVP5PE93xA",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FyxV1YVP5PE93xA",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Boots%2045%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Mystic Boots 45%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 9
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Mystic Boots 45%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.23",
+          "minSellSubtotalMinor": 23,
+          "listings": 8
+        }
+      ]
+    },
+    {
+      "marketHashName": "Mystic Bracelet 45%",
+      "name": "Mystic Bracelet 45%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsRhpWFAU9coU8h",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsRhpWFAU9coU8h",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Bracelet%2045%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Mystic Bracelet 45%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.18",
+          "minSellSubtotalMinor": 18,
+          "listings": 5
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Mystic Bracelet 45%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.18",
+          "minSellSubtotalMinor": 18,
+          "listings": 5
+        }
+      ]
+    },
+    {
+      "marketHashName": "Mystic Chestplate 45%",
+      "name": "Mystic Chestplate 45%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNzFFrZSiegUMic",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNzFFrZSiegUMic",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Chestplate%2045%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Mystic Chestplate 45%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.42",
+          "minSellSubtotalMinor": 42,
+          "listings": 7
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Mystic Chestplate 45%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.42",
+          "minSellSubtotalMinor": 42,
+          "listings": 7
+        }
+      ]
+    },
+    {
+      "marketHashName": "Mystic Gloves 45%",
+      "name": "Mystic Gloves 45%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVCi5tGz0iSr5vT",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVCi5tGz0iSr5vT",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Gloves%2045%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Mystic Gloves 45%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$1.47",
+          "minSellSubtotalMinor": 147,
+          "listings": 6
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Mystic Gloves 45%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$1.47",
+          "minSellSubtotalMinor": 147,
+          "listings": 6
+        }
+      ]
+    },
+    {
+      "marketHashName": "Mystic Helmet 45%",
+      "name": "Mystic Helmet 45%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5LnMVYxoKUEQT93w",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5LnMVYxoKUEQT93w",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Helmet%2045%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Mystic Helmet 45%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.17",
+          "minSellSubtotalMinor": 17,
+          "listings": 6
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Mystic Helmet 45%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.17",
+          "minSellSubtotalMinor": 17,
+          "listings": 6
+        }
+      ]
+    },
+    {
+      "marketHashName": "Mystic Necklace 45%",
+      "name": "Mystic Necklace 45%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsRhpWFAUvxvWlc",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsRhpWFAUvxvWlc",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Necklace%2045%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Mystic Necklace 45%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$1.46",
+          "minSellSubtotalMinor": 146,
+          "listings": 4
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Mystic Necklace 45%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$1.46",
+          "minSellSubtotalMinor": 146,
+          "listings": 4
+        }
+      ]
+    },
+    {
+      "marketHashName": "Mystic Pants 45%",
+      "name": "Mystic Pants 45%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FyxV1YVPjzv3GEc",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FyxV1YVPjzv3GEc",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Pants%2045%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Mystic Pants 45%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.30",
+          "minSellSubtotalMinor": 30,
+          "listings": 8
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Mystic Pants 45%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.30",
+          "minSellSubtotalMinor": 30,
+          "listings": 8
+        }
+      ]
+    },
+    {
+      "marketHashName": "Mystic Ring 45%",
+      "name": "Mystic Ring 45%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FyxV1YVP0ONcFBQ",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FyxV1YVP0ONcFBQ",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Ring%2045%25",
+      "lastObservedAt": "2026-10-25T13:54:26.142Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Mystic Ring 45%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.30",
+          "minSellSubtotalMinor": 30,
+          "listings": 9
+        },
+        {
+          "observedAt": "2026-10-25T13:54:26.142Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Mystic Ring 45%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.30",
+          "minSellSubtotalMinor": 30,
+          "listings": 9
+        }
+      ]
+    },
+    {
+      "marketHashName": "Mystic Sword 45%",
+      "name": "Mystic Sword 45%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5LnMVYxoJe9uLVCg",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5LnMVYxoJe9uLVCg",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Mystic%20Sword%2045%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:52:35.727Z",
+          "pageStart": 30,
+          "pageSize": 30,
+          "totalCount": 130,
+          "strHash": "Mystic Sword 45%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$1.84",
+          "minSellSubtotalMinor": 184,
+          "listings": 7
+        },
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Mystic Sword 45%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$1.84",
+          "minSellSubtotalMinor": 184,
+          "listings": 7
+        }
+      ]
+    },
+    {
+      "marketHashName": "Platinum Boots 35%",
+      "name": "Platinum Boots 35%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FyJV1YVPBbaW5Ck",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FyJV1YVPBbaW5Ck",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Boots%2035%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Platinum Boots 35%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 7
+        }
+      ]
+    },
+    {
+      "marketHashName": "Platinum Bracelet 35%",
+      "name": "Platinum Bracelet 35%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsfhpWFAYpyx5cI",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsfhpWFAYpyx5cI",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Bracelet%2035%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Platinum Bracelet 35%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 9
+        }
+      ]
+    },
+    {
+      "marketHashName": "Platinum Chestplate 35%",
+      "name": "Platinum Chestplate 35%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNLFFrZSnWjuftI",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNLFFrZSnWjuftI",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Chestplate%2035%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Platinum Chestplate 35%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.08",
+          "minSellSubtotalMinor": 8,
+          "listings": 10
+        }
+      ]
+    },
+    {
+      "marketHashName": "Platinum Gloves 35%",
+      "name": "Platinum Gloves 35%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVMi5tGzwSKLvQv",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVMi5tGzwSKLvQv",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Gloves%2035%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Platinum Gloves 35%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.07",
+          "minSellSubtotalMinor": 7,
+          "listings": 6
+        }
+      ]
+    },
+    {
+      "marketHashName": "Platinum Helmet 35%",
+      "name": "Platinum Helmet 35%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5LksVYxoLUrP_JWw",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5LksVYxoLUrP_JWw",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Helmet%2035%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Platinum Helmet 35%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 13
+        }
+      ]
+    },
+    {
+      "marketHashName": "Platinum Necklace 35%",
+      "name": "Platinum Necklace 35%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsfhpWFAXUnETzl",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsfhpWFAXUnETzl",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Necklace%2035%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Platinum Necklace 35%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.11",
+          "minSellSubtotalMinor": 11,
+          "listings": 11
+        }
+      ]
+    },
+    {
+      "marketHashName": "Platinum Pants 35%",
+      "name": "Platinum Pants 35%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FyJV1YVPzy9UPzg",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FyJV1YVPzy9UPzg",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Pants%2035%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Platinum Pants 35%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 6
+        }
+      ]
+    },
+    {
+      "marketHashName": "Platinum Ring 35%",
+      "name": "Platinum Ring 35%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FyJV1YVPc6LqTjI",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FyJV1YVPc6LqTjI",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Ring%2035%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Platinum Ring 35%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.06",
+          "minSellSubtotalMinor": 6,
+          "listings": 14
+        }
+      ]
+    },
+    {
+      "marketHashName": "Platinum Sword 35%",
+      "name": "Platinum Sword 35%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5LksVYxoK5uiE3CA",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5LksVYxoK5uiE3CA",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Platinum%20Sword%2035%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Platinum Sword 35%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 15
+        }
+      ]
+    },
+    {
+      "marketHashName": "Polished Boots 20%",
+      "name": "Polished Boots 20%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FyFV1YVPkUUQHig",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FyFV1YVPkUUQHig",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Boots%2020%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Polished Boots 20%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 38
+        }
+      ]
+    },
+    {
+      "marketHashName": "Polished Bracelet 20%",
+      "name": "Polished Bracelet 20%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztschpWFAWqQaaAV",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztschpWFAWqQaaAV",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Bracelet%2020%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Polished Bracelet 20%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 46
+        }
+      ]
+    },
+    {
+      "marketHashName": "Polished Chestplate 20%",
+      "name": "Polished Chestplate 20%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNHFFrZSwQMXi7E",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNHFFrZSwQMXi7E",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Chestplate%2020%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Polished Chestplate 20%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 47
+        }
+      ]
+    },
+    {
+      "marketHashName": "Polished Gloves 20%",
+      "name": "Polished Gloves 20%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVPi5tGzw0wwcRZ",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVPi5tGzw0wwcRZ",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Gloves%2020%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Polished Gloves 20%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 48
+        }
+      ]
+    },
+    {
+      "marketHashName": "Polished Helmet 20%",
+      "name": "Polished Helmet 20%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5LkcVYxoL4FmV61Q",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5LkcVYxoL4FmV61Q",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Helmet%2020%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Polished Helmet 20%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 44
+        }
+      ]
+    },
+    {
+      "marketHashName": "Polished Necklace 20%",
+      "name": "Polished Necklace 20%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztschpWFAS6Vn2nt",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztschpWFAS6Vn2nt",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Necklace%2020%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Polished Necklace 20%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 57
+        }
+      ]
+    },
+    {
+      "marketHashName": "Polished Pants 20%",
+      "name": "Polished Pants 20%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FyFV1YVPcvC-J2E",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FyFV1YVPcvC-J2E",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Pants%2020%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Polished Pants 20%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 34
+        }
+      ]
+    },
+    {
+      "marketHashName": "Polished Ring 20%",
+      "name": "Polished Ring 20%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FyFV1YVP3Cl9_sY",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FyFV1YVP3Cl9_sY",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Ring%2020%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Polished Ring 20%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 46
+        }
+      ]
+    },
+    {
+      "marketHashName": "Polished Sword 20%",
+      "name": "Polished Sword 20%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5LkcVYxoJBc_wqzw",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5LkcVYxoJBc_wqzw",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Polished%20Sword%2020%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Polished Sword 20%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 33
+        }
+      ]
+    },
+    {
+      "marketHashName": "Rusty Boots 5%",
+      "name": "Rusty Boots 5%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FyRV1YVP4GWbPxE",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FyRV1YVP4GWbPxE",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Boots%205%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Rusty Boots 5%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 134
+        }
+      ]
+    },
+    {
+      "marketHashName": "Rusty Bracelet 5%",
+      "name": "Rusty Bracelet 5%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsZhpWFAc5cFlOI",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsZhpWFAc5cFlOI",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Bracelet%205%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Rusty Bracelet 5%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 151
+        }
+      ]
+    },
+    {
+      "marketHashName": "Rusty Chestplate 5%",
+      "name": "Rusty Chestplate 5%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNTFFrZS1IJUyd4",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNTFFrZS1IJUyd4",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Chestplate%205%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Rusty Chestplate 5%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 115
+        }
+      ]
+    },
+    {
+      "marketHashName": "Rusty Gloves 5%",
+      "name": "Rusty Gloves 5%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVKi5tGz-z0er8G",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVKi5tGz-z0er8G",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Gloves%205%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Rusty Gloves 5%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 136
+        }
+      ]
+    },
+    {
+      "marketHashName": "Rusty Helmet 5%",
+      "name": "Rusty Helmet 5%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5LlMVYxoJwd4kIOQ",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5LlMVYxoJwd4kIOQ",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Helmet%205%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Rusty Helmet 5%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 133
+        }
+      ]
+    },
+    {
+      "marketHashName": "Rusty Necklace 5%",
+      "name": "Rusty Necklace 5%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsZhpWFARQasK5O",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsZhpWFARQasK5O",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Necklace%205%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Rusty Necklace 5%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 151
+        }
+      ]
+    },
+    {
+      "marketHashName": "Rusty Pants 5%",
+      "name": "Rusty Pants 5%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FyRV1YVPjiK0_GI",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FyRV1YVPjiK0_GI",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Pants%205%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Rusty Pants 5%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 138
+        }
+      ]
+    },
+    {
+      "marketHashName": "Rusty Ring 5%",
+      "name": "Rusty Ring 5%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FyRV1YVPSNI1AAc",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FyRV1YVPSNI1AAc",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Ring%205%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Rusty Ring 5%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 117
+        }
+      ]
+    },
+    {
+      "marketHashName": "Rusty Sword 5%",
+      "name": "Rusty Sword 5%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5LlMVYxoL3z-LDiw",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5LlMVYxoL3z-LDiw",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Rusty%20Sword%205%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Rusty Sword 5%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 120
+        }
+      ]
+    },
+    {
+      "marketHashName": "Seraphic Chestplate 90%",
+      "name": "Seraphic Chestplate 90%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmd3FFrZSyqLMiG8",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmd3FFrZSyqLMiG8",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Seraphic%20Chestplate%2090%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Seraphic Chestplate 90%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$27.61",
+          "minSellSubtotalMinor": 2761,
+          "listings": 2
+        }
+      ]
+    },
+    {
+      "marketHashName": "Shadow Boots 50%",
+      "name": "Shadow Boots 50%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FiVV1YVPvrPjtBs",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FiVV1YVPvrPjtBs",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Boots%2050%25",
+      "lastObservedAt": "2026-10-25T13:54:41.311Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:41.311Z",
+          "pageStart": 60,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Shadow Boots 50%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.59",
+          "minSellSubtotalMinor": 59,
+          "listings": 7
+        }
+      ]
+    },
+    {
+      "marketHashName": "Shadow Bracelet 50%",
+      "name": "Shadow Bracelet 50%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztoYhpWFAf3W0zMG",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztoYhpWFAf3W0zMG",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Bracelet%2050%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Shadow Bracelet 50%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.87",
+          "minSellSubtotalMinor": 87,
+          "listings": 6
+        }
+      ]
+    },
+    {
+      "marketHashName": "Shadow Chestplate 50%",
+      "name": "Shadow Chestplate 50%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmdXFFrZSR6-UDNY",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmdXFFrZSR6-UDNY",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Chestplate%2050%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Shadow Chestplate 50%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.63",
+          "minSellSubtotalMinor": 63,
+          "listings": 4
+        }
+      ]
+    },
+    {
+      "marketHashName": "Shadow Gloves 50%",
+      "name": "Shadow Gloves 50%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCRLi5tGzz1FI6gw",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCRLi5tGzz1FI6gw",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Gloves%2050%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Shadow Gloves 50%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$1.19",
+          "minSellSubtotalMinor": 119,
+          "listings": 4
+        }
+      ]
+    },
+    {
+      "marketHashName": "Shadow Helmet 50%",
+      "name": "Shadow Helmet 50%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5KlcVYxoIsg_fQaw",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5KlcVYxoIsg_fQaw",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Helmet%2050%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Shadow Helmet 50%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$22.32",
+          "minSellSubtotalMinor": 2232,
+          "listings": 3
+        }
+      ]
+    },
+    {
+      "marketHashName": "Shadow Necklace 50%",
+      "name": "Shadow Necklace 50%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztoYhpWFAd1dv_cS",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztoYhpWFAd1dv_cS",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Necklace%2050%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Shadow Necklace 50%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$2.96",
+          "minSellSubtotalMinor": 296,
+          "listings": 2
+        }
+      ]
+    },
+    {
+      "marketHashName": "Shadow Pants 50%",
+      "name": "Shadow Pants 50%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FiVV1YVP4E3zryY",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FiVV1YVP4E3zryY",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Pants%2050%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Shadow Pants 50%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$7.40",
+          "minSellSubtotalMinor": 740,
+          "listings": 5
+        }
+      ]
+    },
+    {
+      "marketHashName": "Shadow Ring 50%",
+      "name": "Shadow Ring 50%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FiVV1YVPKkix3iQ",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FiVV1YVPKkix3iQ",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Ring%2050%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Shadow Ring 50%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$7.43",
+          "minSellSubtotalMinor": 743,
+          "listings": 3
+        }
+      ]
+    },
+    {
+      "marketHashName": "Shadow Sword 50%",
+      "name": "Shadow Sword 50%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5KlcVYxoIeoPX0Cw",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5KlcVYxoIeoPX0Cw",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Shadow%20Sword%2050%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Shadow Sword 50%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$1.49",
+          "minSellSubtotalMinor": 149,
+          "listings": 1
+        }
+      ]
+    },
+    {
+      "marketHashName": "Starforged Boots 55%",
+      "name": "Starforged Boots 55%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FiRV1YVPfIkVc9g",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FiRV1YVPfIkVc9g",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Boots%2055%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Starforged Boots 55%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.55",
+          "minSellSubtotalMinor": 55,
+          "listings": 5
+        }
+      ]
+    },
+    {
+      "marketHashName": "Starforged Bracelet 55%",
+      "name": "Starforged Bracelet 55%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztoZhpWFAQqzA-pS",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztoZhpWFAQqzA-pS",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Bracelet%2055%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Starforged Bracelet 55%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$5.54",
+          "minSellSubtotalMinor": 554,
+          "listings": 2
+        }
+      ]
+    },
+    {
+      "marketHashName": "Starforged Gloves 55%",
+      "name": "Starforged Gloves 55%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCRKi5tGz9_pLzeY",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCRKi5tGz9_pLzeY",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Gloves%2055%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Starforged Gloves 55%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$2.56",
+          "minSellSubtotalMinor": 256,
+          "listings": 3
+        }
+      ]
+    },
+    {
+      "marketHashName": "Starforged Helmet 55%",
+      "name": "Starforged Helmet 55%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5KlMVYxoIVA09YDg",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5KlMVYxoIVA09YDg",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Helmet%2055%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Starforged Helmet 55%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$1.21",
+          "minSellSubtotalMinor": 121,
+          "listings": 6
+        }
+      ]
+    },
+    {
+      "marketHashName": "Starforged Necklace 55%",
+      "name": "Starforged Necklace 55%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztoZhpWFAQY6ksMk",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztoZhpWFAQY6ksMk",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Necklace%2055%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Starforged Necklace 55%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$3.68",
+          "minSellSubtotalMinor": 368,
+          "listings": 2
+        }
+      ]
+    },
+    {
+      "marketHashName": "Starforged Pants 55%",
+      "name": "Starforged Pants 55%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FiRV1YVPRiibQ90",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FiRV1YVPRiibQ90",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Pants%2055%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Starforged Pants 55%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.62",
+          "minSellSubtotalMinor": 62,
+          "listings": 4
+        }
+      ]
+    },
+    {
+      "marketHashName": "Starforged Ring 55%",
+      "name": "Starforged Ring 55%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FiRV1YVPoHEVx1A",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FiRV1YVPoHEVx1A",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Ring%2055%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Starforged Ring 55%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$2.23",
+          "minSellSubtotalMinor": 223,
+          "listings": 2
+        }
+      ]
+    },
+    {
+      "marketHashName": "Starforged Sword 55%",
+      "name": "Starforged Sword 55%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5KlMVYxoKVjiuKYw",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5KlMVYxoKVjiuKYw",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Starforged%20Sword%2055%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Starforged Sword 55%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$1.44",
+          "minSellSubtotalMinor": 144,
+          "listings": 3
+        }
+      ]
+    },
+    {
+      "marketHashName": "Stormborn Boots 75%",
+      "name": "Stormborn Boots 75%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FiBV1YVPx9mvBIA",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FiBV1YVPx9mvBIA",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Stormborn%20Boots%2075%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Stormborn Boots 75%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$12.88",
+          "minSellSubtotalMinor": 1288,
+          "listings": 1
+        }
+      ]
+    },
+    {
+      "marketHashName": "Stormborn Helmet 75%",
+      "name": "Stormborn Helmet 75%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5KkMVYxoKFiTvMKQ",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5KkMVYxoKFiTvMKQ",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Stormborn%20Helmet%2075%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Stormborn Helmet 75%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$2.44",
+          "minSellSubtotalMinor": 244,
+          "listings": 2
+        }
+      ]
+    },
+    {
+      "marketHashName": "Sturdy Boots 15%",
+      "name": "Sturdy Boots 15%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FyZV1YVPgpFnPzE",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FyZV1YVPgpFnPzE",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Boots%2015%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Sturdy Boots 15%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 42
+        }
+      ]
+    },
+    {
+      "marketHashName": "Sturdy Bracelet 15%",
+      "name": "Sturdy Bracelet 15%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsbhpWFAdke7ugP",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsbhpWFAdke7ugP",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Bracelet%2015%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Sturdy Bracelet 15%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 42
+        }
+      ]
+    },
+    {
+      "marketHashName": "Sturdy Chestplate 15%",
+      "name": "Sturdy Chestplate 15%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNbFFrZSLzxblII",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNbFFrZSLzxblII",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Chestplate%2015%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Sturdy Chestplate 15%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 44
+        }
+      ]
+    },
+    {
+      "marketHashName": "Sturdy Gloves 15%",
+      "name": "Sturdy Gloves 15%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVIi5tGzyaBGonr",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVIi5tGzyaBGonr",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Gloves%2015%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Sturdy Gloves 15%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 37
+        }
+      ]
+    },
+    {
+      "marketHashName": "Sturdy Helmet 15%",
+      "name": "Sturdy Helmet 15%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5LlsVYxoIz2DlEhg",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5LlsVYxoIz2DlEhg",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Helmet%2015%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Sturdy Helmet 15%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 49
+        }
+      ]
+    },
+    {
+      "marketHashName": "Sturdy Necklace 15%",
+      "name": "Sturdy Necklace 15%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsbhpWFAYult9YQ",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsbhpWFAYult9YQ",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Necklace%2015%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Sturdy Necklace 15%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 40
+        }
+      ]
+    },
+    {
+      "marketHashName": "Sturdy Pants 15%",
+      "name": "Sturdy Pants 15%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FyZV1YVPv5qDL2g",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FyZV1YVPv5qDL2g",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Pants%2015%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Sturdy Pants 15%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 55
+        }
+      ]
+    },
+    {
+      "marketHashName": "Sturdy Ring 15%",
+      "name": "Sturdy Ring 15%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FyZV1YVP8XTLzIE",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FyZV1YVP8XTLzIE",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Ring%2015%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Sturdy Ring 15%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 44
+        }
+      ]
+    },
+    {
+      "marketHashName": "Sturdy Sword 15%",
+      "name": "Sturdy Sword 15%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5LlsVYxoKDEF_PkQ",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5LlsVYxoKDEF_PkQ",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Sturdy%20Sword%2015%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Sturdy Sword 15%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.04",
+          "minSellSubtotalMinor": 4,
+          "listings": 46
+        }
+      ]
+    },
+    {
+      "marketHashName": "Titan Boots 70%",
+      "name": "Titan Boots 70%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FiFV1YVPaeDglWI",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FiFV1YVPaeDglWI",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Titan%20Boots%2070%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Titan Boots 70%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$3.41",
+          "minSellSubtotalMinor": 341,
+          "listings": 1
+        }
+      ]
+    },
+    {
+      "marketHashName": "Titan Chestplate 70%",
+      "name": "Titan Chestplate 70%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmdHFFrZSq1VdFTQ",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmdHFFrZSq1VdFTQ",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Titan%20Chestplate%2070%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Titan Chestplate 70%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$1.70",
+          "minSellSubtotalMinor": 170,
+          "listings": 1
+        }
+      ]
+    },
+    {
+      "marketHashName": "Titan Gloves 70%",
+      "name": "Titan Gloves 70%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCRPi5tGz7YIModL",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCRPi5tGz7YIModL",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Titan%20Gloves%2070%25",
+      "lastObservedAt": "2026-10-25T13:54:56.127Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:54:56.127Z",
+          "pageStart": 90,
+          "pageSize": 30,
+          "totalCount": 131,
+          "strHash": "Titan Gloves 70%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$21.29",
+          "minSellSubtotalMinor": 2129,
+          "listings": 2
+        }
+      ]
+    },
+    {
+      "marketHashName": "Titan Pants 70%",
+      "name": "Titan Pants 70%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FiFV1YVPCS0TT2k",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FiFV1YVPCS0TT2k",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Titan%20Pants%2070%25",
+      "lastObservedAt": "2026-10-25T13:55:11.103Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:55:11.103Z",
+          "pageStart": 120,
+          "pageSize": 11,
+          "totalCount": 131,
+          "strHash": "Titan Pants 70%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$29.71",
+          "minSellSubtotalMinor": 2971,
+          "listings": 2
+        }
+      ]
+    },
+    {
+      "marketHashName": "Titan Sword 70%",
+      "name": "Titan Sword 70%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5KkcVYxoII43x4Rw",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5KkcVYxoII43x4Rw",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Titan%20Sword%2070%25",
+      "lastObservedAt": "2026-10-25T13:55:11.103Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:55:11.103Z",
+          "pageStart": 120,
+          "pageSize": 11,
+          "totalCount": 131,
+          "strHash": "Titan Sword 70%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$9.20",
+          "minSellSubtotalMinor": 920,
+          "listings": 1
+        }
+      ]
+    },
+    {
+      "marketHashName": "Worn Boots 10%",
+      "name": "Worn Boots 10%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FydV1YVPz7KIXrs",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcyp06s5dt_FydV1YVPz7KIXrs",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Boots%2010%25",
+      "lastObservedAt": "2026-10-25T13:55:11.103Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:55:11.103Z",
+          "pageStart": 120,
+          "pageSize": 11,
+          "totalCount": 131,
+          "strHash": "Worn Boots 10%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 86
+        }
+      ]
+    },
+    {
+      "marketHashName": "Worn Bracelet 10%",
+      "name": "Worn Bracelet 10%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsahpWFAa-zR-56",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcjvUCq8-hxU2YkztsahpWFAa-zR-56",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Bracelet%2010%25",
+      "lastObservedAt": "2026-10-25T13:55:11.103Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:55:11.103Z",
+          "pageStart": 120,
+          "pageSize": 11,
+          "totalCount": 131,
+          "strHash": "Worn Bracelet 10%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 93
+        }
+      ]
+    },
+    {
+      "marketHashName": "Worn Chestplate 10%",
+      "name": "Worn Chestplate 10%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNfFFrZSnNUvj6U",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcip0S64vR4RmEe1rRDmNfFFrZSnNUvj6U",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Chestplate%2010%25",
+      "lastObservedAt": "2026-10-25T13:55:11.103Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:55:11.103Z",
+          "pageStart": 120,
+          "pageSize": 11,
+          "totalCount": 131,
+          "strHash": "Worn Chestplate 10%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 76
+        }
+      ]
+    },
+    {
+      "marketHashName": "Worn Gloves 10%",
+      "name": "Worn Gloves 10%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVJi5tGz9Yckixx",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcmo06_8_dLTCVJi5tGz9Yckixx",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Gloves%2010%25",
+      "lastObservedAt": "2026-10-25T13:55:11.103Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:55:11.103Z",
+          "pageStart": 120,
+          "pageSize": 11,
+          "totalCount": 131,
+          "strHash": "Worn Gloves 10%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 70
+        }
+      ]
+    },
+    {
+      "marketHashName": "Worn Helmet 10%",
+      "name": "Worn Helmet 10%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5Ll8VYxoJWWroQUA",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcpqk2k8_BneH5Ll8VYxoJWWroQUA",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Helmet%2010%25",
+      "lastObservedAt": "2026-10-25T13:55:11.103Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:55:11.103Z",
+          "pageStart": 120,
+          "pageSize": 11,
+          "totalCount": 131,
+          "strHash": "Worn Helmet 10%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 75
+        }
+      ]
+    },
+    {
+      "marketHashName": "Worn Necklace 10%",
+      "name": "Worn Necklace 10%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsahpWFAdpoRRv2",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcvqkKi-uV3QmYkztsahpWFAdpoRRv2",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Necklace%2010%25",
+      "lastObservedAt": "2026-10-25T13:55:11.103Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:55:11.103Z",
+          "pageStart": 120,
+          "pageSize": 11,
+          "totalCount": 131,
+          "strHash": "Worn Necklace 10%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 85
+        }
+      ]
+    },
+    {
+      "marketHashName": "Worn Pants 10%",
+      "name": "Worn Pants 10%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FydV1YVPbx-YhHo",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjcxrk-95dt_FydV1YVPbx-YhHo",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Pants%2010%25",
+      "lastObservedAt": "2026-10-25T13:55:11.103Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:55:11.103Z",
+          "pageStart": 120,
+          "pageSize": 11,
+          "totalCount": 131,
+          "strHash": "Worn Pants 10%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 88
+        }
+      ]
+    },
+    {
+      "marketHashName": "Worn Ring 10%",
+      "name": "Worn Ring 10%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FydV1YVPtby_eDE",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjczpk-u5dt_FydV1YVPtby_eDE",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Ring%2010%25",
+      "lastObservedAt": "2026-10-25T13:55:11.103Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:55:11.103Z",
+          "pageStart": 120,
+          "pageSize": 11,
+          "totalCount": 131,
+          "strHash": "Worn Ring 10%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 84
+        }
+      ]
+    },
+    {
+      "marketHashName": "Worn Sword 10%",
+      "name": "Worn Sword 10%",
+      "appid": 5084200,
+      "currency": "USD",
+      "source": "Steam Community Market queryAction",
+      "priceBasis": "min-sell-subtotal-unverified-fees",
+      "iconId": "IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5Ll8VYxoLE2rRTUg",
+      "imageUrl": "https://community.cloudflare.steamstatic.com/economy/image/IsbalNkwkZVhANMs-ZckfpOUh5NBCNmUeGe9TAbELaP22lmDQwRtYJY_6JarK3pO2NY2Lb4iOORUri89ByvlRhdb95XJLE-ACBHEtjc2qkC5-epneH5Ll8VYxoLE2rRTUg",
+      "steamUrl": "https://steamcommunity.com/market/listings/5084200/Worn%20Sword%2010%25",
+      "lastObservedAt": "2026-10-25T13:55:11.103Z",
+      "observations": [
+        {
+          "observedAt": "2026-10-25T13:55:11.103Z",
+          "pageStart": 120,
+          "pageSize": 11,
+          "totalCount": 131,
+          "strHash": "Worn Sword 10%",
+          "requestCurrencyId": 1,
+          "responseCurrencyId": 1,
+          "minSellSubtotalText": "$0.03",
+          "minSellSubtotalMinor": 3,
+          "listings": 77
+        }
+      ]
+    }
+  ],
+  "completedRuns": [
+    {
+      "runId": "8a7f4319-1140-491f-a13b-46fd9402c1fc",
+      "startedAt": "2026-10-25T13:51:28.011Z",
+      "finishedAt": "2026-10-25T13:54:10.707Z",
+      "status": "restart-required",
+      "requestCurrencyId": 1,
+      "sort": 1,
+      "direction": 1,
+      "restartReason": "total-count-changed",
+      "totalCountChanged": false,
+      "reportedTotalCount": 131,
+      "pagesFetched": 2,
+      "distinctProductsObserved": 60,
+      "catalogComplete": false
+    }
+  ],
+  "progress": {
+    "status": "count-reached-unverified",
+    "runId": "ac62da2e-5ec2-4c41-add9-468f71afca36",
+    "startedAt": "2026-10-25T13:54:10.707Z",
+    "requestCurrencyId": 1,
+    "sort": 1,
+    "direction": 1,
+    "totalCountChanged": false,
+    "reportedTotalCount": 131,
+    "nextStart": 131,
+    "pagesFetched": 5,
+    "seenMarketHashNames": [
+      "Arcane Boots 60%",
+      "Arcane Bracelet 60%",
+      "Arcane Chestplate 60%",
+      "Arcane Gloves 60%",
+      "Arcane Helmet 60%",
+      "Arcane Necklace 60%",
+      "Arcane Pants 60%",
+      "Arcane Ring 60%",
+      "Blazing Gloves 65%",
+      "Blazing Helmet 65%",
+      "Blazing Necklace 65%",
+      "Blazing Pants 65%",
+      "Blazing Ring 65%",
+      "Celestial Chestplate 85%",
+      "Celestial Necklace 85%",
+      "Chest Lv.1",
+      "Chest Lv.2",
+      "Chest Lv.3",
+      "Chest Lv.4",
+      "Chest Lv.5",
+      "Cobalt Boots 25%",
+      "Cobalt Bracelet 25%",
+      "Cobalt Chestplate 25%",
+      "Cobalt Gloves 25%",
+      "Cobalt Helmet 25%",
+      "Cobalt Necklace 25%",
+      "Cobalt Pants 25%",
+      "Cobalt Ring 25%",
+      "Cobalt Sword 25%",
+      "Crimson Boots 40%",
+      "Crimson Bracelet 40%",
+      "Crimson Chestplate 40%",
+      "Crimson Gloves 40%",
+      "Crimson Helmet 40%",
+      "Crimson Necklace 40%",
+      "Crimson Pants 40%",
+      "Crimson Ring 40%",
+      "Crimson Sword 40%",
+      "Dragonforged Bracelet 80%",
+      "Dragonforged Ring 80%",
+      "Eternal Gloves 95%",
+      "Eternal Pants 95%",
+      "Eternal Sword 95%",
+      "Golden Boots 30%",
+      "Golden Bracelet 30%",
+      "Golden Chestplate 30%",
+      "Golden Gloves 30%",
+      "Golden Helmet 30%",
+      "Golden Necklace 30%",
+      "Golden Pants 30%",
+      "Golden Ring 30%",
+      "Golden Sword 30%",
+      "Mystic Boots 45%",
+      "Mystic Bracelet 45%",
+      "Mystic Chestplate 45%",
+      "Mystic Gloves 45%",
+      "Mystic Helmet 45%",
+      "Mystic Necklace 45%",
+      "Mystic Pants 45%",
+      "Mystic Ring 45%",
+      "Mystic Sword 45%",
+      "Platinum Boots 35%",
+      "Platinum Bracelet 35%",
+      "Platinum Chestplate 35%",
+      "Platinum Gloves 35%",
+      "Platinum Helmet 35%",
+      "Platinum Necklace 35%",
+      "Platinum Pants 35%",
+      "Platinum Ring 35%",
+      "Platinum Sword 35%",
+      "Polished Boots 20%",
+      "Polished Bracelet 20%",
+      "Polished Chestplate 20%",
+      "Polished Gloves 20%",
+      "Polished Helmet 20%",
+      "Polished Necklace 20%",
+      "Polished Pants 20%",
+      "Polished Ring 20%",
+      "Polished Sword 20%",
+      "Rusty Boots 5%",
+      "Rusty Bracelet 5%",
+      "Rusty Chestplate 5%",
+      "Rusty Gloves 5%",
+      "Rusty Helmet 5%",
+      "Rusty Necklace 5%",
+      "Rusty Pants 5%",
+      "Rusty Ring 5%",
+      "Rusty Sword 5%",
+      "Seraphic Chestplate 90%",
+      "Shadow Boots 50%",
+      "Shadow Bracelet 50%",
+      "Shadow Chestplate 50%",
+      "Shadow Gloves 50%",
+      "Shadow Helmet 50%",
+      "Shadow Necklace 50%",
+      "Shadow Pants 50%",
+      "Shadow Ring 50%",
+      "Shadow Sword 50%",
+      "Starforged Boots 55%",
+      "Starforged Bracelet 55%",
+      "Starforged Gloves 55%",
+      "Starforged Helmet 55%",
+      "Starforged Necklace 55%",
+      "Starforged Pants 55%",
+      "Starforged Ring 55%",
+      "Starforged Sword 55%",
+      "Stormborn Boots 75%",
+      "Stormborn Helmet 75%",
+      "Sturdy Boots 15%",
+      "Sturdy Bracelet 15%",
+      "Sturdy Chestplate 15%",
+      "Sturdy Gloves 15%",
+      "Sturdy Helmet 15%",
+      "Sturdy Necklace 15%",
+      "Sturdy Pants 15%",
+      "Sturdy Ring 15%",
+      "Sturdy Sword 15%",
+      "Titan Boots 70%",
+      "Titan Chestplate 70%",
+      "Titan Gloves 70%",
+      "Titan Pants 70%",
+      "Titan Sword 70%",
+      "Worn Boots 10%",
+      "Worn Bracelet 10%",
+      "Worn Chestplate 10%",
+      "Worn Gloves 10%",
+      "Worn Helmet 10%",
+      "Worn Necklace 10%",
+      "Worn Pants 10%",
+      "Worn Ring 10%",
+      "Worn Sword 10%"
+    ],
+    "orderingRisk": true,
+    "catalogComplete": false
+  }
+}

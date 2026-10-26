@@ -76,15 +76,20 @@ export async function runFeedCycle({ sourceUrl, inputPath, isolationRoot = null,
 // Acquisition adapters share the same validation, merge, rollback and Pages publication path.
 // The callback runs under the output lock, so a second cycle cannot acquire another page first.
 export async function runMarketInputCycle({ loadText, isolationRoot = null,
-  rightsReference = null, enabled = false, provenance }) {
+  rightsReference = null, enabled = false, provenance,
+  factualObservationPublication = false, includeSteamImages = false }) {
   const isolated = isolationRoot !== null;
   if (typeof loadText !== 'function') throw new Error('A market input loader is required');
-  if (!isolated && (!enabled || typeof rightsReference !== 'string' || !rightsReference.trim()
-      || rightsReference.length > 180 || /[\r\n\0]/.test(rightsReference))) {
-    throw new Error('Production input needs explicit enablement and a recorded rights review');
+  if (factualObservationPublication && rightsReference) {
+    throw new Error('Factual observations cannot claim a rights review');
+  }
+  if (!isolated && (!enabled || (!factualObservationPublication
+      && (typeof rightsReference !== 'string' || !rightsReference.trim()
+      || rightsReference.length > 180 || /[\r\n\0]/.test(rightsReference))))) {
+    throw new Error('Production input needs explicit enablement and a recorded rights review or factual mode');
   }
   const outputPath = isolated ? isolatedOutput(isolationRoot) : fileURLToPath(new URL('../public/market-observations.json', import.meta.url));
-  const recordedProvenance = isolated ? provenance : `${provenance}; rights: ${rightsReference}`;
+  const recordedProvenance = isolated || factualObservationPublication ? provenance : `${provenance}; rights: ${rightsReference}`;
   const lockKey = createHash('sha256').update(outputPath.toLowerCase()).digest('hex');
   const lockPath = join(tmpdir(), `tbcm-feed-${lockKey}.lock`);
   let lock;
@@ -103,7 +108,8 @@ export async function runMarketInputCycle({ loadText, isolationRoot = null,
     // Raw HARs/headers live only in the OS temp directory. Only the existing
     // importer's allowlisted product fields can reach a store or Git commit.
     const result = await importMarketFile({ inputPath: staged, outputPath,
-      provenance: recordedProvenance, rightsConfirmed: !isolated, publish: false });
+      provenance: recordedProvenance, rightsConfirmed: !isolated && !factualObservationPublication,
+      factualObservationPublication, includeSteamImages, publish: false });
     if (!result.changed) return { changed: false, products: result.snapshot.products.length, addedPoints: 0 };
     if (isolated) {
       stage = 'save';
@@ -114,7 +120,9 @@ export async function runMarketInputCycle({ loadText, isolationRoot = null,
       // Keep the existing clean-main, build, rollback, push and exact Pages JSON
       // verification path; a feed must not invent a second publication protocol.
       await exec(process.execPath, [fileURLToPath(new URL('./market-publish.mjs', import.meta.url)),
-        '--input', staged, '--provenance', recordedProvenance, '--publish', '--rights-confirmed'],
+        '--input', staged, '--provenance', recordedProvenance,
+        ...(factualObservationPublication ? ['--publish-factual-observations',
+          ...(includeSteamImages ? ['--include-steam-images'] : [])] : ['--publish', '--rights-confirmed'])],
       { cwd: repository, timeout: 10 * 60_000, maxBuffer: 8 * 1024 * 1024 });
     }
     return { changed: true, products: result.snapshot.products.length, addedPoints: result.addedPoints };

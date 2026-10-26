@@ -4,7 +4,7 @@ import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { runFeedCycle, validateFeedUrl } from '../scripts/market-feed.mjs';
+import { runFeedCycle, runMarketInputCycle, validateFeedUrl } from '../scripts/market-feed.mjs';
 import { parseMarketObservations, latestObservedItems } from '../src/market-observations.ts';
 
 test('feed production gate rejects absent rights before transport; Steam and credential URLs are excluded', async () => {
@@ -14,6 +14,14 @@ test('feed production gate rejects absent rights before transport; Steam and cre
   }
   assert.equal(validateFeedUrl('https://feed.example/market.json').hostname, 'feed.example');
   await assert.rejects(runFeedCycle({ sourceUrl: 'https://feed.example/market.json' }), /rights review/);
+});
+
+test('factual publication mode never attests a rights reference', async () => {
+  let loaded = false;
+  await assert.rejects(runMarketInputCycle({ enabled: true, factualObservationPublication: true,
+    rightsReference: 'unverified', provenance: 'test', loadText: async () => { loaded = true; return '{}'; } }),
+  /cannot claim a rights review/);
+  assert.equal(loaded, false);
 });
 
 test('isolated feed handles null price/images, adds products, preserves timestamps and refuses corrupt stores', async () => {

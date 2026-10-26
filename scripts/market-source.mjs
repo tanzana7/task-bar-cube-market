@@ -35,15 +35,29 @@ function persistControlFiles() {
 
 export async function runQueryActionSourceCycle({ live = false, savedStorePath = null,
   isolationRoot = null, enabled = false, rightsReference = null, maxPages = 1, restart = false,
+  factualObservationPublication = false, includeSteamImages = false,
   collectImpl = collectLiveQueryActionPages } = {}) {
   if ((live ? 1 : 0) + (savedStorePath ? 1 : 0) !== 1) throw new Error('Choose --live or --saved-store');
   if (!Number.isSafeInteger(maxPages) || maxPages < 1 || maxPages > 6) throw new Error('max-pages must be 1..6');
   const isolated = isolationRoot !== null;
+  // A saved, sanitized observation may be replayed without claiming Valve permission.
+  // Live production collection still requires its separate access and rights gates.
+  if (live && factualObservationPublication && !isolated) {
+    throw new Error('Factual replay cannot initiate live Steam collection');
+  }
+  if (includeSteamImages && !factualObservationPublication) {
+    throw new Error('Steam images require explicit factual observation mode');
+  }
   if (!isolated && !enabled) throw new Error('Production source needs explicit enablement');
   let collection;
   // The shared pipeline checks publication rights before invoking this loader or making HTTP requests.
   const result = await runMarketInputCycle({ isolationRoot, enabled, rightsReference,
-    provenance: 'Steam Community Market GET queryAction; USD subtotal, fee basis unverified',
+    factualObservationPublication, includeSteamImages,
+    // Observation provenance is immutable: changing it during replay would conflict
+    // with the same product/timestamp already published. Image links were restored later.
+    provenance: factualObservationPublication
+      ? 'operator-directed factual observations; rights unconfirmed; images omitted'
+      : 'Steam Community Market GET queryAction; USD subtotal, fee basis unverified',
     loadText: async () => {
       if (!isolated) requireCleanMain();
       let store;
@@ -89,7 +103,9 @@ async function main() {
     const key = args[index];
     if (seen.has(key)) throw new Error('Duplicate source option');
     seen.add(key);
-    if (key === '--live' || key === '--publish' || key === '--restart') options[key.slice(2)] = true;
+    if (['--live', '--publish', '--restart', '--publish-factual-observations', '--include-steam-images'].includes(key)) {
+      options[key.slice(2)] = true;
+    }
     else if (['--saved-store', '--isolation-root', '--max-pages'].includes(key)) {
       const value = args[++index];
       if (!value || value.startsWith('--')) throw new Error('Source option needs a value');
@@ -99,11 +115,21 @@ async function main() {
   if (!options.publish && !options['isolation-root']) throw new Error('Use --isolation-root for a local test, or explicit --publish');
   if (options.publish && options['isolation-root']) throw new Error('Choose isolation or publication');
   if (options.restart && !options.live) throw new Error('--restart requires --live');
+  if (options['publish-factual-observations'] && !options.publish) {
+    throw new Error('--publish-factual-observations requires --publish');
+  }
+  if (options['include-steam-images'] && !options['publish-factual-observations']) {
+    throw new Error('--include-steam-images requires --publish-factual-observations');
+  }
+  const factualReplay = options['publish-factual-observations'] === true;
   const result = await runQueryActionSourceCycle({ live: options.live === true,
     savedStorePath: options['saved-store'] ?? null, isolationRoot: options['isolation-root'] ?? null,
     restart: options.restart === true,
-    maxPages: Number(options['max-pages'] ?? 1), enabled: options.publish === true && process.env.TBCM_FEED_ENABLED === 'true',
-    rightsReference: process.env.TBCM_FEED_RIGHTS_REFERENCE ?? null });
+    maxPages: Number(options['max-pages'] ?? 1), enabled: options.publish === true
+      && (factualReplay || process.env.TBCM_FEED_ENABLED === 'true'),
+    rightsReference: factualReplay ? null : process.env.TBCM_FEED_RIGHTS_REFERENCE ?? null,
+    factualObservationPublication: factualReplay,
+    includeSteamImages: options['include-steam-images'] === true });
   console.log(JSON.stringify({ event: 'query-action-source-cycle', live: options.live === true, ...result }));
 }
 

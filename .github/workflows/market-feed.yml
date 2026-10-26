@@ -7,6 +7,10 @@ on:
         description: Previous failure and persisted request state have been reviewed and recovered
         type: boolean
         default: false
+      factual_replay:
+        description: Validate and publish only the committed sanitized TBC observations (no Steam request)
+        type: boolean
+        default: false
   repository_dispatch:
     types: [tbc-market-feed-updated]
   # The direct Steam source additionally requires its collection gate and rights reference.
@@ -24,6 +28,7 @@ permissions:
 jobs:
   update:
     if: >-
+      inputs.factual_replay != true &&
       vars.TBCM_FEED_ENABLED == 'true' && vars.TBCM_FEED_RIGHTS_REFERENCE != '' &&
       ((vars.TBCM_MARKET_SOURCE == 'query-action' && vars.STEAM_MARKET_COLLECTION_ALLOWED == 'true') ||
       (vars.TBCM_MARKET_SOURCE != 'query-action' && vars.TBCM_FEED_URL != ''))
@@ -90,3 +95,31 @@ jobs:
             .market/query-action-observations-5084200.json
           include-hidden-files: true
           retention-days: 7
+
+  factual-replay:
+    if: github.event_name == 'workflow_dispatch' && inputs.factual_replay == true
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - name: Configure commit identity
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+      # The fixed, sanitized store is already in Git. This path never contacts Steam
+      # and never turns an unverified subtotal into the canonical USD price history.
+      - name: Replay factual observations and verify Pages if changed
+        run: >-
+          npm run market:source -- --saved-store
+          .market/query-action-observations-5084200.json
+          --publish --publish-factual-observations --include-steam-images
