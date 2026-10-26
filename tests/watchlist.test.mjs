@@ -2,7 +2,7 @@ import test from 'node:test';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import assert from 'node:assert/strict';
-import { evaluateWatchTarget, mergeFavoriteKeys, parseWatchTargetPrice, parseWatchTargets,
+import { evaluateWatchTarget, mergeFavoriteKeys, parseWatchTargetPrice, parseWatchTargets, watchTargetDistance,
   serializeWatchTargets, setWatchTarget } from '../src/watchlist.ts';
 
 const usdBuy = { currency: 'USD', direction: 'buy-at-or-below', priceMinor: 29 };
@@ -35,6 +35,15 @@ test('target comparisons use same-currency values and convert only with a valid 
   assert.equal(evaluateWatchTarget(yenBuy, freshUsd, null, now), 'fx-unavailable');
   const yenSell = { currency: 'JPY', direction: 'sell-at-or-above', priceMinor: 4500 };
   assert.equal(evaluateWatchTarget(yenSell, freshUsd, 157.12, now), 'reached');
+});
+
+test('target distance is shown only for fresh, comparable observations', () => {
+  const now = Date.parse('2026-10-25T12:00:00Z');
+  const price = { currency: 'USD', priceMinor: 29, observedAt: new Date(now).toISOString() };
+  assert.equal(watchTargetDistance({ ...usdBuy, priceMinor: 25 }, price, null, now), 4);
+  assert.equal(watchTargetDistance({ currency: 'JPY', direction: 'buy-at-or-below', priceMinor: 4000 }, price, 157.12, now), 600);
+  assert.equal(watchTargetDistance({ currency: 'JPY', direction: 'buy-at-or-below', priceMinor: 4000 }, price, null, now), null);
+  assert.equal(watchTargetDistance(usdBuy, { ...price, observedAt: '2026-10-23T00:00:00Z' }, null, now), null);
 });
 
 test('target state never reports reached for missing, expired or future observations', () => {

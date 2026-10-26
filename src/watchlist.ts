@@ -84,6 +84,16 @@ export function evaluateWatchTarget(target: WatchTarget, price: WatchPrice | nul
     : comparable >= target.priceMinor ? 'reached' : 'not-reached';
 }
 
+/** Remaining amount in the target currency. A non-positive value has reached the goal. */
+export function watchTargetDistance(target: WatchTarget, price: WatchPrice | null, usdJpyRate: number | null,
+  now = Date.now()): number | null {
+  const status = evaluateWatchTarget(target, price, usdJpyRate, now);
+  if (status !== 'reached' && status !== 'not-reached') return null;
+  const comparable = convertMinor(price!.priceMinor, price!.currency, target.currency, usdJpyRate);
+  if (comparable === null) return null;
+  return target.direction === 'buy-at-or-below' ? comparable - target.priceMinor : target.priceMinor - comparable;
+}
+
 export function mergeFavoriteKeys(current: Set<string>, legacyValues: Array<string | null>): Set<string> {
   const merged = new Set(current);
   for (const value of legacyValues) {

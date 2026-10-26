@@ -18,13 +18,14 @@
   <header class="site-header"><div class="shell header-row"><a class="brand" href="/" aria-label="Task Bar Cube Market ホーム"><span class="brand-mark" aria-hidden="true">▣</span><span>Task Bar Cube <strong>Market</strong></span></a><div class="header-actions"><button id="watchlist-open" class="watchlist-open" type="button">★ ウォッチリスト <span id="watchlist-count">0</span></button><a class="header-link" href="https://steamcommunity.com/market/search?appid=5084200" target="_blank" rel="noopener noreferrer">Steam Market ↗</a></div></div></header>
   <main class="shell">
     <div class="intro"><p class="eyebrow">UNOFFICIAL MARKET BROWSER</p><h1>欲しいアイテムの相場を、すぐに。</h1><p class="intro-copy">Task Bar CubeのSteam出品を検索・比較。</p></div>
+    <nav class="quick-nav" aria-label="主な操作"><a href="#market-section">商品を探す</a><a href="#price-comparison">価格を比較する</a><a href="#price-movement">値動きを見る</a></nav>
     <section class="overview" aria-label="市場概要">
       <article><span>取得商品</span><strong id="overview-items">—</strong></article>
       <article><span>取得分の出品数</span><strong id="overview-listings">—</strong></article>
       <article><span>最終観測</span><strong id="overview-updated">—</strong></article>
       <article><span>参考為替</span><strong id="overview-fx">—</strong></article>
     </section>
-    <section class="market" aria-label="アイテム一覧">
+    <section id="market-section" class="market" aria-label="アイテム一覧">
       <p id="watch-alert" class="watch-alert" role="status" hidden></p>
       <div class="controls"><label class="search"><span class="search-icon" aria-hidden="true">⌕</span><span class="sr-only">アイテム名で検索</span><input id="search" type="search" placeholder="アイテム名で検索" autocomplete="off" /></label><label class="sort"><span class="sr-only">通貨</span><select id="currency"><option value="JPY">JPY</option><option value="USD">USD</option></select></label><label class="sort"><span class="sr-only">並び替え</span><select id="sort"><option value="price-asc">価格が安い順</option><option value="price-desc">価格が高い順</option><option value="name">名前順</option><option value="listings-desc">出品数が多い順</option><option value="listings-asc">出品数が少ない順</option></select></label></div>
       <details id="filter-disclosure" class="filter-disclosure" open>
@@ -51,11 +52,13 @@
       <div id="items" class="items" hidden></div>
     </section>
     <p id="market-note" class="market-note">価格は取得時点の最安出品価格です。購入時はSteamでご確認ください。</p>
-    <section class="analysis-section" aria-labelledby="value-heading">
-      <div class="section-heading"><div><h2 id="value-heading">参考安値候補</h2><p>同じType・Quality帯の参考価格を比較。Quality・Grade・性能の同等性は未確認です。</p></div><button id="value-more" type="button" hidden>もっと見る</button></div>
+    <section id="price-comparison" class="analysis-section" aria-labelledby="value-heading">
+      <div class="section-heading"><div><h2 id="value-heading">参考価格を比較する</h2><p>同じType・Quality帯で比較。素材・Grade・性能の同等性は未確認です。</p></div><label class="analysis-type-label">Type<select id="comparison-type"><option value="">すべて</option></select></label></div>
       <div id="value-status" role="status"></div><div id="value-list" class="analysis-grid"></div>
+      <button id="value-more" class="analysis-more" type="button" hidden>もっと見る</button>
     </section>
-    <section class="analysis-section" aria-labelledby="change-heading">
+    <section class="analysis-section bargain-section" aria-labelledby="bargain-heading"><h2 id="bargain-heading">過去相場からの安値候補</h2><p id="bargain-status" role="status">データを確認中</p><div id="bargain-list" class="analysis-grid"></div></section>
+    <section id="price-movement" class="analysis-section" aria-labelledby="change-heading">
       <div class="section-heading"><div><h2 id="change-heading">前回観測からの変化</h2><p>24時間変化率ではありません。比較した日時を表示します。</p></div></div>
       <div id="change-status" role="status"></div><div id="change-list" class="change-grid"></div>
     </section>
@@ -70,6 +73,7 @@
     <div class="history-dialog-content">
       <div class="history-heading"><span id="history-image" class="history-item-art" aria-hidden="true"></span><div><h2 id="history-title"></h2><p id="history-summary"></p><p id="history-classification" hidden></p></div><button id="history-close" class="icon-button" type="button" aria-label="閉じる">×</button></div>
       <div id="history-stats" class="history-stats"></div>
+      <details id="history-comparison-details" class="history-comparison"><summary>同じType・Quality帯の価格分布</summary><p id="history-comparison"></p></details>
       <div class="history-controls">
         <label>期間<select id="history-range"><option value="24h">24時間</option><option value="7d" selected>7日</option><option value="30d">30日</option><option value="90d">90日</option><option value="all">全期間</option></select></label>
         <label>通貨<select id="history-currency"><option value="USD">USD</option><option value="JPY">JPY</option></select></label>
@@ -88,7 +92,7 @@
     <div class="history-dialog-content">
       <div class="history-heading"><div><h2 id="watchlist-title">ウォッチリスト</h2><p>登録商品をこのページで読み込んだ観測値と比較</p></div><button id="watchlist-close" class="icon-button" type="button" aria-label="閉じる">×</button></div>
       <p class="watchlist-notice">ページを開いている間に読み込んだデータで判定します。バックグラウンド監視は行いません。</p>
-      <div class="watchlist-controls"><label>商品名で検索<input id="watchlist-search" type="search" autocomplete="off" /></label><label>並び替え<select id="watchlist-sort"><option value="name">名前順</option><option value="price-asc">価格が安い順</option><option value="price-desc">価格が高い順</option><option value="listings-desc">出品数が多い順</option></select></label></div>
+      <div class="watchlist-controls"><label>商品名で検索<input id="watchlist-search" type="search" autocomplete="off" /></label><label>並び替え<select id="watchlist-sort"><option value="reached">目標到達順</option><option value="drop">値下がり率順</option><option value="price-asc">価格が安い順</option><option value="price-desc">価格が高い順</option><option value="name">名前順</option><option value="listings-desc">出品数が多い順</option></select></label></div>
       <p id="watchlist-status" class="history-status" role="status"></p>
       <div id="watchlist-items" class="watchlist-items"></div>
     </div>

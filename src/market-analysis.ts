@@ -12,6 +12,77 @@ export type PriceComparison = {
   groupSize: number; listings: number | null; observedAt: string;
 };
 
+export type BargainPolicy = {
+  minObservations: number;
+  minSpanHours: number;
+  maxAgeHours: number;
+  minDiscountPercent: number;
+  maxConfirmationGapHours: number;
+  maxConfirmationSpreadPercent: number;
+  maxDropPercent: number;
+};
+export const DEFAULT_BARGAIN_POLICY: Readonly<BargainPolicy> = Object.freeze({
+  minObservations: 6,
+  minSpanHours: 24,
+  maxAgeHours: 24,
+  minDiscountPercent: 20,
+  maxConfirmationGapHours: 6,
+  maxConfirmationSpreadPercent: 25,
+  maxDropPercent: 80,
+});
+export type BargainSignal = {
+  marketHashName: string;
+  latestPriceMinor: number;
+  historicalMedianMinor: number;
+  discountPercent: number;
+  observations: number;
+  spanHours: number;
+  observedAt: string;
+};
+
+function median(values: number[]): number {
+  const sorted = [...values].sort((a, b) => a - b);
+  const middle = Math.floor(sorted.length / 2);
+  return sorted.length % 2 ? sorted[middle] : Math.round((sorted[middle - 1] + sorted[middle]) / 2);
+}
+
+/**
+ * A cross-item distribution only supports browsing. A historical discount
+ * requires repeated observations of the *same* market_hash_name and price basis.
+ * Two nearby low quotes confirm that a one-off bad quote is not advertised.
+ */
+export function bargainSignal(data: MarketObservations | null, marketHashName: string,
+  now = Date.now(), policy: Readonly<BargainPolicy> = DEFAULT_BARGAIN_POLICY): BargainSignal | null {
+  if (!Number.isFinite(now) || !Number.isSafeInteger(policy.minObservations) || policy.minObservations < 4) return null;
+  const points = referenceSeries(data, marketHashName).filter((point): point is ComparablePoint & { priceMinor: number } => point.priceMinor !== null);
+  if (points.length < policy.minObservations) return null;
+  const latest = points.at(-1)!;
+  const confirmation = points.at(-2)!;
+  const baseline = points.slice(0, -2);
+  const spanHours = (Date.parse(latest.observedAt) - Date.parse(points[0].observedAt)) / 3_600_000;
+  const ageHours = (now - Date.parse(latest.observedAt)) / 3_600_000;
+  const confirmationGap = (Date.parse(latest.observedAt) - Date.parse(confirmation.observedAt)) / 3_600_000;
+  if (baseline.length < 2 || spanHours < policy.minSpanHours || ageHours < 0 || ageHours > policy.maxAgeHours
+      || confirmationGap <= 0 || confirmationGap > policy.maxConfirmationGapHours) return null;
+  const historicalMedianMinor = median(baseline.map(point => point.priceMinor));
+  if (historicalMedianMinor <= 0 || latest.priceMinor <= 0 || confirmation.priceMinor <= 0) return null;
+  const discountPercent = (historicalMedianMinor - latest.priceMinor) / historicalMedianMinor * 100;
+  const confirmationDiscount = (historicalMedianMinor - confirmation.priceMinor) / historicalMedianMinor * 100;
+  const spreadPercent = Math.abs(latest.priceMinor - confirmation.priceMinor) / Math.max(latest.priceMinor, confirmation.priceMinor) * 100;
+  if (discountPercent < policy.minDiscountPercent || confirmationDiscount < policy.minDiscountPercent
+      || discountPercent > policy.maxDropPercent || spreadPercent > policy.maxConfirmationSpreadPercent) return null;
+  return { marketHashName, latestPriceMinor: latest.priceMinor, historicalMedianMinor,
+    discountPercent, observations: points.length, spanHours, observedAt: latest.observedAt };
+}
+
+export function bargainSignals(data: MarketObservations | null, now = Date.now(),
+  policy: Readonly<BargainPolicy> = DEFAULT_BARGAIN_POLICY): BargainSignal[] {
+  return (data?.products ?? []).flatMap(product => {
+    const signal = bargainSignal(data, product.marketHashName, now, policy);
+    return signal ? [signal] : [];
+  }).sort((a, b) => b.discountPercent - a.discountPercent);
+}
+
 // Reference observations are compared only within the same source, currency and price basis.
 // They must never be merged into the verified search/render price history.
 function referenceKey(point: ObservationPoint): string | null {
