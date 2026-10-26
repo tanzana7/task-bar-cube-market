@@ -51,6 +51,14 @@
       <div id="items" class="items" hidden></div>
     </section>
     <p id="market-note" class="market-note">価格は取得時点の最安出品価格です。購入時はSteamでご確認ください。</p>
+    <section class="analysis-section" aria-labelledby="value-heading">
+      <div class="section-heading"><div><h2 id="value-heading">参考安値候補</h2><p>同じType・Quality帯の参考価格を比較。Quality・Grade・性能の同等性は未確認です。</p></div><button id="value-more" type="button" hidden>もっと見る</button></div>
+      <div id="value-status" role="status"></div><div id="value-list" class="analysis-grid"></div>
+    </section>
+    <section class="analysis-section" aria-labelledby="change-heading">
+      <div class="section-heading"><div><h2 id="change-heading">前回観測からの変化</h2><p>24時間変化率ではありません。比較した日時を表示します。</p></div></div>
+      <div id="change-status" role="status"></div><div id="change-list" class="change-grid"></div>
+    </section>
     <section class="ranking-section" aria-labelledby="ranking-heading">
       <div class="section-heading"><div><h2 id="ranking-heading">価格変動</h2><p>観測した最安出品価格の変化</p></div><label>期間<select id="ranking-period"><option value="24h">24時間</option><option value="7d">7日</option></select></label></div>
       <div id="ranking-status" role="status">ランキングを読み込んでいます</div>

@@ -5,6 +5,7 @@ import { filterHistoryPoints, formatHistoryPrice, makeChartPoints, parseHistoryI
 import { calculateTechnicalIndicators, currencyView, filterMarketItems, isObservationStale, parseFavorites, parsePriceFilterInput, parseRankingSnapshot, priceStatistics, recommendEquipment, summarizeMarket, toggleFavorite, type MarketSort, type RankingSnapshot, type RecommendationPriority } from './market-features';
 import { classifyItemName, ITEM_GRADES, ITEM_QUALITIES, ITEM_TYPES, type ItemGrade, type ItemType } from './item-classification';
 import { evaluateWatchTarget, mergeFavoriteKeys, parseWatchTargetPrice, parseWatchTargets, serializeWatchTargets, setWatchTarget, WATCH_TARGETS_STORAGE_KEY, type WatchDirection, type WatchTarget } from './watchlist';
+import { observationChange, periodChange, referenceComparisons, referenceSeries, type PriceComparison } from './market-analysis';
 
 type Snapshot = MarketSnapshot;
 const isDemoPreview = document.body.dataset.preview === 'watchlist';
@@ -78,6 +79,11 @@ const watchlistSearchInput = document.querySelector<HTMLInputElement>('#watchlis
 const watchlistSortSelect = document.querySelector<HTMLSelectElement>('#watchlist-sort')!;
 const watchlistItemsNode = document.querySelector<HTMLDivElement>('#watchlist-items')!;
 const watchlistStatusNode = document.querySelector<HTMLParagraphElement>('#watchlist-status')!;
+const valueListNode = document.querySelector<HTMLDivElement>('#value-list')!;
+const valueStatusNode = document.querySelector<HTMLDivElement>('#value-status')!;
+const valueMoreButton = document.querySelector<HTMLButtonElement>('#value-more')!;
+const changeListNode = document.querySelector<HTMLDivElement>('#change-list')!;
+const changeStatusNode = document.querySelector<HTMLDivElement>('#change-status')!;
 const indicatorSma = document.querySelector<HTMLInputElement>('#indicator-sma')!;
 const indicatorBands = document.querySelector<HTMLInputElement>('#indicator-bands')!;
 const indicatorRsi = document.querySelector<HTMLInputElement>('#indicator-rsi')!;
@@ -103,6 +109,18 @@ let historyLoadSequence = 0;
 let loadSequence = 0;
 const selectedForCompare = new Set<string>();
 let currentMarketItems: ListedItem[] = [];
+let showAllValues = false;
+
+function usdReference(minor: number): string { return `$${(minor / 100).toFixed(2)}`; }
+function signedAmount(minor: number): string { return `${minor > 0 ? '+' : minor < 0 ? '−' : ''}${usdReference(Math.abs(minor))}`; }
+function observationInterval(start: string, end: string): string {
+  const minutes = Math.round((Date.parse(end) - Date.parse(start)) / 60_000);
+  return minutes < 60 ? `${minutes}分` : minutes < 2_880 ? `${(minutes / 60).toFixed(1)}時間` : `${(minutes / 1_440).toFixed(1)}日`;
+}
+
+function comparisonFor(key: string): PriceComparison | undefined {
+  return referenceComparisons(importedSnapshot).find(entry => entry.marketHashName === key);
+}
 function storedValue(key: string): string | null {
   try { return localStorage.getItem(key); } catch { return null; }
 }
@@ -401,6 +419,8 @@ async function openHistory(item: ListedItem | MarketSnapshot['items'][number]) {
   historyFxFallbackNotice = useUsdHistoryFallback ? '為替レート未取得のため、価格履歴をUSDで表示しています' : null;
   historyTitle.textContent = item.name;
   const imported = importedObservations.get(item.marketHashName);
+  historyRange.disabled = Boolean(imported);
+  historyCurrency.disabled = Boolean(imported);
   const visibleItem = imported ? item : snapshot?.items.find(candidate => candidate.marketHashName === item.marketHashName) ?? item;
   const currentPrice = imported
     ? ('importedPriceText' in item ? item.importedPriceText : null) ?? (imported.priceText ? `${imported.priceText} USD（取込観測）` : '価格情報なし')
@@ -424,7 +444,39 @@ async function openHistory(item: ListedItem | MarketSnapshot['items'][number]) {
   if (!historyDialog.open) historyDialog.showModal();
 
   if (imported) {
-    historyStatus.textContent = 'この取込観測は価格履歴に接続していません。';
+    historyRange.value = 'all';
+    historyCurrency.value = 'USD';
+    const series = referenceSeries(importedSnapshot, item.marketHashName);
+    const change = observationChange(importedSnapshot, item.marketHashName);
+    historyStatsNode.replaceChildren();
+    const stats: Array<[string, string]> = [['観測回数', `${series.length}回`]];
+    if (series.length) stats.push(['観測期間', `${formatObservedAt(series[0].observedAt)} → ${formatObservedAt(series.at(-1)!.observedAt)}`]);
+    const prices = series.flatMap(point => point.priceMinor === null ? [] : [point.priceMinor]);
+    if (prices.length >= 2) {
+      const ordered = [...prices].sort((a, b) => a - b);
+      const median = ordered.length % 2 ? ordered[Math.floor(ordered.length / 2)] : (ordered[ordered.length / 2 - 1] + ordered[ordered.length / 2]) / 2;
+      stats.push(['参考価格の範囲', `${usdReference(ordered[0])}–${usdReference(ordered.at(-1)!)}`],
+        ['平均・中央値', `${usdReference(Math.round(prices.reduce((sum, price) => sum + price, 0) / prices.length))} / ${usdReference(Math.round(median))}`]);
+    }
+    if (change) {
+      stats.push(['前回観測', `${change.previous.priceMinor === null ? '価格未取得' : usdReference(change.previous.priceMinor)} · ${formatObservedAt(change.previous.observedAt)}`],
+        ['価格変化', change.priceDelta === null ? '比較データ不足' : `${signedAmount(change.priceDelta)}${change.pricePercent === null ? '' : ` (${change.pricePercent > 0 ? '+' : ''}${change.pricePercent.toFixed(1)}%)`}`],
+        ['出品数変化', change.listingsDelta === null ? '比較データ不足' : `${change.listingsDelta > 0 ? '+' : ''}${change.listingsDelta}件`]);
+    }
+    for (const [label, value] of stats) {
+      const card = document.createElement('article'); const term = document.createElement('span'); const data = document.createElement('strong');
+      term.textContent = label; data.textContent = value; card.append(term, data); historyStatsNode.append(card);
+    }
+    const selected = series.filter(point => historyRange.value === 'all' || Date.parse(point.observedAt) >= Date.now() -
+      ({ '24h': 1, '7d': 7, '30d': 30, '90d': 90 }[historyRange.value] ?? 90) * 86_400_000);
+    const pricePoints = selected.filter((point): point is typeof point & { priceMinor: number } => point.priceMinor !== null)
+      .map(point => ({ observedAt: point.observedAt, value: point.priceMinor / 100, label: usdReference(point.priceMinor), listings: point.listings ?? 0 }));
+    const listingPoints = selected.filter((point): point is typeof point & { listings: number } => point.listings !== null)
+      .map(point => ({ observedAt: point.observedAt, value: point.listings, label: `${point.listings}件`, listings: point.listings }));
+    makeChart(historyChart, pricePoints, value => `$${value.toFixed(2)}`, 'USD参考価格の推移');
+    makeChart(listingChart, listingPoints, value => `${Math.round(value)}件`, '出品数の推移');
+    indicatorStatus.textContent = '参考価格の疎な観測系列にはテクニカル指標を適用しません。';
+    historyStatus.textContent = `参考価格・価格基準確認中 · ${series.length < 2 ? '比較データ不足' : `観測間隔 ${observationInterval(series[0].observedAt, series.at(-1)!.observedAt)}`} · 観測点の間は未取得`;
     return;
   }
 
@@ -445,6 +497,60 @@ async function openHistory(item: ListedItem | MarketSnapshot['items'][number]) {
     if (request !== historyLoadSequence) return;
     console.error('Price history load failed', error);
     historyStatus.textContent = '価格履歴を読み込めませんでした。時間をおいて再度お試しください。';
+  }
+}
+
+function renderReferenceAnalysis() {
+  valueListNode.replaceChildren();
+  changeListNode.replaceChildren();
+  const candidates = referenceComparisons(importedSnapshot).filter(entry => entry.deltaMinor < 0);
+  valueStatusNode.textContent = candidates.length
+    ? `${candidates.length}件の参考安値候補 · 同じType・Quality帯で3商品以上 · ${isObservationStale(candidates[0].observedAt) ? '古い観測' : '観測時点の比較'}`
+    : '比較できる商品が不足しています。';
+  valueMoreButton.hidden = candidates.length <= 6;
+  valueMoreButton.textContent = showAllValues ? '閉じる' : 'もっと見る';
+  for (const entry of (showAllValues ? candidates : candidates.slice(0, 6))) {
+    const item = displayItemsByKey.get(entry.marketHashName);
+    if (!item) continue;
+    const card = document.createElement('article'); card.className = 'analysis-card';
+    card.append(createItemArtwork(item.name, item.imageUrl, 'analysis-art'));
+    const content = document.createElement('div');
+    const name = document.createElement('button'); name.type = 'button'; name.className = 'analysis-name'; name.textContent = item.name;
+    name.addEventListener('click', () => { void openHistory(item); });
+    const price = document.createElement('strong'); price.textContent = `${usdReference(entry.priceMinor)} 参考価格`;
+    const context = document.createElement('small'); context.textContent = `${entry.type} · Quality ${entry.quality}%（比較帯 ${entry.qualityBand}）· ${entry.groupSize}商品中 · Grade未取得 · 観測 ${formatObservedAt(entry.observedAt)}${isObservationStale(entry.observedAt) ? ' · 古い観測' : ''}`;
+    const delta = document.createElement('span'); delta.textContent = `中央値 ${usdReference(Math.round(entry.medianMinor))} より ${usdReference(Math.abs(entry.deltaMinor))} (${Math.abs(entry.deltaPercent).toFixed(1)}%) 低い · 出品 ${entry.listings ?? '未取得'}件`;
+    const actions = document.createElement('div'); actions.className = 'analysis-actions';
+    const watch = document.createElement('button'); watch.type = 'button'; watch.textContent = favorites.has(item.marketHashName) ? '★ ウォッチ中' : '☆ ウォッチ';
+    watch.setAttribute('aria-pressed', String(favorites.has(item.marketHashName)));
+    watch.addEventListener('click', () => setFavorite(item.marketHashName));
+    actions.append(watch, makeFeatureLink(item));
+    content.append(name, price, context, delta, actions); card.append(content); valueListNode.append(card);
+  }
+  const changes = importedSnapshot?.products.flatMap(product => {
+    const change = observationChange(importedSnapshot, product.marketHashName);
+    return change ? [change] : [];
+  }) ?? [];
+  const sections = [
+    { title: '値上がり', entries: changes.filter(change => (change.priceDelta ?? 0) > 0).sort((a, b) => b.priceDelta! - a.priceDelta!) },
+    { title: '値下がり', entries: changes.filter(change => (change.priceDelta ?? 0) < 0).sort((a, b) => a.priceDelta! - b.priceDelta!) },
+    { title: '出品数増加', entries: changes.filter(change => (change.listingsDelta ?? 0) > 0).sort((a, b) => b.listingsDelta! - a.listingsDelta!) },
+    { title: '出品数減少', entries: changes.filter(change => (change.listingsDelta ?? 0) < 0).sort((a, b) => a.listingsDelta! - b.listingsDelta!) },
+  ];
+  changeStatusNode.textContent = changes.length ? `${changes.length}商品に比較可能な前回観測あり · 24時間・7日比較はデータ蓄積中` : '比較データ不足 · データ蓄積中';
+  for (const section of sections) {
+    const column = document.createElement('section'); column.className = 'change-column';
+    const heading = document.createElement('h3'); heading.textContent = section.title; column.append(heading);
+    if (!section.entries.length) { const empty = document.createElement('p'); empty.textContent = '変化なし'; column.append(empty); }
+    for (const change of section.entries.slice(0, 5)) {
+      const item = displayItemsByKey.get(change.marketHashName);
+      const button = document.createElement('button'); button.type = 'button'; button.className = 'change-row';
+      const figure = section.title.startsWith('出品数') ? `${change.listingsDelta! > 0 ? '+' : ''}${change.listingsDelta}件`
+        : `${signedAmount(change.priceDelta!)}${change.pricePercent === null ? '' : ` (${change.pricePercent > 0 ? '+' : ''}${change.pricePercent.toFixed(1)}%)`}`;
+      button.textContent = `${item?.name ?? change.marketHashName} · ${figure} · ${formatObservedAt(change.previous.observedAt)} → ${formatObservedAt(change.latest.observedAt)} (${observationInterval(change.previous.observedAt, change.latest.observedAt)})${isObservationStale(change.latest.observedAt) ? ' · 古い観測' : ''}`;
+      button.addEventListener('click', () => { if (item) void openHistory(item); }); column.append(button);
+    }
+    changeListNode.append(column);
   }
 }
 
@@ -516,6 +622,7 @@ function render() {
   currentMarketItems = allItems;
   updateGradeAvailability(allItems);
   displayItemsByKey = new Map(allItems.map(item => [item.marketHashName, item]));
+  renderReferenceAnalysis();
   updateWatchlistSummary();
   if (watchlistDialog.open) renderWatchlist();
   const importedText = new Map([...selection.imported].map(([key, item]) => [key, item.importedPriceText ?? '価格情報なし']));
@@ -722,6 +829,8 @@ function renderRecommendations() {
     const staleText = observedAt && isObservationStale(observedAt) ? ' · 古い観測' : '';
     facts.textContent = `${classification.grade ?? 'Grade未取得'} · ${classification.quality === null ? 'Quality未取得' : `${classification.quality}%`} · ${displayedPrice(result.item)} · 出品 ${result.item.listings ?? '未取得'}件 · ${observedAt ? `観測 ${formatObservedAt(observedAt)}` : '観測日時未取得'}${staleText}`;
     const reason = document.createElement('small'); reason.textContent = `${index + 1}位 · ${result.reason}${result.score === null ? '' : ` · ${result.score.toFixed(1)}点`}${result.criteria ? ` · 評価 ${result.criteria}` : ''}`;
+    const comparison = comparisonFor(result.item.marketHashName);
+    if (comparison) reason.textContent += ` · 同Type・Quality帯 ${comparison.qualityBand}の${comparison.groupSize}商品中央値 ${usdReference(Math.round(comparison.medianMinor))}との参考差 ${signedAmount(comparison.deltaMinor)}（性能差未確認）`;
     const favoriteButton = document.createElement('button'); favoriteButton.type = 'button'; favoriteButton.className = 'recommend-watch';
     favoriteButton.textContent = favorites.has(result.item.marketHashName) ? '★ 登録済み' : '☆ ウォッチ';
     favoriteButton.setAttribute('aria-pressed', String(favorites.has(result.item.marketHashName)));
@@ -854,6 +963,12 @@ function renderWatchlist() {
         : status === 'stale' ? '古い観測のため判定なし'
           : status === 'fx-unavailable' ? '為替未取得のため判定なし' : '価格未取得のため判定なし';
     content.append(title, currentLabel, state);
+    const change = observationChange(importedSnapshot, marketHashName);
+    if (change) {
+      const movement = document.createElement('p'); movement.className = `watch-movement${change.priceDelta !== null && change.priceDelta < 0 ? ' is-falling' : ''}`;
+      movement.textContent = `前回観測比 ${change.priceDelta === null ? '価格比較なし' : signedAmount(change.priceDelta)}${change.pricePercent === null ? '' : ` (${change.pricePercent > 0 ? '+' : ''}${change.pricePercent.toFixed(1)}%)`} · 出品 ${change.listingsDelta === null ? '比較なし' : `${change.listingsDelta > 0 ? '+' : ''}${change.listingsDelta}件`} · ${formatObservedAt(change.previous.observedAt)} → ${formatObservedAt(change.latest.observedAt)}`;
+      content.append(movement);
+    }
     const form = document.createElement('form'); form.className = 'watch-target-form';
     const conditionLabel = document.createElement('label'); conditionLabel.textContent = '条件';
     const condition = document.createElement('select'); condition.name = 'direction';
@@ -944,7 +1059,25 @@ function renderRankings() {
   const period = rankingPeriodSelect.value as '24h' | '7d';
   const section = rankingSnapshot?.periods[period];
   if (!section || (!section.up.length && !section.down.length)) {
-    rankingStatusNode.textContent = 'この期間の価格変動データはまだありません。';
+    const hours = period === '24h' ? 24 : 168;
+    const comparable = importedSnapshot?.products.flatMap(product => {
+      const change = periodChange(importedSnapshot, product.marketHashName, hours);
+      return change?.priceDelta === null || change?.priceDelta === undefined ? [] : [change];
+    }) ?? [];
+    if (!comparable.length) { rankingStatusNode.textContent = `${period === '24h' ? '24時間' : '7日間'}の比較データは蓄積中です。`; return; }
+    rankingStatusNode.textContent = `参考価格の${period === '24h' ? '24時間' : '7日間'}比較 · 価格基準確認中`;
+    for (const [title, entries] of [['値上がり', comparable.filter(change => change.priceDelta! > 0).sort((a, b) => b.priceDelta! - a.priceDelta!)],
+      ['値下がり', comparable.filter(change => change.priceDelta! < 0).sort((a, b) => a.priceDelta! - b.priceDelta!)]] as const) {
+      const column = document.createElement('section'); column.className = 'ranking-column';
+      const heading = document.createElement('h3'); heading.textContent = title; column.append(heading);
+      if (!entries.length) { const empty = document.createElement('p'); empty.textContent = '該当なし'; column.append(empty); }
+      for (const change of entries.slice(0, 5)) {
+        const button = document.createElement('button'); button.type = 'button'; button.className = 'ranking-row';
+        button.textContent = `${change.marketHashName} · ${signedAmount(change.priceDelta!)} · ${formatObservedAt(change.previous.observedAt)} → ${formatObservedAt(change.latest.observedAt)}`;
+        button.addEventListener('click', () => { const item = displayItemsByKey.get(change.marketHashName); if (item) void openHistory(item); }); column.append(button);
+      }
+      rankingListNode.append(column);
+    }
     return;
   }
   rankingStatusNode.textContent = `基準時刻±${section.toleranceHours}時間以内に観測点がある商品だけを比較`;
@@ -1068,6 +1201,7 @@ watchlistSortSelect.addEventListener('change', renderWatchlist);
 historyRange.addEventListener('change', renderHistoryChart);
 historyCurrency.addEventListener('change', renderHistoryChart);
 rankingPeriodSelect.addEventListener('change', renderRankings);
+valueMoreButton.addEventListener('click', () => { showAllValues = !showAllValues; renderReferenceAnalysis(); });
 historyFavoriteButton.addEventListener('click', () => {
   if (activeHistoryItem) setFavorite(activeHistoryItem.marketHashName);
 });
