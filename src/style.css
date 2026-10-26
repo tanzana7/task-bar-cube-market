@@ -205,3 +205,5 @@ body[data-preview="watchlist"] .ranking-section{display:none}
 @media(max-width:620px){.analysis-grid,.change-grid{grid-template-columns:1fr}.analysis-card{grid-template-columns:64px minmax(0,1fr)}.analysis-art{width:64px;height:64px}}
 .analysis-section .section-heading button{white-space:nowrap}.watch-movement.is-falling{color:#83ddb2}
 body[data-preview="watchlist"] .analysis-section{display:none}
+.feature-result>.recommend-value-link{grid-column:2;grid-row:4}
+@media(max-width:620px){.feature-result>.recommend-value-link{grid-column:auto;grid-row:auto}}

@@ -476,7 +476,7 @@ async function openHistory(item: ListedItem | MarketSnapshot['items'][number]) {
     makeChart(historyChart, pricePoints, value => `$${value.toFixed(2)}`, 'USD参考価格の推移');
     makeChart(listingChart, listingPoints, value => `${Math.round(value)}件`, '出品数の推移');
     indicatorStatus.textContent = '参考価格の疎な観測系列にはテクニカル指標を適用しません。';
-    historyStatus.textContent = `参考価格・価格基準確認中 · ${series.length < 2 ? '比較データ不足' : `観測間隔 ${observationInterval(series[0].observedAt, series.at(-1)!.observedAt)}`} · 観測点の間は未取得`;
+    historyStatus.textContent = `参考価格・価格基準確認中${isObservationStale(imported.observedAt) ? ' · 古い観測' : ''} · ${series.length < 2 ? '比較データ不足' : `観測間隔 ${observationInterval(series[0].observedAt, series.at(-1)!.observedAt)}`} · 観測点の間は未取得`;
     return;
   }
 
@@ -836,6 +836,16 @@ function renderRecommendations() {
     favoriteButton.setAttribute('aria-pressed', String(favorites.has(result.item.marketHashName)));
     favoriteButton.addEventListener('click', () => setFavorite(result.item.marketHashName));
     row.append(title, facts, reason, makeFeatureLink(result.item), favoriteButton);
+    if (comparison && comparison.deltaMinor < 0) {
+      const showComparison = document.createElement('button'); showComparison.type = 'button'; showComparison.className = 'recommend-value-link'; showComparison.textContent = '安値候補を見る';
+      showComparison.addEventListener('click', () => {
+        showAllValues = true;
+        renderReferenceAnalysis();
+        recommendDialog.close();
+        document.querySelector('#value-heading')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      row.append(showComparison);
+    }
     recommendResultsNode.append(row);
   }
 }
