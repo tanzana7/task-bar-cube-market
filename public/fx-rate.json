@@ -4,7 +4,7 @@
   "apiUrl": "https://api.frankfurter.dev/v2/rate/USD/JPY",
   "base": "USD",
   "quote": "JPY",
-  "rate": 158,
-  "rateDate": "2026-10-29",
-  "fetchedAt": "2026-10-29T22:50:47.182Z"
+  "rate": 157.71,
+  "rateDate": "2026-10-30",
+  "fetchedAt": "2026-10-30T22:28:00.071Z"
 }
